@@ -6,7 +6,13 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
-
+        <item name="android:windowActivityTransitions">true</item>
     </style>
+
+    <!--<style name="AppTheme.Splash" parent="AppTheme">-->
+    <!--<item name="android:activityCloseExitAnimation">@anim/nav_default_pop_exit_anim</item>-->
+    <!--<item name="android:activityCloseEnterAnimation">@anim/nav_default_pop_enter_anim</item>-->
+    <!--</style>-->
+
 
 </resources>

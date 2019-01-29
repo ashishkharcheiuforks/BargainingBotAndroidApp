@@ -1,4 +1,4 @@
-package com.example.shounak.bargainingbot.login
+package com.example.shounak.bargainingbot.intro
 
 import android.support.v4.view.ViewPager
 import android.view.View

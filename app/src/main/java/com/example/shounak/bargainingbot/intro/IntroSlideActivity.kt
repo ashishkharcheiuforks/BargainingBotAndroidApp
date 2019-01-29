@@ -1,7 +1,8 @@
-package com.example.shounak.bargainingbot.login
+package com.example.shounak.bargainingbot.intro
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.transition.Fade
 import com.example.shounak.bargainingbot.R
 import kotlinx.android.synthetic.main.activity_slide_intro.*
 
@@ -13,6 +14,9 @@ class IntroSlideActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slide_intro)
+
+        window.enterTransition = Fade()
+        window.exitTransition = Fade()
 
         val viewPager = slideViewPager
         val customAdapter = IntroSlideAdapter(supportFragmentManager)

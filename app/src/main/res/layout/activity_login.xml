@@ -12,13 +12,15 @@
     <ImageView
             android:src="@drawable/main_logo"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="0dp"
             android:id="@+id/imageView" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="66dp"
             android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp" android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.25"
-            android:elevation="25dp"/>
+            android:layout_marginEnd="16dp"
+            android:elevation="25dp" app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginBottom="307dp"
+            app:layout_constraintVertical_bias="0.100000024"
+            android:transitionName="introMainLogoTran" app:layout_constraintBottom_toTopOf="@+id/login_button_fb"/>
 
 
     <android.support.design.button.MaterialButton android:layout_width="300dp"
@@ -26,34 +28,45 @@
                                                   android:backgroundTint="@android:color/white"
                                                   app:rippleColor="@color/secondaryLightColor"
                                                   app:cornerRadius="16dp"
-                                                  android:layout_marginTop="16dp"
-                                                  app:layout_constraintTop_toBottomOf="@+id/imageView"
                                                   app:layout_constraintEnd_toEndOf="parent"
                                                   android:layout_marginEnd="16dp"
-                                                  app:layout_constraintBottom_toBottomOf="parent"
-                                                  android:layout_marginBottom="16dp"
                                                   app:layout_constraintStart_toStartOf="parent"
                                                   android:layout_marginStart="16dp"
-                                                  app:layout_constraintVertical_bias="0.33999997"
                                                   android:text="@string/google_login_button_text"
                                                   android:textColor="@android:color/black"
-                                                  android:id="@+id/google_signin_button"/>
+                                                  android:id="@+id/google_signin_button"
+                                                  app:layout_constraintHorizontal_bias="0.493"
+                                                  android:layout_marginTop="8dp"
+                                                  app:layout_constraintTop_toBottomOf="@+id/imageView"
+                                                  android:layout_marginBottom="8dp"
+                                                  app:layout_constraintBottom_toBottomOf="parent"
+                                                  app:layout_constraintVertical_bias="0.32999998"/>
 
     <android.support.design.button.MaterialButton android:layout_width="300dp" android:layout_height="70dp"
                                                   android:backgroundTint="@color/facebookBlue"
                                                   app:rippleColor="@color/facebookBlueLight"
-                                                  android:layout_marginTop="16dp"
                                                   app:cornerRadius="16dp"
-                                                  app:layout_constraintTop_toBottomOf="@+id/google_signin_button"
                                                   app:layout_constraintEnd_toEndOf="parent"
                                                   android:layout_marginEnd="16dp"
-                                                  app:layout_constraintBottom_toBottomOf="parent"
-                                                  android:layout_marginBottom="16dp"
                                                   app:layout_constraintStart_toStartOf="parent"
                                                   android:layout_marginStart="16dp"
-                                                  app:layout_constraintVertical_bias="0.0"
                                                   android:text="@string/facebook_login_button_text"
-                                                  android:id="@+id/facebook_signin_button"/>
+                                                  android:id="@+id/facebook_signin_button"
+                                                  app:layout_constraintHorizontal_bias="0.506"
+                                                  android:layout_marginTop="8dp"
+                                                  app:layout_constraintTop_toBottomOf="@+id/google_signin_button"/>
+
+
+    <com.facebook.login.widget.LoginButton
+            style="@style/AppTheme"
+            android:id="@+id/login_button_fb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" android:layout_marginBottom="124dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="59dp" android:layout_marginEnd="59dp"/>
 
 
 </android.support.constraint.ConstraintLayout>

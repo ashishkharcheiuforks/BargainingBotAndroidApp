@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "79082025326-s0vvkh3cqjvtpok2u41rq3acrdkvoh33.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shounak.bargainingbot",
+            "certificate_hash": "66d09039727f031e3ec5c0291370da04bf921989"
+          }
+        },
+        {
           "client_id": "79082025326-av6gti68th02r9aoqhpf0e83anpse6ih.apps.googleusercontent.com",
           "client_type": 3
         }
