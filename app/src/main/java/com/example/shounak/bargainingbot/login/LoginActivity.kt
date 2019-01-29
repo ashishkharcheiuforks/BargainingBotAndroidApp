@@ -22,19 +22,25 @@ import kotlinx.android.synthetic.main.activity_login.*
 check if already logged in is working
  */
 
+
+private var onCreateCounter = 0
+
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private val TAG = "MainActivity"
     private lateinit var auth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
-    private val RC_SIGN_IN: Int = 1
+
+    companion object {
+        private const val RC_SIGN_IN: Int = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-
+        onCreateCounter++
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id2))
@@ -49,6 +55,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         googleSignInButton.setOnClickListener(this)
 
+        if(auth.currentUser == null && onCreateCounter <= 1){
+            intent = Intent(this, IntroSlideActivity::class.java)
+            startActivity(intent)
+        }
+
+
 
     }
 
@@ -60,7 +72,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val currentUser = auth.currentUser
 
 
-        updateUI(currentUser)
+            updateUI(currentUser)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -118,28 +131,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-//    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-//        try {
-//            val account = completedTask.getResult(ApiException::class.java)
-//
-//            // Signed in successfully, show authenticated UI.
-//            updateUI(account)
-//        } catch (e: ApiException) {
-//            // The ApiException status code indicates the detailed failure reason.
-//            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-//            Log.w(TAG, "signInResult:failed code=" + e.statusCode)
-//            updateUI(null)
-//        }
-//
-//    }
-
     private fun updateUI(account: FirebaseUser?) {
         if (account != null) {
             Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show()
             intent = Intent(this, testActivity::class.java)
             startActivity(intent)
         } else {
-            Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show()
 
         }
     }
@@ -151,4 +148,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
 
 
-    }
+
+
+}
