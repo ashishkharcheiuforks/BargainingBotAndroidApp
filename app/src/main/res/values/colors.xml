@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--?xml version="1.0" encoding="UTF-8"?-->
+
+    <color name="primaryColor">#33373d</color>
+    <color name="primaryLightColor">#5d6167</color>
+    <color name="primaryDarkColor">#0c1117</color>
+    <color name="secondaryColor">#e80000</color>
+    <color name="secondaryLightColor">#ff5533</color>
+    <color name="secondaryDarkColor">#AD0000</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+
+    <color name="facebookBlue">#3b5998</color>
+    <color name="facebookBlueLight">#dfe3ee</color>
+
+</resources>
