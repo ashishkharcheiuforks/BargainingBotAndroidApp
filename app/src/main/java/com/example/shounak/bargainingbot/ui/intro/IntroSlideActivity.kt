@@ -1,7 +1,7 @@
-package com.example.shounak.bargainingbot.intro
+package com.example.shounak.bargainingbot.ui.intro
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.transition.Fade
 import com.example.shounak.bargainingbot.R
 import kotlinx.android.synthetic.main.activity_slide_intro.*

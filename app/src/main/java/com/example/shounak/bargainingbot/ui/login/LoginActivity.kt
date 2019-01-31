@@ -1,17 +1,17 @@
-package com.example.shounak.bargainingbot.login
+package com.example.shounak.bargainingbot.ui.login
 
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.transition.Fade
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.example.shounak.bargainingbot.R
-import com.example.shounak.bargainingbot.intro.IntroSlideActivity
-import com.example.shounak.bargainingbot.testActivity
+import com.example.shounak.bargainingbot.data.testActivity
+import com.example.shounak.bargainingbot.ui.intro.IntroSlideActivity
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -23,29 +23,36 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.generic.instance
 import java.util.*
 
 
 private var onCreateCounter = 0
+private const val RC_SIGN_IN: Int = 1
+private lateinit var auth: FirebaseAuth
 
-class LoginActivity : AppCompatActivity(), View.OnClickListener {
+
+class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
+    override val kodein by closestKodein()
+    private val viewModelFactory: LoginViewModelFactory by instance()
 
 
+    private lateinit var viewModel: LoginViewModel
     private val TAG = "MainActivity"
-    private lateinit var auth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     private lateinit var callbackManager: CallbackManager
 
-
-    companion object {
-        private const val RC_SIGN_IN: Int = 1
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -53,6 +60,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
 
         //OnCreateCounter
         onCreateCounter++
@@ -154,6 +163,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
+                    updateData(user)
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -177,6 +187,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
+                    updateData(user)
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -228,6 +239,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             finish()
         } else {
 
+        }
+    }
+
+    private fun updateData(user: FirebaseUser?) {
+        if (user != null) {
+            runBlocking {
+                withContext(this.coroutineContext) {
+                    viewModel.updateData(user)
+                }
+            }
         }
     }
 

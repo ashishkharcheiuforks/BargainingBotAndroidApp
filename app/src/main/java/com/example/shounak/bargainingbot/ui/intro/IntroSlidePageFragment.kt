@@ -1,4 +1,4 @@
-package com.example.shounak.bargainingbot.intro
+package com.example.shounak.bargainingbot.ui.intro
 
 
 import android.os.Bundle
@@ -9,7 +9,7 @@ import com.example.shounak.bargainingbot.R
 import kotlinx.android.synthetic.main.fragment_intro_slide_page.*
 
 
-class IntroSlidePageFragment : android.support.v4.app.Fragment() {
+class IntroSlidePageFragment : androidx.fragment.app.Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

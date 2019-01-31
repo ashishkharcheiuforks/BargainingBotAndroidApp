@@ -1,11 +1,12 @@
-package com.example.shounak.bargainingbot
+package com.example.shounak.bargainingbot.data
 
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.transition.Fade
-import com.example.shounak.bargainingbot.login.LoginActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.example.shounak.bargainingbot.R
+import com.example.shounak.bargainingbot.ui.login.LoginActivity
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

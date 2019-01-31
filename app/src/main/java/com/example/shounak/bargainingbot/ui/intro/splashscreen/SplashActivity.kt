@@ -1,12 +1,12 @@
-package com.example.shounak.bargainingbot.intro.splashscreen
+package com.example.shounak.bargainingbot.ui.intro.splashscreen
 
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.transition.Fade
 import com.example.shounak.bargainingbot.R
-import com.example.shounak.bargainingbot.login.LoginActivity
+import com.example.shounak.bargainingbot.ui.login.LoginActivity
 import java.util.*
 
 class SplashActivity : AppCompatActivity() {
