@@ -11,6 +11,7 @@
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
 
+    <color name="colorTransparentWhite">#cccccc</color>
     <color name="facebookBlue">#3b5998</color>
     <color name="facebookBlueLight">#dfe3ee</color>
 

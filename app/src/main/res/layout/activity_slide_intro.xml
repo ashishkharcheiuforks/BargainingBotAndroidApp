@@ -4,19 +4,65 @@
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   android:background="@color/primaryColor"
+                                                   android:background="@drawable/slide_bg"
+                                                   android:backgroundTint="@color/primaryDarkColor"
+                                                   android:backgroundTintMode="multiply"
                                                    tools:context=".ui.intro.IntroSlideActivity">
 
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/slideViewPager"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="646dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"/>
+
+    <LinearLayout
+            android:id="@+id/dotsLayout"
+            android:layout_width="395dp"
+            android:layout_height="69dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/slideViewPager" />
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/nextBtn"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/transparent"
+            android:text="Next"
+            android:backgroundTint="@color/colorTransparentWhite"
+            app:rippleColor="@color/secondaryColor"
+            app:cornerRadius="16dp"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/prevBtn"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/colorTransparentWhite"
+            app:rippleColor="@color/secondaryColor"
+            app:cornerRadius="16dp"
+            android:text="Back"
+            android:textColor="@android:color/black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="invisible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

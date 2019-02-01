@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.shounak.bargainingbot.R
 import com.example.shounak.bargainingbot.data.testActivity
-import com.example.shounak.bargainingbot.ui.intro.IntroSlideActivity
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -37,7 +36,6 @@ import org.kodein.di.generic.instance
 import java.util.*
 
 
-private var onCreateCounter = 0
 private const val RC_SIGN_IN: Int = 1
 private lateinit var auth: FirebaseAuth
 
@@ -64,7 +62,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
 
         //OnCreateCounter
-        onCreateCounter++
 
 
         //Set transition animations
@@ -95,10 +92,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
         auth = FirebaseAuth.getInstance()
 
         //Check if OnCreate called for first time and if user is not signed in
-        if (auth.currentUser == null && onCreateCounter <= 1) {
-            intent = Intent(this, IntroSlideActivity::class.java)
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this@LoginActivity).toBundle())
-        }
 
 
     }

@@ -6,6 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.login.LoginActivity"
+        android:backgroundTint="@color/primaryDarkColor"
+        android:backgroundTintMode="src_atop"
         android:background="@color/primaryColor" android:id="@+id/login_layout">
 
 
@@ -46,16 +48,18 @@
                                                        app:layout_constraintVertical_bias="0.32999998"/>
 
     <com.google.android.material.button.MaterialButton android:layout_width="300dp" android:layout_height="70dp"
-                                                       android:backgroundTint="@color/facebookBlue"
-                                                       app:rippleColor="@color/facebookBlueLight"
+                                                       android:backgroundTint="@android:color/white"
+                                                       app:rippleColor="@color/facebookBlue"
                                                        app:cornerRadius="16dp"
                                                        app:icon="@drawable/com_facebook_button_icon"
+                                                       app:iconTint="@color/facebookBlue"
                                                        app:iconSize="20dp"
                                                        app:layout_constraintEnd_toEndOf="parent"
                                                        android:layout_marginEnd="16dp"
                                                        app:layout_constraintStart_toStartOf="parent"
                                                        android:layout_marginStart="16dp"
                                                        android:text="@string/facebook_login_button_text"
+                                                       android:textColor="@android:color/black"
                                                        android:id="@+id/facebook_signin_button"
                                                        app:layout_constraintHorizontal_bias="0.506"
                                                        android:layout_marginTop="8dp"

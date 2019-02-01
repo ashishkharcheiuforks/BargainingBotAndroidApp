@@ -53,6 +53,7 @@ class testActivity : AppCompatActivity() ,KodeinAware {
 
             val intent = Intent(this,LoginActivity::class.java)
             startActivity(intent , ActivityOptions.makeSceneTransitionAnimation(this@testActivity).toBundle())
+            finish()
         }
 
     }
