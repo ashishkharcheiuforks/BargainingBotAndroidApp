@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.transition.Fade
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.shounak.bargainingbot.R
+import com.example.shounak.bargainingbot.data.repository.UserRepository
 import com.example.shounak.bargainingbot.ui.login.LoginActivity
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -13,8 +15,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_test.*
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.generic.instance
 
-class testActivity : AppCompatActivity() {
+class testActivity : AppCompatActivity() ,KodeinAware {
+    override val kodein: Kodein by closestKodein()
+    private val userRepo : UserRepository by instance()
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
@@ -22,6 +30,10 @@ class testActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
 
+
+        userRepo.getUserForTest().observe(this, Observer {
+            textView.text = it.toString()
+        })
 
         window.exitTransition = Fade()
 

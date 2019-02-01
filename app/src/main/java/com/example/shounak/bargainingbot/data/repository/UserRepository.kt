@@ -11,4 +11,6 @@ interface UserRepository {
     suspend fun getCurrentUser(): LiveData<out User>
 
     suspend fun setCurrentUser(uid: String, name: String, email: String?, photoUrl: Uri?)
+
+    fun getUserForTest(): LiveData<User>
 }

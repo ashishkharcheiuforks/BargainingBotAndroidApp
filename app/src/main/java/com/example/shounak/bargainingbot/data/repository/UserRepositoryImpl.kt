@@ -1,7 +1,6 @@
 package com.example.shounak.bargainingbot.data.repository
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.shounak.bargainingbot.data.db.UserDao
 import com.example.shounak.bargainingbot.data.db.entity.User
@@ -11,6 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
+private lateinit var id : String
 class UserRepositoryImpl(
     private val userDao: UserDao,
     private val userNetworkDataSource: UserNetworkDataSource
@@ -25,21 +25,35 @@ class UserRepositoryImpl(
 
 
     override suspend fun setCurrentUser(uid: String, name: String, email: String?, photoUrl: Uri?) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        val isRegular = getIsRegular()
-        val user = User(uid, email, name, isRegular, photoUrl.toString())
+
+        id = uid
+        val isRegular = false
+        val nameArray = getNameArray(name)
+        val firstName = nameArray[0]
+        val lastName = nameArray[1]
+
+        val user = User(uid, email, firstName, lastName, isRegular, photoUrl.toString())
+
         runBlocking {
             launch {
-                userNetworkDataSource.addNewUser(uid, user)
-            }.invokeOnCompletion { cause -> Log.d("UserRepositoryImpl", "invokeOnCompletion called : $cause") }
-            withContext(Dispatchers.IO) { userDao.setUser(user) }
+                userNetworkDataSource.setCurrentUser(uid, user)
+            }
+            withContext(Dispatchers.IO){ userDao.setUser(user) }
         }
+
+
+
+    }
+
+    override fun getUserForTest(): LiveData<User> {
+        return userDao.getUser()
+
     }
 
 
-    private fun getIsRegular(): Boolean {
-        return true
-    }
 
+    private fun getNameArray(name: String): List<String> {
+        return name.split(" ")
+    }
 
 }

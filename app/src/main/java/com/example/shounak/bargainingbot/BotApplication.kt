@@ -20,10 +20,7 @@ import org.kodein.di.generic.singleton
  * Created by Shounak on 30-Jan-19
  */
 class BotApplication : Application() , KodeinAware {
-
-    private var launchCounter = 0
-
-    override val kodein = Kodein.lazy {
+        override val kodein = Kodein.lazy {
         import(androidXModule(this@BotApplication))
 
         bind() from singleton { BotDatabase(instance()) }
