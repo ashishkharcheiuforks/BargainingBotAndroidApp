@@ -9,6 +9,14 @@
         <item name="android:windowActivityTransitions">true</item>
     </style>
 
+
+    <style name="ToolbarTheme" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/secondaryColor</item>
+        <item name="android:textColorSecondary">@color/colorTransparentWhite</item>
+
+
+    </style>
+
     <!--<style name="AppTheme.Splash" parent="AppTheme">-->
     <!--<item name="android:activityCloseExitAnimation">@anim/nav_default_pop_exit_anim</item>-->
     <!--<item name="android:activityCloseEnterAnimation">@anim/nav_default_pop_enter_anim</item>-->

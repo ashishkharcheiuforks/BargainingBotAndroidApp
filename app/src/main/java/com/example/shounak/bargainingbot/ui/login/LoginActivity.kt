@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.shounak.bargainingbot.R
-import com.example.shounak.bargainingbot.data.testActivity
+import com.example.shounak.bargainingbot.ui.MainActivity
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -29,7 +29,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
@@ -227,7 +226,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
     private fun updateUI(account: FirebaseUser?) {
         if (account != null) {
             Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show()
-            intent = Intent(this, testActivity::class.java)
+            intent = Intent(this, MainActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this@LoginActivity).toBundle())
             finish()
         } else {
@@ -238,9 +237,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
     private fun updateData(user: FirebaseUser?) {
         if (user != null) {
             runBlocking {
-                withContext(this.coroutineContext) {
-                    viewModel.updateData(user)
-                }
+                viewModel.updateData(user)
             }
         }
     }

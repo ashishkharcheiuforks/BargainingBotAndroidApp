@@ -38,7 +38,7 @@ class UserRepositoryImpl(
             launch {
                 userNetworkDataSource.setCurrentUser(uid, user)
             }
-            withContext(Dispatchers.IO){ userDao.setUser(user) }
+            withContext(Dispatchers.IO){ userDao.setUser(user) } //Do this from main activity later
         }
 
 

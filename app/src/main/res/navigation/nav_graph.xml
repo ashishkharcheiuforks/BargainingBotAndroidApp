@@ -2,10 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
-            app:startDestination="@id/loginActivity">
-
-    <activity android:id="@+id/loginActivity" android:name="com.example.shounak.bargainingbot.ui.login.LoginActivity"
-              android:label="activity_login" tools:layout="@layout/activity_login"/>
-    <activity android:id="@+id/testActivity" android:name="com.example.shounak.bargainingbot.data.testActivity"
-              android:label="activity_test" tools:layout="@layout/activity_test"/>
+            app:startDestination="@id/botFragment">
+    <fragment android:id="@+id/botFragment" android:name="com.example.shounak.bargainingbot.ui.main.BotFragment"
+              android:label="bot_fragment" tools:layout="@layout/bot_fragment"/>
+    <fragment android:id="@+id/drinksMenuFragment"
+              android:name="com.example.shounak.bargainingbot.ui.main.DrinksMenuFragment"
+              android:label="drinks_menu_fragment" tools:layout="@layout/drinks_menu_fragment"/>
+    <fragment android:id="@+id/foodMenuFragment"
+              android:name="com.example.shounak.bargainingbot.ui.main.FoodMenuFragment"
+              android:label="food_menu_fragment" tools:layout="@layout/food_menu_fragment"/>
 </navigation>

@@ -8,25 +8,37 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="loginActivity">
+                  <entry key="botFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-200" />
-                            <option name="y" value="13" />
+                            <option name="x" value="360" />
+                            <option name="y" value="362" />
                           </Point>
                         </option>
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="testActivity">
+                  <entry key="drinksMenuFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-207" />
-                            <option name="y" value="-277" />
+                            <option name="x" value="652" />
+                            <option name="y" value="360" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="foodMenuFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="89" />
+                            <option name="y" value="365" />
                           </Point>
                         </option>
                       </LayoutPositions>
