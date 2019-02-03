@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Home"
-    android:id="@+id/botFragment"/>
+    <item android:title="Home"/>
 
     <item android:title="My Orders"/>
 
-    <group >
+    <group>
         <item android:title="Concept"/>
         <item android:title="About"/>
     </group>

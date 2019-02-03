@@ -27,7 +27,7 @@ suspend fun updateData(user : FirebaseUser){
     val uid = user.uid
     val photoUrl = user.photoUrl
 
-    userRepository.setCurrentUser(uid, name!!, email, photoUrl )
+    userRepository.setCurrentUser(uid, name!!, email!!, photoUrl!! )
 
 }
 

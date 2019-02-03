@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.shounak.bargainingbot.R
-import com.example.shounak.bargainingbot.ui.MainActivity
+import com.example.shounak.bargainingbot.ui.main.MainActivity
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback

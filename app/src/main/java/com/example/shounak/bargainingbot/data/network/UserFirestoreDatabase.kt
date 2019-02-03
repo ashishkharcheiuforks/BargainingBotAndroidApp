@@ -2,6 +2,7 @@ package com.example.shounak.bargainingbot.data.network
 
 import com.example.shounak.bargainingbot.data.db.entity.User
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -15,9 +16,11 @@ class UserFirestoreDatabase {
     private val db = FirebaseFirestore.getInstance()
     private val usersCollection = db.collection("Users")
 
-    suspend fun getCurrentUser(userId: String): Task<DocumentSnapshot> {
+    suspend fun getCurrentUser(): Task<DocumentSnapshot> {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-        return usersCollection.document("userId").get()
+        return usersCollection.document(userId!!).get()
+
     }
 
 
@@ -28,7 +31,7 @@ class UserFirestoreDatabase {
 
     suspend fun updateUser(userId: String, data: Any) {
 
-        runBlocking { usersCollection.document(userId).set(data, SetOptions.merge())}
+        runBlocking { usersCollection.document(userId).set(data, SetOptions.merge()) }
     }
 
 

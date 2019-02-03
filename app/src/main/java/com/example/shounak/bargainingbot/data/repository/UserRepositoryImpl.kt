@@ -5,27 +5,50 @@ import androidx.lifecycle.LiveData
 import com.example.shounak.bargainingbot.data.db.UserDao
 import com.example.shounak.bargainingbot.data.db.entity.User
 import com.example.shounak.bargainingbot.data.network.UserNetworkDataSource
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-private lateinit var id : String
+private lateinit var id: String
+
 class UserRepositoryImpl(
     private val userDao: UserDao,
     private val userNetworkDataSource: UserNetworkDataSource
 ) : UserRepository {
+
+    private val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+    init {
+        userNetworkDataSource.downloadedCurrentUser.observeForever {
+            if (it != null) {
+                persistCurrentUser(it)
+            } else {
+                createUserAgain() //TODO: Test to see if this isn't being called every time resulting in 2 write opertaions
+            }
+        }
+    }
+
     override suspend fun getCurrentUser(): LiveData<User> {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+
         return withContext(Dispatchers.IO) {
-            return@withContext userDao.getUser()
+            val user = userDao.getUser()
+            val userval = user.value
+            if (userval?.uid == firebaseUser?.uid) {
+                return@withContext user
+            } else {
+                initUserExistsCheck()  //TODO: Check if user data was written to firestore and user exists. If not add user again
+                return@withContext userDao.getUser()
+            }
+
         }
 
     }
 
 
-    override suspend fun setCurrentUser(uid: String, name: String, email: String?, photoUrl: Uri?) {
-
+    override suspend fun setCurrentUser(uid: String, name: String, email: String, photoUrl: Uri) {
         id = uid
         val isRegular = false
         val nameArray = getNameArray(name)
@@ -38,22 +61,43 @@ class UserRepositoryImpl(
             launch {
                 userNetworkDataSource.setCurrentUser(uid, user)
             }
-            withContext(Dispatchers.IO){ userDao.setUser(user) } //Do this from main activity later
         }
-
-
-
-    }
-
-    override fun getUserForTest(): LiveData<User> {
-        return userDao.getUser()
-
     }
 
 
+    private suspend fun initUserExistsCheck() {
+        if (userDao.getUser().value != null) {
+            return
+        } else {
+            userNetworkDataSource.getCurrentUser()
+        }
+    }
 
     private fun getNameArray(name: String): List<String> {
         return name.split(" ")
+    }
+
+
+    private fun persistCurrentUser(user: User) {
+        runBlocking { withContext(Dispatchers.IO) { userDao.setUser(user) } }
+    }
+
+    private fun createUserAgain() {
+
+        runBlocking {
+            initUserExistsCheck()
+            if (userDao.getUser() != null) {
+                return@runBlocking
+            } else {
+                setCurrentUser(
+                    firebaseUser!!.uid,
+                    firebaseUser.displayName!!,
+                    firebaseUser.email!!,
+                    firebaseUser.photoUrl!!
+                )
+            }
+        }
+
     }
 
 }

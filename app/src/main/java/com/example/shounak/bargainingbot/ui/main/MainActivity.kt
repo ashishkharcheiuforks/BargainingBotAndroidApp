@@ -1,23 +1,26 @@
-package com.example.shounak.bargainingbot.ui
+package com.example.shounak.bargainingbot.ui.main
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.generic.instance
 
 
-
-
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, KodeinAware {
+    override val kodein: Kodein by closestKodein()
+    private val viewModelFactory : MainActivityViewModelFactory by instance()
 
 
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
@@ -30,11 +33,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(com.example.shounak.bargainingbot.R.layout.activity_main)
 
+        val viewModel = ViewModelProviders.of(this,viewModelFactory).get(MainActivityViewModel::class.java)
+
+        viewModel.setUserDataToRoom()
+
+        setupNavigation()
 
 
-      setupNavigation()
 
     }
+
+
+
+
 
     private fun setupNavigation() {
 

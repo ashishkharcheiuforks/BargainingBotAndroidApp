@@ -19,5 +19,5 @@ interface UserDao {
     fun setUser(user : User)
 
     @Query("select * from User where constId=$CURRENT_USER_ID")
-    fun getUser() :LiveData<User>
+    fun getUser() : LiveData<User>
 }
