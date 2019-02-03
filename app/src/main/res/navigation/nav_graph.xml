@@ -3,12 +3,12 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
             app:startDestination="@id/botFragment">
-    <fragment android:id="@+id/botFragment" android:name="com.example.shounak.bargainingbot.ui.main.BotFragment"
+    <fragment android:id="@+id/botFragment" android:name="com.example.shounak.bargainingbot.ui.main.bot.BotFragment"
               android:label="bot_fragment" tools:layout="@layout/bot_fragment"/>
     <fragment android:id="@+id/drinksMenuFragment"
-              android:name="com.example.shounak.bargainingbot.ui.main.DrinksMenuFragment"
+              android:name="com.example.shounak.bargainingbot.ui.main.drinks.DrinksMenuFragment"
               android:label="drinks_menu_fragment" tools:layout="@layout/drinks_menu_fragment"/>
     <fragment android:id="@+id/foodMenuFragment"
-              android:name="com.example.shounak.bargainingbot.ui.main.FoodMenuFragment"
+              android:name="com.example.shounak.bargainingbot.ui.main.food.FoodMenuFragment"
               android:label="food_menu_fragment" tools:layout="@layout/food_menu_fragment"/>
 </navigation>

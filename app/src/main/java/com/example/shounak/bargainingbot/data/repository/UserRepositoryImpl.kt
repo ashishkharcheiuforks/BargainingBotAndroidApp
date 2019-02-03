@@ -36,7 +36,7 @@ class UserRepositoryImpl(
         return withContext(Dispatchers.IO) {
             val user = userDao.getUser()
             val userval = user.value
-            if (userval?.uid == firebaseUser?.uid) {
+            if (userval?.uid != null && userval.uid == FirebaseAuth.getInstance().currentUser?.uid) {
                 return@withContext user
             } else {
                 initUserExistsCheck()  //TODO: Check if user data was written to firestore and user exists. If not add user again

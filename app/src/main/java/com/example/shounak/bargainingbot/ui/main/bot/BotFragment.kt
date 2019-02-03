@@ -1,4 +1,4 @@
-package com.example.shounak.bargainingbot.ui.main
+package com.example.shounak.bargainingbot.ui.main.bot
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,7 +36,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
         val button = botRefreshButton
 
-        TODO("The following code should be moved to main activity and set the data in nav drawer.")
+//        TODO("The following code should be moved to main activity and set the data in nav drawer.")
         launch {
             val currentUser = viewModel.user.await()
 

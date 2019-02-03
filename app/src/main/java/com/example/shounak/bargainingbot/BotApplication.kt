@@ -8,7 +8,7 @@ import com.example.shounak.bargainingbot.data.network.UserNetworkDataSourceImpl
 import com.example.shounak.bargainingbot.data.repository.UserRepository
 import com.example.shounak.bargainingbot.data.repository.UserRepositoryImpl
 import com.example.shounak.bargainingbot.ui.login.LoginViewModelFactory
-import com.example.shounak.bargainingbot.ui.main.BotViewModelFactory
+import com.example.shounak.bargainingbot.ui.main.bot.BotViewModelFactory
 import com.example.shounak.bargainingbot.ui.main.MainActivityViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware

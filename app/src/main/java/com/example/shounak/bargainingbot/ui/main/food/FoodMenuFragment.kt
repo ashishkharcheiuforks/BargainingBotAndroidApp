@@ -1,4 +1,4 @@
-package com.example.shounak.bargainingbot.ui.main
+package com.example.shounak.bargainingbot.ui.main.food
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle

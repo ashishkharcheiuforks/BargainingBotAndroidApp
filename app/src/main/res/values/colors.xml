@@ -13,6 +13,7 @@
 
     <color name="primaryColor">#0c1117</color>
     <color name="primaryLightColor">#33373d</color>
+    <color name="primaryLightColor2">#333942</color>
     <color name="primaryDarkColor">#000000</color>
     <color name="secondaryColor">#e80000</color>
     <color name="secondaryLightColor">#ff5533</color>
@@ -23,5 +24,7 @@
     <color name="colorTransparentWhite">#cccccc</color>
     <color name="facebookBlue">#3b5998</color>
     <color name="facebookBlueLight">#dfe3ee</color>
+
+
 
 </resources>
