@@ -38,6 +38,7 @@ import java.util.*
 private const val RC_SIGN_IN: Int = 1
 private lateinit var auth: FirebaseAuth
 
+//TODO: Show alert if user email exists with different signin account.
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
     override val kodein by closestKodein()
@@ -52,8 +53,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-//        TODO("Get User details and add to database. Update Firestore")
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)

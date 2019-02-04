@@ -2,6 +2,7 @@ package com.example.shounak.bargainingbot.ui.login
 
 import androidx.lifecycle.ViewModel
 import com.example.shounak.bargainingbot.data.repository.UserRepository
+import com.example.shounak.bargainingbot.internal.ProfileImageUrl.getLargePhotoUrl
 import com.google.firebase.auth.FirebaseUser
 
 /**
@@ -25,9 +26,9 @@ suspend fun updateData(user : FirebaseUser){
     val name = user.displayName
     val email  = user.email
     val uid = user.uid
-    val photoUrl = user.photoUrl
+    val photoUrl = getLargePhotoUrl(user.photoUrl)
 
-    userRepository.setCurrentUser(uid, name!!, email!!, photoUrl!! )
+    userRepository.setCurrentUser(uid, name!!, email!!, photoUrl!!)
 
 }
 

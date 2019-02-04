@@ -17,16 +17,18 @@ import kotlinx.android.synthetic.main.activity_slide_intro.*
  */
 class IntroSlideActivity : AppCompatActivity() {
 
+    /*
+    TODO: Add skip button. Fix scrolling back from last slide keeps next button as next activity button
+     */
+
 
     private var mDotLayout: LinearLayout? = null
 
 //    private lateinit var mDots: Array<TextView?>
 
 
-
-
-    lateinit var mNextBtn : Button
-    lateinit var mBackBtn : Button
+    lateinit var mNextBtn: Button
+    lateinit var mBackBtn: Button
 
     private var mCurrentPage: Int = 0
 
@@ -47,8 +49,8 @@ class IntroSlideActivity : AppCompatActivity() {
 //        mSlideViewPager = findViewById(R.id.slideViewPager)
 //        mDotLayout = dotsLayout
 
-         mNextBtn = nextBtn
-         mBackBtn = prevBtn
+        mNextBtn = nextBtn
+        mBackBtn = prevBtn
 
 //        sliderAdapter = SliderAdapter(this)
 
@@ -107,7 +109,6 @@ class IntroSlideActivity : AppCompatActivity() {
                     mBackBtn.text = "Back"
 
 
-
                 }
             }
 
@@ -117,9 +118,6 @@ class IntroSlideActivity : AppCompatActivity() {
 
         }
     }
-
-
-
 
 
 //    @RequiresApi(Build.VERSION_CODES.N)

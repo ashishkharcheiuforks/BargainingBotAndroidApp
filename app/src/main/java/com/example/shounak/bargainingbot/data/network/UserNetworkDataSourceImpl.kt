@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.shounak.bargainingbot.data.db.entity.User
 import com.example.shounak.bargainingbot.internal.NoConnectivityException
 import com.google.android.gms.tasks.Tasks
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class UserNetworkDataSourceImpl(
     private val userFirestoreDatabase: UserFirestoreDatabase
@@ -21,24 +23,28 @@ class UserNetworkDataSourceImpl(
 //TODO: user is fetched when get user is called. Implementation for data change on firestore? Add SnapshotListener
 
     override suspend fun getCurrentUser() {
-        val result = userFirestoreDatabase.getCurrentUser()
-            .addOnSuccessListener {
-                try {
-                    if (it != null) {
-                        val user = it.toObject(User::class.java)
-                        _downloadedCurrentUser.postValue(user)
 
+        withContext(Dispatchers.IO) {
+            val result = userFirestoreDatabase.getCurrentUser()
+                .addOnSuccessListener {
+                    try {
+                        if (it != null) {
+                            val user = it.toObject(User::class.java)
+                            _downloadedCurrentUser.postValue(user)
+
+                        }
+
+                    } catch (e: NoConnectivityException) {
+                        Log.e(TAG, "No internet connection")
                     }
-
-                } catch (e: NoConnectivityException) {
-                    Log.e(TAG, "No internet connection")
                 }
-            }
-        Tasks.await(result)
+            Tasks.await(result)
+
+        }
     }
 
     override suspend fun setCurrentUser(userId: String, data: User) {
-        val result = userFirestoreDatabase.getCurrentUser().addOnSuccessListener {
+        userFirestoreDatabase.getCurrentUser().addOnSuccessListener {
             if (!it.exists()) {
                 runBlocking { userFirestoreDatabase.addNewUser(userId, data) }
             } else {

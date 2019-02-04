@@ -1,10 +1,12 @@
 package com.example.shounak.bargainingbot.data.repository
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.shounak.bargainingbot.data.db.UserDao
 import com.example.shounak.bargainingbot.data.db.entity.User
 import com.example.shounak.bargainingbot.data.network.UserNetworkDataSource
+import com.example.shounak.bargainingbot.internal.ProfileImageUrl.getLargePhotoUrl
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,7 +50,7 @@ class UserRepositoryImpl(
     }
 
 
-    override suspend fun setCurrentUser(uid: String, name: String, email: String, photoUrl: Uri) {
+    override suspend fun setCurrentUser(uid: String, name: String, email: String, photoUrl: Uri?) {
         id = uid
         val isRegular = false
         val nameArray = getNameArray(name)
@@ -84,16 +86,18 @@ class UserRepositoryImpl(
 
     private fun createUserAgain() {
 
+        Log.d("UserRepositoryImpl","createUserAgain called")
         runBlocking {
             initUserExistsCheck()
             if (userDao.getUser() != null) {
                 return@runBlocking
             } else {
+                val url = getLargePhotoUrl(firebaseUser?.photoUrl)
                 setCurrentUser(
                     firebaseUser!!.uid,
                     firebaseUser.displayName!!,
                     firebaseUser.email!!,
-                    firebaseUser.photoUrl!!
+                    url
                 )
             }
         }

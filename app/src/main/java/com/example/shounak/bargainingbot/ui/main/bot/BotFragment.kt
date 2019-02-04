@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.shounak.bargainingbot.R
+import com.example.shounak.bargainingbot.data.provider.PreferenceProvider
 import com.example.shounak.bargainingbot.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.bot_fragment.*
-import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -34,28 +33,17 @@ class BotFragment : ScopedFragment(), KodeinAware {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BotViewModel::class.java)
 
-        val button = botRefreshButton
 
 //        TODO("The following code should be moved to main activity and set the data in nav drawer.")
-        launch {
-            val currentUser = viewModel.user.await()
 
-            currentUser.observe(this@BotFragment, Observer {
-                if (it != null) {
-                    botFragment_textView.text = it.toString()
+        val pref = PreferenceProvider.getPrefrences(this@BotFragment.context!!)
+        val uid = pref.getString(PreferenceProvider.USER_ID, "Not Available")
 
-                }
-            })
-
-            button.setOnClickListener {
-                launch { viewModel.user.await() }
-            }
-
-
-        }
-
-
+        user_id_textview.text = uid
     }
 
 
 }
+
+
+

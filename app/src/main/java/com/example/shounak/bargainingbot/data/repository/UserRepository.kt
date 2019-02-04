@@ -10,6 +10,6 @@ import com.example.shounak.bargainingbot.data.db.entity.User
 interface UserRepository {
     suspend fun getCurrentUser(): LiveData<User>
 
-    suspend fun setCurrentUser(uid: String, name: String, email: String, photoUrl: Uri)
+    suspend fun setCurrentUser(uid: String, name: String, email: String, photoUrl: Uri?)
 
 }
