@@ -1,8 +1,11 @@
 package com.example.shounak.bargainingbot.ui.main
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -60,20 +63,32 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
     private fun logOutOnClickListener() {
-        //TODO: Show alert dialog
+
         logout_button.setOnClickListener {
 
-            LoginManager.getInstance().logOut()
-            GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
-            FirebaseAuth.getInstance().signOut()
+            AlertDialog.Builder(this)
+                .setTitle("LOG OUT?")
+                .setIcon(R.drawable.ic_error_outline_e80000_24dp)
+                .setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
+                    LoginManager.getInstance().logOut()
+                    GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
+                    FirebaseAuth.getInstance().signOut()
 
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                })
+                .setNegativeButton("No", DialogInterface.OnClickListener { dialog, _ ->
+                    dialog.dismiss()
+                })
+                .show()
+
         }
     }
 
     private fun bindUI(viewModel: MainActivityViewModel) {
+
+
         launch {
             val currentUser = viewModel.user.await()
 
@@ -95,6 +110,7 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
             })
 
         }
+
     }
 
 

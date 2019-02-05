@@ -3,7 +3,6 @@ package com.example.shounak.bargainingbot.ui.intro.splashscreen
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.transition.Fade
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shounak.bargainingbot.R
 import com.example.shounak.bargainingbot.ui.intro.IntroSlideActivity
@@ -27,14 +26,6 @@ class SplashActivity : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
 
 
-
-
-        window.enterTransition = Fade()
-        window.exitTransition = Fade()
-
-        val options = ActivityOptions.makeSceneTransitionAnimation(this@SplashActivity)
-
-
         Timer().schedule(object : TimerTask() {
             override fun run() {
 
@@ -49,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
                             finish()
                         } else {
                             intent = Intent(this@SplashActivity, LoginActivity::class.java)
-                            startActivity(intent, options.toBundle())
+                            startActivity(intent)
                             finish()
                         }
                     }

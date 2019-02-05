@@ -2,7 +2,6 @@ package com.example.shounak.bargainingbot.ui.intro
 
 import android.content.Intent
 import android.os.Bundle
-import android.transition.Fade
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -36,8 +35,6 @@ class IntroSlideActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slide_intro)
 
-        window.enterTransition = Fade()
-        window.exitTransition = Fade()
 
         val mSlideViewPager = slideViewPager
         val sliderAdapter = SliderAdapter(this)
@@ -61,10 +58,30 @@ class IntroSlideActivity : AppCompatActivity() {
 
         //OnClickListeners
 
-        mNextBtn.setOnClickListener { mSlideViewPager.currentItem = mCurrentPage + 1 }
+        mNextBtn.setOnClickListener {
+
+            if (mCurrentPage < 2) {
+                mSlideViewPager.currentItem = mCurrentPage + 1
+            } else {
+
+               callLoginActivity()
+
+            }
+
+        }
 
         mBackBtn.setOnClickListener { mSlideViewPager.currentItem = mCurrentPage - 1 }
 
+        skip_text_view.setOnClickListener {
+           callLoginActivity()
+        }
+
+    }
+
+    private fun callLoginActivity() {
+        val intent = Intent(this@IntroSlideActivity, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private var viewListener: ViewPager.OnPageChangeListener = object : ViewPager.OnPageChangeListener {
@@ -94,11 +111,7 @@ class IntroSlideActivity : AppCompatActivity() {
                     mNextBtn.text = "Let's Go"
                     mBackBtn.text = "Back"
 
-                    mNextBtn.setOnClickListener {
-                        val intent = Intent(this@IntroSlideActivity, LoginActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
+
                 }
                 else -> {
                     mNextBtn.isEnabled = true

@@ -1,12 +1,12 @@
 package com.example.shounak.bargainingbot.ui.login
 
-import android.app.ActivityOptions
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.transition.Fade
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.shounak.bargainingbot.R
@@ -59,13 +59,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
 
-        //OnCreateCounter
-
-
-        //Set transition animations
-        window.exitTransition = Fade()
-
-
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id2))
@@ -88,8 +81,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
 
         //Firebase Auth instance
         auth = FirebaseAuth.getInstance()
-
-        //Check if OnCreate called for first time and if user is not signed in
 
 
     }
@@ -183,10 +174,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(
-                        baseContext, "Authentication failed.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                   //TODO: Background color wrong
+                    AlertDialog.Builder(this)
+                        .setIcon(R.drawable.ic_error_outline_e80000_24dp)
+                        .setTitle("LOGIN FAILED.")
+                        .setMessage("This email may be associated with a different account.")
+                        .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, _ ->
+                            dialog.dismiss()
+                        })
+                        .show()
                     updateUI(null)
                 }
 
@@ -226,7 +222,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
         if (account != null) {
             Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show()
             intent = Intent(this, MainActivity::class.java)
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this@LoginActivity).toBundle())
+            startActivity(intent)
             finish()
         } else {
 
