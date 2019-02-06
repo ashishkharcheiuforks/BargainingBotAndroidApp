@@ -6,8 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shounak.bargainingbot.R
+import com.example.shounak.bargainingbot.data.db.entity.Food
 import com.example.shounak.bargainingbot.ui.base.ScopedFragment
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.food_menu_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
@@ -17,7 +21,7 @@ import org.kodein.di.generic.instance
 
 class FoodMenuFragment : ScopedFragment(), KodeinAware {
     override val kodein: Kodein by closestKodein()
-    private val viewModelFactory : FoodMenuViewModelFactory by instance()
+    private val viewModelFactory: FoodMenuViewModelFactory by instance()
 
 
     private lateinit var viewModel: FoodMenuViewModel
@@ -37,9 +41,31 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
             val foodMenu = viewModel.food.await()
 
             foodMenu.observe(this@FoodMenuFragment, Observer {
-                food_menu_text_view.text = it.toString()
+                if (!it.isEmpty()) {
+                    food_group_loading.visibility = View.GONE
+                }
+                initRecyclerView(it.toFoodMenuItem())
             })
         }
+    }
+
+    private fun List<Food>.toFoodMenuItem(): List<FoodMenuItem> {
+        return this.map {
+            FoodMenuItem(it)
+        }
+    }
+
+    private fun initRecyclerView(foodList: List<FoodMenuItem>) {
+
+        val groupAdapter = GroupAdapter<ViewHolder>().apply {
+            addAll(foodList)
+        }
+
+        food_menu_recycler_view.apply {
+            layoutManager = LinearLayoutManager(this@FoodMenuFragment.context)
+            adapter = groupAdapter
+        }
+
     }
 
 }

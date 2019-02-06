@@ -25,6 +25,8 @@
     <color name="facebookBlue">#3b5998</color>
     <color name="facebookBlueLight">#dfe3ee</color>
 
+    <color name="primaryListItemColor">#090d11</color>
+
 
 
 </resources>
