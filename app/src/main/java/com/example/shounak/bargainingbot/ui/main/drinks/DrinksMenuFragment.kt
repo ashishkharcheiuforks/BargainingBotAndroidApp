@@ -1,19 +1,23 @@
 package com.example.shounak.bargainingbot.ui.main.drinks
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.shounak.bargainingbot.R
+import com.example.shounak.bargainingbot.ui.base.ScopedFragment
+import kotlinx.android.synthetic.main.drinks_menu_fragment.*
+import kotlinx.coroutines.launch
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
-class DrinksMenuFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = DrinksMenuFragment()
-    }
+class DrinksMenuFragment : ScopedFragment() ,KodeinAware {
+    override val kodein: Kodein by closestKodein()
+    private val viewModelFactory : DrinksMenuViewModelFactory by instance()
 
     private lateinit var viewModel: DrinksMenuViewModel
 
@@ -26,8 +30,15 @@ class DrinksMenuFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(DrinksMenuViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel = ViewModelProviders.of(this,viewModelFactory).get(DrinksMenuViewModel::class.java)
+
+        launch {
+           val drinksMenu = viewModel.drinks.await()
+
+            drinksMenu.observe(this@DrinksMenuFragment, Observer {
+                drinks_menu_text_view.text = it.toString()
+            })
+        }
     }
 
 }

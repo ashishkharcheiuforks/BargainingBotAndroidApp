@@ -3,7 +3,7 @@ package com.example.shounak.bargainingbot.data.repository
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.shounak.bargainingbot.data.db.UserDao
+import com.example.shounak.bargainingbot.data.db.Dao.UserDao
 import com.example.shounak.bargainingbot.data.db.entity.User
 import com.example.shounak.bargainingbot.data.network.UserNetworkDataSource
 import com.example.shounak.bargainingbot.internal.ProfileImageUrl.getLargePhotoUrl

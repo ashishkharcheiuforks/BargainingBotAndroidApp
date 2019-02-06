@@ -4,6 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.shounak.bargainingbot.data.db.Dao.MenuDao
+import com.example.shounak.bargainingbot.data.db.Dao.UserDao
+import com.example.shounak.bargainingbot.data.db.entity.Drinks
+import com.example.shounak.bargainingbot.data.db.entity.Food
 import com.example.shounak.bargainingbot.data.db.entity.User
 
 /**
@@ -11,10 +15,11 @@ import com.example.shounak.bargainingbot.data.db.entity.User
  */
 
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class, Drinks::class, Food::class], version = 1)
 
 abstract class BotDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun menuDao(): MenuDao
 
     companion object {
         @Volatile

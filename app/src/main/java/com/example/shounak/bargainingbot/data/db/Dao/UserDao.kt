@@ -1,4 +1,4 @@
-package com.example.shounak.bargainingbot.data.db
+package com.example.shounak.bargainingbot.data.db.Dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
