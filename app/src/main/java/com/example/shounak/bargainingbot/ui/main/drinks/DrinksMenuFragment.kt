@@ -44,8 +44,11 @@ class DrinksMenuFragment : ScopedFragment() ,KodeinAware {
                 if (!it.isEmpty()){
                     drinks_group_loading.visibility = View.GONE
                 }
+
                 initRecyclerView(it.toDrinksMenuItems())
-            })
+            } )
+
+//            })
         }
     }
 
@@ -60,6 +63,7 @@ class DrinksMenuFragment : ScopedFragment() ,KodeinAware {
 
         val groupAdapter = GroupAdapter<ViewHolder>().apply {
             addAll(drinksList)
+
         }
 
         drinks_menu_recycler_view.apply {

@@ -31,13 +31,14 @@ class BotApplication : Application(), KodeinAware {
         bind() from singleton { instance<BotDatabase>().userDao() }
         bind() from singleton { instance<BotDatabase>().menuDao() }
         bind() from singleton { UserFirestoreDatabase() }
+        bind<APIAIService>() with singleton { APIAIServiceImpl() }
         bind<MenuNetworkDataSource>() with singleton { MenuNetworkDataSourceImpl() }
         bind<UserNetworkDataSource>() with singleton { UserNetworkDataSourceImpl(instance()) }
         bind<MenuRepository>() with singleton { MenuRepositoryImpl(instance(), instance()) }
         bind<UserRepository>() with singleton { UserRepositoryImpl(instance(), instance()) }
         bind() from provider { LoginViewModelFactory(instance()) }
         bind() from provider { MainActivityViewModelFactory(instance()) }
-        bind() from provider { BotViewModelFactory(instance()) }
+        bind() from provider { BotViewModelFactory(instance(),instance()) }
         bind() from provider { FoodMenuViewModelFactory(instance()) }
         bind() from provider { DrinksMenuViewModelFactory(instance()) }
     }

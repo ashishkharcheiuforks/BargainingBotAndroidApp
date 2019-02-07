@@ -22,6 +22,11 @@ android {
         dataBinding {
             enabled = true
         }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
     }
     buildTypes {
         release {
@@ -36,9 +41,21 @@ androidExtensions {
 }
 
 dependencies {
+//    android.defaultConfig.javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
+
+//    annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
+
+    // Dialogflow
+    implementation 'ai.api:sdk:2.0.7@aar'
+    implementation ('ai.api:libai:1.4.8'){
+        exclude module : 'log4j-core'
+    }
+    implementation 'commons-io:commons-io:2.4'
+
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"

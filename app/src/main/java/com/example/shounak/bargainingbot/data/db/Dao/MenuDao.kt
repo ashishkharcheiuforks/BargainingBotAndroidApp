@@ -15,10 +15,11 @@ import com.example.shounak.bargainingbot.data.db.entity.Food
 @Dao
 interface MenuDao {
 
-    @Query("select * from Drinks")
+    @Query("select * from Drinks order by type")
     fun getDrinksMenu() : LiveData<List<Drinks>>
 
-    @Query("select * from Food")
+
+    @Query("select * from Food order by type")
     fun getFoodMenu() : LiveData<List<Food>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
