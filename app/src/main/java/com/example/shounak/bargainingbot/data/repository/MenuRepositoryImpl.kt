@@ -41,6 +41,20 @@ class MenuRepositoryImpl(
         }
     }
 
+    override suspend fun getDrinksListByType(type: String): List<Drinks> {
+
+        return withContext(Dispatchers.IO) {
+            return@withContext menuDao.getDrinksListByType(type)
+        }
+
+    }
+
+    override suspend fun getFoodListByType(type: String): List<Food> {
+        return withContext(Dispatchers.IO) {
+            return@withContext menuDao.getFoodListByType(type)
+        }
+    }
+
 
     private fun initDrinksMenu() {
         if (menuDao.getDrinksMenu().value != null) {

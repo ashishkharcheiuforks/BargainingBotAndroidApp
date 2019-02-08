@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shounak.bargainingbot.R
 import com.example.shounak.bargainingbot.data.db.entity.Food
 import com.example.shounak.bargainingbot.ui.base.ScopedFragment
+import com.example.shounak.bargainingbot.ui.main.MenuHeaderItem
 import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.food_menu_fragment.*
 import kotlinx.coroutines.launch
@@ -44,7 +46,7 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
                 if (!it.isEmpty()) {
                     food_group_loading.visibility = View.GONE
                 }
-                initRecyclerView(it.toFoodMenuItem())
+                initRecyclerView(it)
             })
         }
     }
@@ -55,15 +57,24 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
         }
     }
 
-    private fun initRecyclerView(foodList: List<FoodMenuItem>) {
+    private fun initRecyclerView(foodList: List<Food>) {
 
-        val groupAdapter = GroupAdapter<ViewHolder>().apply {
-            addAll(foodList)
-        }
+        launch {
+            val foodTitle = viewModel.getFoodMenuTitles(foodList)
 
-        food_menu_recycler_view.apply {
-            layoutManager = LinearLayoutManager(this@FoodMenuFragment.context)
-            adapter = groupAdapter
+            val groupAdapter = GroupAdapter<ViewHolder>().apply {
+                for (food in foodTitle){
+                    val section = Section()
+                    section.setHeader(MenuHeaderItem(food))
+                    section.addAll( viewModel.getFoodListByType(food).toFoodMenuItem())
+                    add(section)
+                }
+            }
+
+            food_menu_recycler_view.apply {
+                layoutManager = LinearLayoutManager(this@FoodMenuFragment.context)
+                adapter = groupAdapter
+            }
         }
 
     }

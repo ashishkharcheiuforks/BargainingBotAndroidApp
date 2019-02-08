@@ -13,4 +13,6 @@ interface MenuRepository {
 
     suspend fun getFoodMenu(): LiveData<List<Food>>
 
+    suspend fun getDrinksListByType(title: String): List<Drinks>
+    suspend fun getFoodListByType(type: String): List<Food>
 }

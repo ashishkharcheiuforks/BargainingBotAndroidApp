@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shounak.bargainingbot.R
 import com.example.shounak.bargainingbot.data.db.entity.Drinks
 import com.example.shounak.bargainingbot.ui.base.ScopedFragment
+import com.example.shounak.bargainingbot.ui.main.MenuHeaderItem
 import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.drinks_menu_fragment.*
 import kotlinx.coroutines.launch
@@ -20,9 +22,9 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-class DrinksMenuFragment : ScopedFragment() ,KodeinAware {
+class DrinksMenuFragment : ScopedFragment(), KodeinAware {
     override val kodein: Kodein by closestKodein()
-    private val viewModelFactory : DrinksMenuViewModelFactory by instance()
+    private val viewModelFactory: DrinksMenuViewModelFactory by instance()
 
     private lateinit var viewModel: DrinksMenuViewModel
 
@@ -35,46 +37,55 @@ class DrinksMenuFragment : ScopedFragment() ,KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this,viewModelFactory).get(DrinksMenuViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(DrinksMenuViewModel::class.java)
 
         launch {
-           val drinksMenu = viewModel.drinks.await()
+            val drinksMenu = viewModel.drinks.await()
 
             drinksMenu.observe(this@DrinksMenuFragment, Observer {
-                if (!it.isEmpty()){
+                if (!it.isEmpty()) {
                     drinks_group_loading.visibility = View.GONE
                 }
 
-                initRecyclerView(it.toDrinksMenuItems())
-            } )
+                initRecyclerView(it)
+            })
 
 //            })
         }
     }
 
 
-    private fun List<Drinks>.toDrinksMenuItems() : List<DrinksMenuItem>{
+    private fun List<Drinks>.toDrinksMenuItems(): List<DrinksMenuItem> {
         return this.map {
             DrinksMenuItem(it)
         }
     }
 
-    private fun initRecyclerView(drinksList: List<DrinksMenuItem>) {
+    private fun initRecyclerView(drinksList: List<Drinks>) {
 
-        val groupAdapter = GroupAdapter<ViewHolder>().apply {
-            addAll(drinksList)
+        launch {
+            val drinksTitle = viewModel.getDrinksMenuTitles(drinksList)
+
+
+            val groupAdapter = GroupAdapter<ViewHolder>().apply {
+                for (drink in drinksTitle) {
+                    val section = Section()
+                    section.setHeader(MenuHeaderItem(drink))
+                    section.addAll(viewModel.getDrinksListByType(drink).toDrinksMenuItems())
+                    add(section)
+                }
+
+            }
+
+            drinks_menu_recycler_view.apply {
+                layoutManager = LinearLayoutManager(this@DrinksMenuFragment.context)
+                adapter = groupAdapter
+            }
+
+            groupAdapter.setOnItemClickListener { item, view ->
+                Toast.makeText(this@DrinksMenuFragment.context, "clicked", Toast.LENGTH_SHORT).show()
+            }
 
         }
-
-        drinks_menu_recycler_view.apply {
-            layoutManager = LinearLayoutManager(this@DrinksMenuFragment.context)
-            adapter = groupAdapter
-        }
-
-        groupAdapter.setOnItemClickListener { item, view ->
-            Toast.makeText(this@DrinksMenuFragment.context, "clicked", Toast.LENGTH_SHORT).show()
-        }
-
     }
-
 }
