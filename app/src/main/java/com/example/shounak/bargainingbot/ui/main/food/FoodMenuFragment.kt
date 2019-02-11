@@ -1,9 +1,12 @@
 package com.example.shounak.bargainingbot.ui.main.food
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +18,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.food_menu_fragment.*
+import kotlinx.android.synthetic.main.food_menu_popup_window.view.*
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -47,8 +51,13 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
                     food_group_loading.visibility = View.GONE
                 }
                 initRecyclerView(it)
+
             })
         }
+    }
+
+    private fun setTitle() {
+        (activity as? AppCompatActivity)?.supportActionBar?.title = "FOOD MENU"
     }
 
     private fun List<Food>.toFoodMenuItem(): List<FoodMenuItem> {
@@ -63,10 +72,10 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
             val foodTitle = viewModel.getFoodMenuTitles(foodList)
 
             val groupAdapter = GroupAdapter<ViewHolder>().apply {
-                for (food in foodTitle){
+                for (food in foodTitle) {
                     val section = Section()
                     section.setHeader(MenuHeaderItem(food))
-                    section.addAll( viewModel.getFoodListByType(food).toFoodMenuItem())
+                    section.addAll(viewModel.getFoodListByType(food).toFoodMenuItem())
                     add(section)
                 }
             }
@@ -75,6 +84,40 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
                 layoutManager = LinearLayoutManager(this@FoodMenuFragment.context)
                 adapter = groupAdapter
             }
+
+            setOnclickListener(groupAdapter)
+        }
+
+
+    }
+
+    private fun setOnclickListener(groupAdapter: GroupAdapter<ViewHolder>) {
+
+        groupAdapter.setOnItemClickListener { item, view ->
+            if (item.layout == R.layout.menu_header_item) {
+
+            } else {
+                val inflater = activity!!.layoutInflater
+                val popupView = inflater.inflate(R.layout.food_menu_popup_window, null)
+                popupView.apply {
+                    food_menu_number_picker.apply {
+                        minValue = 1
+                        maxValue = 25
+                    }
+                    add_to_cart_button.setOnClickListener {
+                        (item as FoodMenuItem).food.let {
+                            Toast.makeText(
+                                this@FoodMenuFragment.context, "${food_menu_number_picker.value} " +
+                                        " ${it.name} for ${it.cost} ${getString(R.string.Rs)} each.", Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                    }
+                }
+                AlertDialog.Builder(this@FoodMenuFragment.context).setView(popupView).setTitle((item as FoodMenuItem).food.name).show()
+            }
+
+
         }
 
     }

@@ -14,11 +14,11 @@ import com.example.shounak.bargainingbot.internal.APIAIToken
 
 class BotViewModel(
     private val userRepository: UserRepository,
-private val apiaiService : APIAIService
-) : ViewModel(){
+    private val apiaiService: APIAIService
+) : ViewModel() {
 
     private var _response = MutableLiveData<String>()
-    val response : LiveData<String>
+    val response: LiveData<String>
         get() = _response
 
     private lateinit var aiDataService: AIDataService
@@ -33,15 +33,41 @@ private val apiaiService : APIAIService
         aiDataService = AIDataService(context, config)
         aiRequest = AIRequest()
 
-        apiaiService.setupService(aiDataService,aiRequest)
+        apiaiService.setupService(aiDataService, aiRequest)
     }
 
-    suspend fun sendAiRequest(messageToSend : String){
+    suspend fun sendAiRequest(messageToSend: String) {
         val res = apiaiService.sendRequest(messageToSend).await()
         Log.d("viewmodelres", res.toString())
         _response.postValue(res.result.fulfillment.speech)
     }
 
+    suspend fun sendAiDrinksOrderRequest(
+        name: String,
+        quantity: Int,
+        currentCost: Int,
+        offeredCost: Int,
+        userId: String
+    ) {
+
+        val stringBuilder = StringBuilder()
+        stringBuilder.apply {
+            append(quantity)
+            append(" ")
+            append(name)
+            append(" for ")
+            append(offeredCost)
+            append(" rupees, current ")
+            append(currentCost)
+            append(" rupees uid ")
+            append(userId)
+        }
+        val messageToSend = stringBuilder.toString()
+        Log.d("BotViewModel", messageToSend)
+        val res = apiaiService.sendRequest(messageToSend).await()
+        _response.postValue(res.result.fulfillment.speech)
+
+    }
 
 
 }

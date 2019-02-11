@@ -39,6 +39,16 @@ class APIAIServiceImpl : APIAIService {
         }
     }
 
+    override suspend fun sendDrinksOrderRequset(messageToSend: String): Deferred<AIResponse> {
+        return withContext(Dispatchers.IO){
+            async {
+                aiRequest.setQuery(messageToSend)
+                val result = aiDataService.request(aiRequest)
+                result
+            }
+        }
+    }
+
 
 }
 

@@ -6,15 +6,27 @@
         android:layout_height="match_parent"
         tools:context=".ui.main.bot.BotFragment">
 
+    <com.google.android.material.textfield.TextInputLayout android:layout_width="0dp"
+                                                           android:layout_height="wrap_content"
+                                                           app:boxStrokeColor="@color/secondaryColor"
+                                                           style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                                           app:layout_constraintEnd_toStartOf="@+id/bot_send_button"
+                                                           android:layout_marginEnd="16dp"
+                                                           app:layout_constraintStart_toStartOf="parent"
+                                                           android:layout_marginStart="16dp"
+                                                           android:layout_marginBottom="16dp"
+                                                           app:boxCornerRadiusBottomEnd="16dp"
+                                                           app:boxCornerRadiusBottomStart="16dp"
+                                                           app:boxCornerRadiusTopEnd="16dp"
+                                                           app:boxCornerRadiusTopStart="16dp"
+                                                           app:layout_constraintBottom_toBottomOf="parent">
 
-    <com.google.android.material.textfield.TextInputEditText android:layout_width="0dp"
-                                                             android:layout_height="wrap_content"
-                                                             app:layout_constraintBaseline_toBaselineOf="@+id/bot_send_button"
-                                                             app:layout_constraintEnd_toStartOf="@+id/bot_send_button"
-                                                             android:layout_marginEnd="8dp"
-                                                             app:layout_constraintStart_toStartOf="parent"
-                                                             android:layout_marginStart="8dp"
-                                                             android:id="@+id/bot_fragment_edit_text"/>
+        <com.google.android.material.textfield.TextInputEditText android:layout_width="match_parent"
+                                                                 android:layout_height="wrap_content"
+                                                                 android:id="@+id/bot_fragment_edit_text"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
             android:id="@+id/botFragment_textView"
@@ -31,9 +43,10 @@
               android:layout_marginTop="292dp"/>
 
     <com.google.android.material.button.MaterialButton
-            android:backgroundTint="@color/secondaryDarkColor"
+            android:backgroundTint="@color/secondaryColor"
             android:id="@+id/bot_send_button"
-            android:text="button"
+            android:text="send"
+            app:cornerRadius="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"

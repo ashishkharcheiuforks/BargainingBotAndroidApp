@@ -9,4 +9,5 @@ interface APIAIService {
 
     suspend fun sendRequest(messageToSend: String): Deferred<out AIResponse>
     fun setupService(aiDataService: AIDataService, aiRequest: AIRequest)
+    suspend fun sendDrinksOrderRequset(messageToSend: String): Deferred<AIResponse>
 }

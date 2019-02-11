@@ -4,11 +4,31 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
             app:startDestination="@id/botFragment">
     <fragment android:id="@+id/botFragment" android:name="com.example.shounak.bargainingbot.ui.main.bot.BotFragment"
-              android:label="bot_fragment" tools:layout="@layout/bot_fragment"/>
+              android:label="BOT" tools:layout="@layout/bot_fragment">
+        <argument android:name="quantity" app:argType="integer" android:defaultValue="0"/>
+        <argument android:name="currentCost" app:argType="integer" android:defaultValue="0"/>
+        <argument android:name="offeredCost" app:argType="integer" android:defaultValue="0"/>
+        <argument android:name="orderDrinks" app:argType="boolean" android:defaultValue="false"/>
+        <argument android:name="name" app:argType="string" android:defaultValue='""'/>
+        <argument android:name="orderFood" app:argType="boolean" android:defaultValue="false"/>
+    </fragment>
     <fragment android:id="@+id/drinksMenuFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.drinks.DrinksMenuFragment"
-              android:label="drinks_menu_fragment" tools:layout="@layout/drinks_menu_fragment"/>
+              android:label="DRINKS MENU" tools:layout="@layout/drinks_menu_fragment">
+        <action android:id="@+id/action_to_botFragment" app:destination="@+id/botFragment"
+                app:popEnterAnim="@anim/nav_default_enter_anim" app:popExitAnim="@anim/nav_default_enter_anim">
+            <argument android:defaultValue="false" android:name="orderDrinks"/>
+            <argument android:defaultValue="false" android:name="orderFood"/>
+
+        </action>
+    </fragment>
     <fragment android:id="@+id/foodMenuFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.food.FoodMenuFragment"
-              android:label="food_menu_fragment" tools:layout="@layout/food_menu_fragment"/>
+              android:label="FOOD MENU" tools:layout="@layout/food_menu_fragment">
+        <action android:id="@+id/action_to_botFragment" app:destination="@id/botFragment">
+            <argument android:defaultValue="false" android:name="orderDrinks"/>
+            <argument android:defaultValue="false" android:name="orderFood"/>
+            <argument android:defaultValue="0" android:name="offeredCost"/>
+        </action>
+    </fragment>
 </navigation>

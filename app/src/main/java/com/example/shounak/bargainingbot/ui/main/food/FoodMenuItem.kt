@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_food_menu.*
  * Created by Shounak on 06-Feb-19
  */
 class FoodMenuItem(
-    private val food :Food
+     val food :Food
 ) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.apply {
