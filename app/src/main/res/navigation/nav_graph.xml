@@ -36,5 +36,5 @@
     </fragment>
     <fragment android:id="@+id/foodCartFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.food.cart.FoodCartFragment"
-              android:label="food_cart_fragment" tools:layout="@layout/food_cart_fragment"/>
+              android:label="CART" tools:layout="@layout/food_cart_fragment"/>
 </navigation>

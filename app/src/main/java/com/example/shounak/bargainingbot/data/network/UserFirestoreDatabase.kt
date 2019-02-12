@@ -19,6 +19,7 @@ class UserFirestoreDatabase {
     suspend fun getCurrentUser(): Task<DocumentSnapshot> {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
 
+
         return usersCollection.document(userId!!).get()
 
     }

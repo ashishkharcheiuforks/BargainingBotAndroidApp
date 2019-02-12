@@ -4,11 +4,16 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.shounak.bargainingbot.data.db.entity.Food
 import com.example.shounak.bargainingbot.data.repository.MenuRepository
+import com.example.shounak.bargainingbot.data.repository.OrderRepository
 import com.example.shounak.bargainingbot.internal.lazyDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
-class FoodMenuViewModel(private val menuRepository: MenuRepository) : ViewModel() {
+class FoodMenuViewModel(
+    private val menuRepository: MenuRepository,
+    private val orderRepository: OrderRepository
+) : ViewModel() {
 
     val food by lazyDeferred {
         return@lazyDeferred menuRepository.getFoodMenu()
@@ -31,6 +36,14 @@ class FoodMenuViewModel(private val menuRepository: MenuRepository) : ViewModel(
 
     suspend fun getFoodListByType(type: String) : List<Food>{
         return menuRepository.getFoodListByType(type)
+    }
+
+    suspend fun addOrderToCart(name: String, quantity : Int, cost: Int) {
+        val time = Date().time
+        val totalCost = cost * quantity
+
+        orderRepository.addItemToFoodCart(time,name, quantity, totalCost)
+
     }
 
 }

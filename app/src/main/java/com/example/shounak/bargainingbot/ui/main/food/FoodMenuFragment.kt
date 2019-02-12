@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -57,9 +56,6 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
         }
     }
 
-    private fun setTitle() {
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "FOOD MENU"
-    }
 
     private fun List<Food>.toFoodMenuItem(): List<FoodMenuItem> {
         return this.map {
@@ -100,7 +96,6 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun setAdapterOnclickListener(groupAdapter: GroupAdapter<ViewHolder>) {
-
         groupAdapter.setOnItemClickListener { item, view ->
             if (item.layout == R.layout.menu_header_item) {
 
@@ -112,17 +107,30 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
                         minValue = 1
                         maxValue = 25
                     }
+                    val alertDialog = AlertDialog.Builder(this@FoodMenuFragment.context)
+                        .setView(popupView)
+                        .setTitle((item as FoodMenuItem).food.name)
+                        .show()
                     add_to_cart_button.setOnClickListener {
                         (item as FoodMenuItem).food.let {
+                            launch {
+                                viewModel.addOrderToCart(
+                                    name = it.name,
+                                    quantity = food_menu_number_picker.value,
+                                    cost = it.cost.toInt()
+                                )
+                            }
                             Toast.makeText(
-                                this@FoodMenuFragment.context, "${food_menu_number_picker.value} " +
-                                        " ${it.name} for ${it.cost} ${getString(R.string.Rs)} each.", Toast.LENGTH_LONG
+                                this@FoodMenuFragment.context,
+                                "${food_menu_number_picker.value} " +
+                                        " ${it.name} for ${it.cost} ${getString(R.string.Rs)} each added to cart.",
+                                Toast.LENGTH_LONG
                             ).show()
                         }
-
+                        alertDialog.dismiss()
                     }
                 }
-                AlertDialog.Builder(this@FoodMenuFragment.context).setView(popupView).setTitle((item as FoodMenuItem).food.name).show()
+
             }
 
 

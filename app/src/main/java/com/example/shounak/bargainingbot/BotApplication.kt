@@ -9,6 +9,7 @@ import com.example.shounak.bargainingbot.ui.main.MainActivityViewModelFactory
 import com.example.shounak.bargainingbot.ui.main.bot.BotViewModelFactory
 import com.example.shounak.bargainingbot.ui.main.drinks.DrinksMenuViewModelFactory
 import com.example.shounak.bargainingbot.ui.main.food.FoodMenuViewModelFactory
+import com.example.shounak.bargainingbot.ui.main.food.cart.FoodCartViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -28,6 +29,7 @@ class BotApplication : Application(), KodeinAware {
         bind() from singleton { instance<BotDatabase>().userDao() }
         bind() from singleton { instance<BotDatabase>().menuDao() }
         bind() from singleton { instance<BotDatabase>().botDao()}
+        bind() from singleton { instance<BotDatabase>().orderDao() }
         bind() from singleton { UserFirestoreDatabase() }
         bind<APIAIService>() with singleton { APIAIServiceImpl() }
         bind<MenuNetworkDataSource>() with singleton { MenuNetworkDataSourceImpl() }
@@ -35,11 +37,13 @@ class BotApplication : Application(), KodeinAware {
         bind<MenuRepository>() with singleton { MenuRepositoryImpl(instance(), instance()) }
         bind<UserRepository>() with singleton { UserRepositoryImpl(instance(), instance()) }
         bind<BotRepository>() with singleton { BotRepositoryImpl(instance(),instance()) }
+        bind<OrderRepository>() with singleton { OrderRepositoryImpl(instance()) }
         bind() from provider { LoginViewModelFactory(instance()) }
         bind() from provider { MainActivityViewModelFactory(instance()) }
         bind() from provider { BotViewModelFactory(instance(),instance(), instance()) }
-        bind() from provider { FoodMenuViewModelFactory(instance()) }
+        bind() from provider { FoodMenuViewModelFactory(instance(), instance()) }
         bind() from provider { DrinksMenuViewModelFactory(instance()) }
+        bind() from provider {FoodCartViewModelFactory(instance())}
     }
 
 
