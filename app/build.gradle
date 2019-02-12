@@ -53,11 +53,10 @@ dependencies {
 
     // Dialogflow
     implementation 'ai.api:sdk:2.0.7@aar'
-    implementation ('ai.api:libai:1.4.8'){
-        exclude module : 'log4j-core'
+    implementation('ai.api:libai:1.4.8') {
+        exclude module: 'log4j-core'
     }
     implementation 'commons-io:commons-io:2.4'
-
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"

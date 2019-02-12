@@ -4,22 +4,40 @@ import ai.api.AIConfiguration
 import ai.api.android.AIDataService
 import ai.api.model.AIRequest
 import android.content.Context
-import android.util.Log
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shounak.bargainingbot.data.network.APIAIService
+import com.example.shounak.bargainingbot.data.repository.BotRepository
 import com.example.shounak.bargainingbot.data.repository.UserRepository
 import com.example.shounak.bargainingbot.internal.APIAIToken
+import com.example.shounak.bargainingbot.internal.ProfileImageUrl
+import com.example.shounak.bargainingbot.internal.lazyDeferred
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class BotViewModel(
     private val userRepository: UserRepository,
-    private val apiaiService: APIAIService
+    private val apiaiService: APIAIService,
+    private val botRepository: BotRepository
 ) : ViewModel() {
 
-    private var _response = MutableLiveData<String>()
-    val response: LiveData<String>
-        get() = _response
+//    private var _response = MutableLiveData<String>()
+//    val response: LiveData<String>
+//        get() = _response
+
+    val messageHistory by lazyDeferred {
+        botRepository.getSavedMessages()
+    }
+
+
+    val response = botRepository.botResponse
+    private val _userMessage = MutableLiveData<String>()
+    val userMessage: LiveData<String>
+        get() = _userMessage
 
     private lateinit var aiDataService: AIDataService
     private lateinit var aiRequest: AIRequest
@@ -37,9 +55,9 @@ class BotViewModel(
     }
 
     suspend fun sendAiRequest(messageToSend: String) {
-        val res = apiaiService.sendRequest(messageToSend).await()
-        Log.d("viewmodelres", res.toString())
-        _response.postValue(res.result.fulfillment.speech)
+        botRepository.saveUserMessage(messageToSend)
+        _userMessage.postValue(messageToSend)
+        botRepository.sendAiRequest(messageToSend)
     }
 
     suspend fun sendAiDrinksOrderRequest(
@@ -50,8 +68,8 @@ class BotViewModel(
         userId: String
     ) {
 
-        val stringBuilder = StringBuilder()
-        stringBuilder.apply {
+        val messageForBot = StringBuilder()
+        messageForBot.apply {
             append(quantity)
             append(" ")
             append(name)
@@ -62,12 +80,23 @@ class BotViewModel(
             append(" rupees uid ")
             append(userId)
         }
-        val messageToSend = stringBuilder.toString()
-        Log.d("BotViewModel", messageToSend)
-        val res = apiaiService.sendRequest(messageToSend).await()
-        _response.postValue(res.result.fulfillment.speech)
+        val messageToSend = messageForBot.toString()
+        withContext(Dispatchers.IO) {
+            launch {
+                botRepository.sendAiRequest(messageToSend)
+            }
+            launch {
+                val messageToShow = "$quantity $name for $offeredCost \u20B9. What do you say?"
+                botRepository.saveUserMessage(messageToShow)
+                _userMessage.postValue(messageToShow)
+            }
+        }
 
     }
 
+    fun getPhotoUrl(): Uri? {
+        val userPhotoUri = FirebaseAuth.getInstance().currentUser?.photoUrl
+        return ProfileImageUrl.getSmallPhotoUrl(userPhotoUri)
+    }
 
 }

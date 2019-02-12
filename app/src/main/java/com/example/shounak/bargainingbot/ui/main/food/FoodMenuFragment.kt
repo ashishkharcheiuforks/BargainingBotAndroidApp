@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shounak.bargainingbot.R
 import com.example.shounak.bargainingbot.data.db.entity.Food
@@ -85,13 +86,20 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
                 adapter = groupAdapter
             }
 
-            setOnclickListener(groupAdapter)
+            setAdapterOnclickListener(groupAdapter)
+            setFabOnClickListener()
         }
 
 
     }
 
-    private fun setOnclickListener(groupAdapter: GroupAdapter<ViewHolder>) {
+    private fun setFabOnClickListener() {
+        food_menu_fab.setOnClickListener {
+            Navigation.findNavController(it).navigate(FoodMenuFragmentDirections.actionToFoodCartFragment())
+        }
+    }
+
+    private fun setAdapterOnclickListener(groupAdapter: GroupAdapter<ViewHolder>) {
 
         groupAdapter.setOnItemClickListener { item, view ->
             if (item.layout == R.layout.menu_header_item) {

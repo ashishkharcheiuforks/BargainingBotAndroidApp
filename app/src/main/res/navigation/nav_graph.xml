@@ -30,5 +30,11 @@
             <argument android:defaultValue="false" android:name="orderFood"/>
             <argument android:defaultValue="0" android:name="offeredCost"/>
         </action>
+        <action android:id="@+id/action_to_foodCartFragment" app:destination="@id/foodCartFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
+    <fragment android:id="@+id/foodCartFragment"
+              android:name="com.example.shounak.bargainingbot.ui.main.food.cart.FoodCartFragment"
+              android:label="food_cart_fragment" tools:layout="@layout/food_cart_fragment"/>
 </navigation>

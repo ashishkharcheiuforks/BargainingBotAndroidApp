@@ -11,9 +11,11 @@ private const val FACEBOOK_URL = "graph.facebook.com"
 
 
 private const val GOOGLE_PROFILE_IMAGE_QUERY_KEY = "sz"
-private const val GOOGLE_PROFILE_IMAGE_QUERY_VALUE = "200"
+private const val GOOGLE_PROFILE_IMAGE_QUERY_VALUE_LARGE = "200"
+private const val GOOGLE_PROFILE_IMAGE_QUERY_VALUE_SMALL = "50"
 private const val FACEBOOK_PROFILE_IMAGE_QUERY_KEY = "type"
-private const val FACEBOOK_PROFILE_IMAGE_QUERY_VALUE = "large"
+private const val FACEBOOK_PROFILE_IMAGE_QUERY_VALUE_LARGE = "large"
+private const val FACEBOOK_PROFILE_IMAGE_QUERY_VALUE_SMALL = "small"
 
 object ProfileImageUrl {
 
@@ -23,13 +25,32 @@ object ProfileImageUrl {
         if (urlString.contains(GOOGLE_URL)) {
             return Uri.parse(urlString)
                 .buildUpon()
-                .appendQueryParameter(GOOGLE_PROFILE_IMAGE_QUERY_KEY, GOOGLE_PROFILE_IMAGE_QUERY_VALUE)
+                .appendQueryParameter(GOOGLE_PROFILE_IMAGE_QUERY_KEY, GOOGLE_PROFILE_IMAGE_QUERY_VALUE_LARGE)
                 .build()
 
         } else if (urlString.contains(FACEBOOK_URL)) {
             return Uri.parse(urlString)
                 .buildUpon()
-                .appendQueryParameter(FACEBOOK_PROFILE_IMAGE_QUERY_KEY, FACEBOOK_PROFILE_IMAGE_QUERY_VALUE)
+                .appendQueryParameter(FACEBOOK_PROFILE_IMAGE_QUERY_KEY, FACEBOOK_PROFILE_IMAGE_QUERY_VALUE_LARGE)
+                .build()
+
+        }
+
+        return null
+    }
+
+    fun getSmallPhotoUrl(photoUrl: Uri?): Uri? {
+        val urlString = photoUrl.toString()
+        if (urlString.contains(GOOGLE_URL)) {
+            return Uri.parse(urlString)
+                .buildUpon()
+                .appendQueryParameter(GOOGLE_PROFILE_IMAGE_QUERY_KEY, GOOGLE_PROFILE_IMAGE_QUERY_VALUE_SMALL)
+                .build()
+
+        } else if (urlString.contains(FACEBOOK_URL)) {
+            return Uri.parse(urlString)
+                .buildUpon()
+                .appendQueryParameter(FACEBOOK_PROFILE_IMAGE_QUERY_KEY, FACEBOOK_PROFILE_IMAGE_QUERY_VALUE_SMALL)
                 .build()
 
         }
