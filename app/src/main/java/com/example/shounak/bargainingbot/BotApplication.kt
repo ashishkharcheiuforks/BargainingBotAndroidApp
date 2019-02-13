@@ -10,6 +10,7 @@ import com.example.shounak.bargainingbot.ui.main.bot.BotViewModelFactory
 import com.example.shounak.bargainingbot.ui.main.drinks.DrinksMenuViewModelFactory
 import com.example.shounak.bargainingbot.ui.main.food.FoodMenuViewModelFactory
 import com.example.shounak.bargainingbot.ui.main.food.cart.FoodCartViewModelFactory
+import com.example.shounak.bargainingbot.ui.main.orders.OrdersViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -44,6 +45,7 @@ class BotApplication : Application(), KodeinAware {
         bind() from provider { FoodMenuViewModelFactory(instance(), instance()) }
         bind() from provider { DrinksMenuViewModelFactory(instance()) }
         bind() from provider {FoodCartViewModelFactory(instance())}
+        bind() from provider { OrdersViewModelFactory(instance()) }
     }
 
 

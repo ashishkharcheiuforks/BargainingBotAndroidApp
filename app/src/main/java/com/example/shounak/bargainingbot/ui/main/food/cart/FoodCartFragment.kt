@@ -15,7 +15,9 @@ import com.example.shounak.bargainingbot.ui.base.ScopedFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.food_cart_fragment.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -91,7 +93,11 @@ class FoodCartFragment : ScopedFragment(), KodeinAware {
 
         place_order_button.setOnClickListener {
             launch {
-                viewModel.addCartToOrders(cartOrdersList)
+                withContext(Dispatchers.IO ){
+                    viewModel.addCartToOrders(cartOrdersList)
+                }
+                viewModel.clearFoodCart()
+
             }
         }
     }

@@ -40,6 +40,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("BotFragment", "OnCreate")
 
     }
 
@@ -47,13 +48,16 @@ class BotFragment : ScopedFragment(), KodeinAware {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("BotFragment", "OnCreateView")
         navigated = true
         return inflater.inflate(R.layout.bot_fragment, container, false)
+
 
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.d("BotFragment", "OnActivityCreated")
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BotViewModel::class.java)
 
 
@@ -62,15 +66,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
             viewModel.apply {
                 setupApiAiService(this@BotFragment.context!!)
 
-                viewModel.messageHistory.await().observe(this@BotFragment, Observer {
-                    if (navigated) {
-                        groupAdapter.clear()
-                        addSavedMessages(it)
-                        navigated = false
-                    }
-
-                })
-
                 response.observe(this@BotFragment, Observer {
                     addBotMessage(it)
                 })
@@ -78,6 +73,18 @@ class BotFragment : ScopedFragment(), KodeinAware {
                 userMessage.observe(this@BotFragment, Observer {
                     addUserMessage(it)
                 })
+
+                viewModel.messageHistory.await().observe(this@BotFragment, Observer {
+                    if (navigated) {
+                        Log.d("BotFragment", "navigated is true")
+                        groupAdapter.clear()
+                        addSavedMessages(it)
+                        navigated = false
+                    }
+
+                })
+
+
             }
         }
 
@@ -182,6 +189,46 @@ class BotFragment : ScopedFragment(), KodeinAware {
             )
             linearLayoutManager.scrollToPosition(groupAdapter.itemCount - 1)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("BotFragment", "OnPause")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("BotFragment", "OnDestroy")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("BotFragment", "OnDestroyView")
+        viewModel.apply {
+            response.removeObservers(this@BotFragment)
+            userMessage.removeObservers(this@BotFragment)
+        }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("BotFragment", "OnStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("BotFragment", "OnResume")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("BotFragment", "OnDetach")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("BotFragment", "OnStop")
     }
 }
 

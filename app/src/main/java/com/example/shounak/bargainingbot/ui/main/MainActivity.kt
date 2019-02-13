@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -20,6 +19,7 @@ import com.example.shounak.bargainingbot.R
 import com.example.shounak.bargainingbot.data.provider.PreferenceProvider
 import com.example.shounak.bargainingbot.ui.base.ScopedActivity
 import com.example.shounak.bargainingbot.ui.login.LoginActivity
+import com.example.shounak.bargainingbot.ui.main.bot.BotFragmentDirections
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -34,7 +34,7 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 
 
-class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedListener, KodeinAware {
+class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedListener , KodeinAware {
 
     override val kodein: Kodein by closestKodein()
     private val viewModelFactory: MainActivityViewModelFactory by instance()
@@ -153,7 +153,7 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
         }
     }
 
-    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
 
         menuItem.isChecked = true
 
@@ -165,7 +165,10 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
             R.id.nav_drawer_menu_home -> {
             }
 
-            R.id.nav_drawer_menu_orders -> {
+            R.id.orders_fragment -> {
+
+                Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment).navigate(BotFragmentDirections.actionToOrders())
+
             }
 
             R.id.nav_drawer_menu_concept -> {

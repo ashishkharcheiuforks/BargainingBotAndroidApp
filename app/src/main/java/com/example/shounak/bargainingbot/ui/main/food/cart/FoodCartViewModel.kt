@@ -18,4 +18,8 @@ class FoodCartViewModel(
         orderRepository.addCartToOrders(cartList)
     }
 
+    suspend fun clearFoodCart() {
+        orderRepository.clearFoodCart()
+    }
+
 }

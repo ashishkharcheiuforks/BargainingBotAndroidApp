@@ -14,7 +14,7 @@ import com.example.shounak.bargainingbot.data.db.entity.Order
 @Dao
 interface OrderDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOrder(order : Order)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -33,6 +33,12 @@ interface OrderDao {
 
     @Query("select * from FoodCartOrder where name = :name")
     fun findInFoodCart(name : String) : FoodCartOrder?
+
+    @Query("delete from FoodCartOrder")
+    fun clearFoodCart()
+
+    @Query("delete from CurrentOrders")
+    fun clearOrders()
 
 
 

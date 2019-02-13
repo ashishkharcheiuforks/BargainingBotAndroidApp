@@ -11,6 +11,7 @@
         <argument android:name="orderDrinks" app:argType="boolean" android:defaultValue="false"/>
         <argument android:name="name" app:argType="string" android:defaultValue='""'/>
         <argument android:name="orderFood" app:argType="boolean" android:defaultValue="false"/>
+        <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
     </fragment>
     <fragment android:id="@+id/drinksMenuFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.drinks.DrinksMenuFragment"
@@ -21,6 +22,7 @@
             <argument android:defaultValue="false" android:name="orderFood"/>
 
         </action>
+        <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
     </fragment>
     <fragment android:id="@+id/foodMenuFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.food.FoodMenuFragment"
@@ -32,9 +34,14 @@
         </action>
         <action android:id="@+id/action_to_foodCartFragment" app:destination="@id/foodCartFragment"
                 app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        />
+        <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
     </fragment>
     <fragment android:id="@+id/foodCartFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.food.cart.FoodCartFragment"
               android:label="CART" tools:layout="@layout/food_cart_fragment"/>
+    <fragment android:id="@+id/ordersFragment"
+              android:name="com.example.shounak.bargainingbot.ui.main.orders.OrdersFragment"
+              android:label="orders_fragment" tools:layout="@layout/orders_fragment"/>
 </navigation>

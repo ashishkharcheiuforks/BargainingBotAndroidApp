@@ -1,6 +1,5 @@
 package com.example.shounak.bargainingbot.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.shounak.bargainingbot.data.db.Dao.OrderDao
 import com.example.shounak.bargainingbot.data.db.OrderType
@@ -14,6 +13,12 @@ class OrderRepositoryImpl(
 ) : OrderRepository {
 
 
+    override suspend fun getOrders(): LiveData<List<Order>> {
+        return withContext(Dispatchers.IO){
+            orderDao.getOrders()
+        }
+    }
+
     override suspend fun getFoodCart(): LiveData<List<FoodCartOrder>> {
         return withContext(Dispatchers.IO) {
             orderDao.getFoodCart()
@@ -23,7 +28,6 @@ class OrderRepositoryImpl(
     override suspend fun addItemToFoodCart(time: Long, name: String, quantity: Int, cost: Int) {
         withContext(Dispatchers.IO) {
             val searchedEntry = orderDao.findInFoodCart(name)
-            Log.d("additem", searchedEntry.toString())
             if(searchedEntry == null){
                 orderDao.addFoodOrderToCart(
                     FoodCartOrder(time, name, quantity, cost)
@@ -66,6 +70,18 @@ class OrderRepositoryImpl(
            }
        }
 
+    }
+
+    override suspend fun clearFoodCart(){
+        withContext(Dispatchers.IO){
+            orderDao.clearFoodCart()
+        }
+    }
+
+    override suspend fun clearOrders(){
+        withContext(Dispatchers.IO){
+            orderDao.clearOrders()
+        }
     }
 
 }

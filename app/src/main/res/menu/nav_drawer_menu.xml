@@ -5,7 +5,7 @@
               android:title="Home"
               android:icon="@drawable/ic_home_black_24dp"/>
 
-        <item android:id="@+id/nav_drawer_menu_orders"
+        <item android:id="@+id/orders_fragment"
               android:title="My Orders"
               android:icon="@drawable/ic_view_list_black_24dp"/>
 
