@@ -17,6 +17,15 @@
                             <option name="y" value="362" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_to_orders">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -36,6 +45,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_to_orders">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -46,9 +60,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="225" />
-                            <option name="y" value="681" />
+                            <option name="x" value="171" />
+                            <option name="y" value="720" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_to_botFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -74,6 +97,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_to_orders">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -87,6 +115,15 @@
                             <option name="x" value="531" />
                             <option name="y" value="680" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_to_orders">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

@@ -68,4 +68,14 @@ class BotRepositoryImpl(
             botDao.getMessages()
         }
     }
+
+    override suspend fun addFoodAcknowledgement(message : String){
+        botDao.addMessage(
+            Message(
+                Date().time,
+                message,
+                MessageFrom.BOT
+            )
+        )
+    }
 }

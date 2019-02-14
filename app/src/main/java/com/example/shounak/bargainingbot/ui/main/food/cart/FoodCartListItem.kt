@@ -9,9 +9,9 @@ import kotlinx.android.synthetic.main.order_cart_list_item.*
  * Created by Shounak on 12-Feb-19
  */
 class FoodCartListItem(
-    private val name : String,
-    private val quantity : Int,
-    private val cost : Int
+     val name : String,
+     val quantity : Int,
+     val cost : Int
 ) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.apply {

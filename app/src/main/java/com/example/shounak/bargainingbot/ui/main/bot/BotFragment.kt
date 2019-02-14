@@ -6,20 +6,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shounak.bargainingbot.R
+import com.example.shounak.bargainingbot.data.db.entity.FoodCartOrder
 import com.example.shounak.bargainingbot.data.db.entity.Message
 import com.example.shounak.bargainingbot.data.provider.PreferenceProvider
 import com.example.shounak.bargainingbot.internal.MessageFrom
 import com.example.shounak.bargainingbot.internal.PrefrencesUserNullException
 import com.example.shounak.bargainingbot.ui.base.ScopedFragment
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.bot_fragment.*
+import kotlinx.android.synthetic.main.bot_fragment_chat_ui.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -36,11 +44,13 @@ class BotFragment : ScopedFragment(), KodeinAware {
 //    private var savedMessages: List<Message>? = null
 
     private var navigated = false
+    private var isBundleChecked = false
+    private var foodAcknowledgement = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("BotFragment", "OnCreate")
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
     }
 
@@ -50,6 +60,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
     ): View? {
         Log.d("BotFragment", "OnCreateView")
         navigated = true
+//        bot_bottom_fragment.fragmentManager?.beginTransaction()?.attach(BotBottomFragment())?.commit()
         return inflater.inflate(R.layout.bot_fragment, container, false)
 
 
@@ -80,6 +91,9 @@ class BotFragment : ScopedFragment(), KodeinAware {
                         groupAdapter.clear()
                         addSavedMessages(it)
                         navigated = false
+                        if (foodAcknowledgement != "") {
+                            addFoodAck(foodAcknowledgement)
+                        }
                     }
 
                 })
@@ -94,6 +108,17 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
         setOnClickListener()
 
+    }
+
+    private fun addFoodAck(foodAcknowledgement: String) {
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                groupAdapter.add(MessageFromBotItem(foodAcknowledgement))
+                linearLayoutManager.scrollToPosition(groupAdapter.itemCount - 1)
+                viewModel.addFoodAcknowledgement(foodAcknowledgement)
+            }
+
+        }
     }
 
     private fun addSavedMessages(savedMessages: List<Message>?) {
@@ -138,8 +163,8 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
     private fun checkBundle() {
         val args: BotFragmentArgs by navArgs()
-        if (args.orderDrinks) {
-            //TODO: send details to bot
+        if (args.orderDrinks && !isBundleChecked) {
+            isBundleChecked = true
             val uid = getUserId()
             launch {
                 if (uid != null || uid != "Not Available") {
@@ -155,11 +180,27 @@ class BotFragment : ScopedFragment(), KodeinAware {
                     throw PrefrencesUserNullException()
                 }
             }
-        } else if (args.orderFood) {
-            //TODO: food order placed. Acknowledge
+        } else if (args.orderFood && !isBundleChecked) {
+            val foodOrderList = args.foodOrderList
+            if (foodOrderList != null) {
+                val foodOrderArrayList = Gson().fromJson<ArrayList<FoodCartOrder>>(foodOrderList)
+                val string = StringBuilder()
+                string.append("Great! Order placed for :\n")
+                for (item in foodOrderArrayList) {
+                    string.append("${item.quantity} - ${item.name} \n")
+                }
+                string.append("Bon Appétit")
+
+                foodAcknowledgement = string.toString()
+            }
+
+
         }
 
     }
+
+    inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)
+
 
     private fun getUserId(): String? {
 
@@ -191,15 +232,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.d("BotFragment", "OnPause")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("BotFragment", "OnDestroy")
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -211,25 +243,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("BotFragment", "OnStart")
-    }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("BotFragment", "OnResume")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("BotFragment", "OnDetach")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("BotFragment", "OnStop")
-    }
 }
 
 

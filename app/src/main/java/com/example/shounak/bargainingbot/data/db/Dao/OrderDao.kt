@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.shounak.bargainingbot.data.db.OrderType
 import com.example.shounak.bargainingbot.data.db.entity.FoodCartOrder
 import com.example.shounak.bargainingbot.data.db.entity.Order
 
@@ -13,6 +14,7 @@ import com.example.shounak.bargainingbot.data.db.entity.Order
  */
 @Dao
 interface OrderDao {
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOrder(order : Order)
@@ -26,8 +28,6 @@ interface OrderDao {
     @Query("select * from CurrentOrders where name = :name")
     fun findInOrders(name : String) : Order?
 
-
-
     @Query("select * from FoodCartOrder")
     fun getFoodCart() : LiveData<List<FoodCartOrder>>
 
@@ -39,6 +39,13 @@ interface OrderDao {
 
     @Query("delete from CurrentOrders")
     fun clearOrders()
+
+    @Query("delete from FoodCartOrder where name = :name")
+    fun deleteItemFromFoodCart(name : String)
+
+    @Query("delete from CurrentOrders where type = :type")
+    fun deleteDrinksOrder(type : OrderType)
+
 
 
 

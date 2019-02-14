@@ -35,9 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             tools:layout_editor_absoluteX="16dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/textView2"/>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,5 +72,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/cart_total_text_view" android:layout_marginTop="16dp"
                 android:layout_marginBottom="32dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+            android:id="@+id/divider2"
+            android:backgroundTint="@color/secondaryColor"
+
+            android:layout_width="380dp"
+            android:layout_height="3dp"
+            android:background="?android:attr/listDivider"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="Long press to delete an item"
+            android:textColor="@color/secondaryColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/divider2"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

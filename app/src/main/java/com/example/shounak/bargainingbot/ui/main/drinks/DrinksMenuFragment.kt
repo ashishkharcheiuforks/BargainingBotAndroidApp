@@ -146,22 +146,20 @@ class DrinksMenuFragment : ScopedFragment(), KodeinAware {
                         currentCost = it.cost.toInt()
                         name = it.name
 
+                        val toBotFragment = DrinksMenuFragmentDirections.actionToBotFragment(
+                            quantity = quantity,
+                            currentCost = currentCost,
+                            offeredCost = offeredCost,
+                            name = name,
+                            orderDrinks = true
+                        )
+
+                        alertDialog.dismiss()
+
+                        Navigation.findNavController(mainView).navigate(toBotFragment)
+
                     }
                 }
-
-                val toBotFragment = DrinksMenuFragmentDirections.actionToBotFragment(
-                    quantity = quantity,
-                    currentCost = currentCost,
-                    offeredCost = offeredCost,
-                    name = name,
-                    orderDrinks = true
-                )
-
-                alertDialog.dismiss()
-
-                Navigation.findNavController(mainView).navigate(toBotFragment)
-
-
             }
         }
     }

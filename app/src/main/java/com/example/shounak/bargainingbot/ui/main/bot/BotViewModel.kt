@@ -99,4 +99,8 @@ class BotViewModel(
         return ProfileImageUrl.getSmallPhotoUrl(userPhotoUri)
     }
 
+    suspend fun addFoodAcknowledgement(message: String){
+        botRepository.addFoodAcknowledgement(message)
+    }
+
 }

@@ -23,9 +23,12 @@ import org.kodein.di.generic.singleton
  * Created by Shounak on 30-Jan-19
  */
 class BotApplication : Application(), KodeinAware {
+
+
+
     override val kodein = Kodein.lazy {
         import(androidXModule(this@BotApplication))
-
+        val context = applicationContext
         bind() from singleton { BotDatabase(instance()) }
         bind() from singleton { instance<BotDatabase>().userDao() }
         bind() from singleton { instance<BotDatabase>().menuDao() }
@@ -35,17 +38,18 @@ class BotApplication : Application(), KodeinAware {
         bind<APIAIService>() with singleton { APIAIServiceImpl() }
         bind<MenuNetworkDataSource>() with singleton { MenuNetworkDataSourceImpl() }
         bind<UserNetworkDataSource>() with singleton { UserNetworkDataSourceImpl(instance()) }
+        bind<OrderNetworkDataSource>() with singleton { OrderNetworkDataSourceImpl() }
         bind<MenuRepository>() with singleton { MenuRepositoryImpl(instance(), instance()) }
         bind<UserRepository>() with singleton { UserRepositoryImpl(instance(), instance()) }
         bind<BotRepository>() with singleton { BotRepositoryImpl(instance(),instance()) }
-        bind<OrderRepository>() with singleton { OrderRepositoryImpl(instance()) }
+        bind<OrderRepository>() with singleton { OrderRepositoryImpl(instance(), instance()) }
         bind() from provider { LoginViewModelFactory(instance()) }
         bind() from provider { MainActivityViewModelFactory(instance()) }
         bind() from provider { BotViewModelFactory(instance(),instance(), instance()) }
         bind() from provider { FoodMenuViewModelFactory(instance(), instance()) }
         bind() from provider { DrinksMenuViewModelFactory(instance()) }
         bind() from provider {FoodCartViewModelFactory(instance())}
-        bind() from provider { OrdersViewModelFactory(instance()) }
+        bind() from provider { OrdersViewModelFactory(instance(), context) }
     }
 
 
