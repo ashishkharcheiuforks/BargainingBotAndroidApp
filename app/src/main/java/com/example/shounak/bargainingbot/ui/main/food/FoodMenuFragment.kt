@@ -19,7 +19,9 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.food_menu_fragment.*
 import kotlinx.android.synthetic.main.food_menu_popup_window.view.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -68,12 +70,15 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
         launch {
             val foodTitle = viewModel.getFoodMenuTitles(foodList)
 
-            val groupAdapter = GroupAdapter<ViewHolder>().apply {
-                for (food in foodTitle) {
-                    val section = Section()
-                    section.setHeader(MenuHeaderItem(food))
-                    section.addAll(viewModel.getFoodListByType(food).toFoodMenuItem())
-                    add(section)
+            val groupAdapter = GroupAdapter<ViewHolder>()
+            withContext(Dispatchers.IO){
+               groupAdapter.apply {
+                    for (food in foodTitle) {
+                        val section = Section()
+                        section.setHeader(MenuHeaderItem(food))
+                        section.addAll(viewModel.getFoodListByType(food).toFoodMenuItem())
+                        add(section)
+                    }
                 }
             }
 

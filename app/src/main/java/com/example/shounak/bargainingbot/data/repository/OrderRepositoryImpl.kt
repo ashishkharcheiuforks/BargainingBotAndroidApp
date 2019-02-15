@@ -3,6 +3,7 @@ package com.example.shounak.bargainingbot.data.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.shounak.bargainingbot.data.db.Dao.OrderDao
 import com.example.shounak.bargainingbot.data.db.OrderType
 import com.example.shounak.bargainingbot.data.db.entity.FoodCartOrder
@@ -17,13 +18,19 @@ import java.util.*
 class OrderRepositoryImpl(
     private val orderDao: OrderDao,
     private val orderNetworkDataSource: OrderNetworkDataSource
+//    private val sendGridAPIService: SendGridAPIService
 ) : OrderRepository {
 
+    override var isDrinksLoadingCompleted = MutableLiveData<Boolean>()
+
+    private var isCartCleared = false
 
     init {
+        isDrinksLoadingCompleted.value = false
         orderNetworkDataSource.drinksOrderChangeList.observeForever {
             runBlocking {
                 updateOrderDatabase(it)
+                isDrinksLoadingCompleted.value = true
             }
         }
     }
@@ -66,6 +73,12 @@ class OrderRepositoryImpl(
 
                     }
 
+                }
+            }else{
+                if (isCartCleared){
+                    withContext(Dispatchers.IO){
+                        orderDao.clearOrders()
+                    }
                 }
             }
         }
@@ -141,9 +154,18 @@ class OrderRepositoryImpl(
         }
     }
 
-    override suspend fun clearOrders(){
+    override suspend fun clearOrders(userId : String){
+
+        withContext(Dispatchers.IO){
+            orderNetworkDataSource.clearOrders(userId)
+            isCartCleared = true
+        }
+    }
+
+    override suspend fun clearLocalOrders(){
         withContext(Dispatchers.IO){
             orderDao.clearOrders()
+            isCartCleared = true
         }
     }
 
@@ -152,4 +174,12 @@ class OrderRepositoryImpl(
             orderDao.deleteItemFromFoodCart(name)
         }
     }
+
+    override suspend fun checkOut(data : HashMap<String, Any>) {
+        orderNetworkDataSource.addToPreviousOrders(data)
+    }
+
+//    override suspend fun sendConfirmationEmail(){
+//
+//    }
 }

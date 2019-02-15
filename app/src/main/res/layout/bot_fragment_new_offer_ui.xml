@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-    <com.google.android.material.button.MaterialButton
-            android:text="QUANTITY"
-            android:textColor="@color/secondaryColor"
-            app:rippleColor="@color/secondaryColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-    <com.google.android.material.button.MaterialButton
-            android:text="COST"
-            android:textColor="@color/secondaryColor"
-            app:rippleColor="@color/secondaryColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-    <com.google.android.material.button.MaterialButton
-            android:text="MAKE OFFER"
-            android:textColor="@color/secondaryColor"
-            app:rippleColor="@color/secondaryColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                             android:orientation="horizontal"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content">
+<com.google.android.material.button.MaterialButton
+        android:id="@+id/bot_fragment_quantity_button"
+        android:text="QUANTITY"
+        android:textColor="@color/secondaryColor"
+        app:rippleColor="@color/secondaryColor"
+        android:layout_width="wrap_content"
+        app:cornerRadius="16dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+<com.google.android.material.button.MaterialButton
+        android:id="@+id/bot_fragment_cost_button"
+        android:text="COST"
+        android:textColor="@color/secondaryColor"
+        app:rippleColor="@color/secondaryColor"
+        app:cornerRadius="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+<com.google.android.material.button.MaterialButton
+        android:id="@+id/bot_fragment_make_offer_button"
+        android:text="MAKE OFFER"
+        android:textColor="@color/secondaryColor"
+        app:rippleColor="@color/secondaryColor"
+        app:cornerRadius="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
 </LinearLayout>

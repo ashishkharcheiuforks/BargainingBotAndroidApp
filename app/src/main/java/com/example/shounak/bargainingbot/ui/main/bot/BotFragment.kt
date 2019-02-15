@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
@@ -23,7 +25,6 @@ import com.google.gson.reflect.TypeToken
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.bot_fragment.*
-import kotlinx.android.synthetic.main.bot_fragment_chat_ui.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -46,6 +47,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
     private var navigated = false
     private var isBundleChecked = false
     private var foodAcknowledgement = ""
+    private var isYesNoFragDisplayed = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +62,13 @@ class BotFragment : ScopedFragment(), KodeinAware {
     ): View? {
         Log.d("BotFragment", "OnCreateView")
         navigated = true
-//        bot_bottom_fragment.fragmentManager?.beginTransaction()?.attach(BotBottomFragment())?.commit()
+        val fragmentTransaction = childFragmentManager.beginTransaction()
+        val botChatButtonUIFragment = BotChatButtonUIFragment()
+        fragmentTransaction.apply {
+            replace(R.id.bot_bottom_fragment, botChatButtonUIFragment)
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            commit()
+        }
         return inflater.inflate(R.layout.bot_fragment, container, false)
 
 
@@ -70,7 +78,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
         super.onActivityCreated(savedInstanceState)
         Log.d("BotFragment", "OnActivityCreated")
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BotViewModel::class.java)
-
+        cancel_chip.visibility = View.GONE
 
 
         launch {
@@ -83,6 +91,17 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
                 userMessage.observe(this@BotFragment, Observer {
                     addUserMessage(it)
+                })
+
+                action.observe(this@BotFragment, Observer {
+                    manageUIWithAction(it)
+                })
+
+                fragmentToReplaceWith.observe(this@BotFragment, Observer {
+                    Log.d("called", "Observer")
+                   if(it != null){
+                       replaceBottomFragmentWith(it)
+                   }
                 })
 
                 viewModel.messageHistory.await().observe(this@BotFragment, Observer {
@@ -106,8 +125,43 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
         checkBundle()
 
-        setOnClickListener()
+        cancel_chip.setOnClickListener {
+            launch {
+                viewModel.sendAiRequest("Cancel")
+            }
+            replaceBottomFragmentWith(BotChatButtonUIFragment())
+            cancel_chip.visibility = View.GONE
+        }
 
+    }
+
+    private fun manageUIWithAction(action: String?) {
+        when(action){
+            "OrderDrinksCounter" , "OrderDrinksAccept" , "OrderDrinksOfferLow" -> {
+                if(!isYesNoFragDisplayed){
+                    replaceBottomFragmentWith(BotYesNoFragment())
+                    cancel_chip.visibility = View.VISIBLE
+                    isYesNoFragDisplayed = true
+                }
+
+            }
+            "OrderDrinksTaunt" -> {
+                replaceBottomFragmentWith(BotTauntResponseFragment())
+                cancel_chip.visibility = View.VISIBLE
+                isYesNoFragDisplayed = false
+            }
+
+            "MakeNewOffer" -> {
+                replaceBottomFragmentWith(BotNewOfferFragment())
+                cancel_chip.visibility = View.VISIBLE
+                isYesNoFragDisplayed = false
+            }
+            "PlaceDrinksOrder" -> {
+                replaceBottomFragmentWith(BotChatButtonUIFragment())
+                cancel_chip.visibility = View.GONE
+                isYesNoFragDisplayed = false
+            }
+        }
     }
 
     private fun addFoodAck(foodAcknowledgement: String) {
@@ -135,17 +189,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
     }
 
 
-    fun setOnClickListener() {
-        bot_send_button.setOnClickListener {
-            launch {
-                if (bot_fragment_edit_text.text.toString() != "") {
-                    viewModel.sendAiRequest(bot_fragment_edit_text.text.toString())
-                }
-                bot_fragment_edit_text.text?.clear()
-            }
-        }
-    }
-
     private fun initRecyclerView(context: Context?) {
         groupAdapter = GroupAdapter<ViewHolder>()
         val recyclerView = bot_fragment_recycler_view
@@ -161,9 +204,13 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
     }
 
+
+
+    //TODO: Multiple chat entries appear
     private fun checkBundle() {
         val args: BotFragmentArgs by navArgs()
-        if (args.orderDrinks && !isBundleChecked) {
+        if (args.orderDrinks and !isBundleChecked) {
+
             isBundleChecked = true
             val uid = getUserId()
             launch {
@@ -180,7 +227,8 @@ class BotFragment : ScopedFragment(), KodeinAware {
                     throw PrefrencesUserNullException()
                 }
             }
-        } else if (args.orderFood && !isBundleChecked) {
+        } else if (args.orderFood and !isBundleChecked) {
+            isBundleChecked = true
             val foodOrderList = args.foodOrderList
             if (foodOrderList != null) {
                 val foodOrderArrayList = Gson().fromJson<ArrayList<FoodCartOrder>>(foodOrderList)
@@ -243,8 +291,19 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
     }
 
+    private fun replaceBottomFragmentWith(fragment : Fragment) {
+        Log.d("called", "replaceBottomFragment")
 
+        val fragmentTransaction = childFragmentManager.beginTransaction()
+        fragmentTransaction.apply {
+            replace(R.id.bot_bottom_fragment, fragment)
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//            addToBackStack("bottom_fragments")
+            commit()
+        }
+
+
+    }
 }
-
 
 

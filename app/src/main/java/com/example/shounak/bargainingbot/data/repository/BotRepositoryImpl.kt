@@ -20,9 +20,13 @@ class BotRepositoryImpl(
 //    override val userMessage : LiveData<String>
 //        get() = _userMessage
 
-    val _botResponse = MutableLiveData<String>()
+    private val _botResponse = MutableLiveData<String>()
     override val botResponse: LiveData<String>
         get() = _botResponse
+
+    private val _botAction = MutableLiveData<String>()
+    override val botAction: LiveData<String>
+        get() = _botAction
 //
 //    init {
 //        botDao.getLatestMessage().observeForever {
@@ -34,6 +38,7 @@ class BotRepositoryImpl(
     override suspend fun sendAiRequest(messageToSend: String) {
 
         val res = apiaiService.sendRequest(messageToSend).await()
+        _botAction.postValue(res.result.action)
         _botResponse.postValue(res.result.fulfillment.speech)
         withContext(Dispatchers.IO) {
             botDao.addMessage(
@@ -64,12 +69,12 @@ class BotRepositoryImpl(
     }
 
     override suspend fun getSavedMessages(): LiveData<List<Message>> {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             botDao.getMessages()
         }
     }
 
-    override suspend fun addFoodAcknowledgement(message : String){
+    override suspend fun addFoodAcknowledgement(message: String) {
         botDao.addMessage(
             Message(
                 Date().time,

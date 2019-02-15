@@ -15,4 +15,5 @@ interface BotRepository {
 
     suspend fun getSavedMessages(): LiveData<List<Message>>
     suspend fun addFoodAcknowledgement(message: String)
+    val botAction: LiveData<String>
 }

@@ -10,12 +10,14 @@
             android:text="NO"
             android:textColor="@color/secondaryColor"
             app:rippleColor="@color/secondaryColor"
+            app:cornerRadius="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button2" android:layout_weight="1"/>
+            android:layout_height="wrap_content" android:id="@+id/bot_fragment_no_button" android:layout_weight="1"/>
     <com.google.android.material.button.MaterialButton
             android:text="YES"
             app:rippleColor="@color/secondaryColor"
             android:textColor="@color/secondaryColor"
+            app:cornerRadius="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button3" android:layout_weight="1"/>
+            android:layout_height="wrap_content" android:id="@+id/bot_fragment_yes_button" android:layout_weight="1"/>
 </LinearLayout>

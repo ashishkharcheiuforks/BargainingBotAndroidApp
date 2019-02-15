@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -220,7 +219,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
     //Call next activity
     private fun updateUI(account: FirebaseUser?) {
         if (account != null) {
-            Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show()
+//            Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show()
             intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()

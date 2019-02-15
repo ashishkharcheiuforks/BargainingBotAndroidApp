@@ -5,6 +5,8 @@ import ai.api.android.AIDataService
 import ai.api.model.AIRequest
 import android.content.Context
 import android.net.Uri
+import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,15 +31,31 @@ class BotViewModel(
 //    val response: LiveData<String>
 //        get() = _response
 
+
+
+    var lastOrderedDrinkName : String = ""
+    var lastOrderedDrinkCurrentCost = 0
+
+    private var _fragmentToReplaceWith = MutableLiveData<Fragment>()
+    val fragmentToReplaceWith : LiveData<Fragment>
+        get() = _fragmentToReplaceWith
+
     val messageHistory by lazyDeferred {
         botRepository.getSavedMessages()
     }
 
 
     val response = botRepository.botResponse
+    val action = botRepository.botAction
+
     private val _userMessage = MutableLiveData<String>()
     val userMessage: LiveData<String>
         get() = _userMessage
+
+
+    init {
+//        _fragmentToReplaceWith.postValue(BotChatButtonUIFragment())
+    }
 
     private lateinit var aiDataService: AIDataService
     private lateinit var aiRequest: AIRequest
@@ -89,6 +107,9 @@ class BotViewModel(
                 val messageToShow = "$quantity $name for $offeredCost \u20B9. What do you say?"
                 botRepository.saveUserMessage(messageToShow)
                 _userMessage.postValue(messageToShow)
+                lastOrderedDrinkName = name
+                lastOrderedDrinkCurrentCost = currentCost
+
             }
         }
 
@@ -101,6 +122,11 @@ class BotViewModel(
 
     suspend fun addFoodAcknowledgement(message: String){
         botRepository.addFoodAcknowledgement(message)
+    }
+
+    fun replaceBottomFragmentWithCallback(fragment: Fragment){
+        Log.d("called", "ViewModel")
+        _fragmentToReplaceWith.value = fragment
     }
 
 }

@@ -18,7 +18,8 @@
               android:name="com.example.shounak.bargainingbot.ui.main.drinks.DrinksMenuFragment"
               android:label="DRINKS MENU" tools:layout="@layout/drinks_menu_fragment">
         <action android:id="@+id/action_to_botFragment" app:destination="@+id/botFragment"
-                app:popEnterAnim="@anim/nav_default_enter_anim" app:popExitAnim="@anim/nav_default_enter_anim">
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popUpToInclusive="true" app:popUpTo="@+id/botFragment">
             <argument android:defaultValue="false" android:name="orderDrinks"/>
             <argument android:defaultValue="false" android:name="orderFood"/>
 
@@ -28,7 +29,8 @@
     <fragment android:id="@+id/foodMenuFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.food.FoodMenuFragment"
               android:label="FOOD MENU" tools:layout="@layout/food_menu_fragment">
-        <action android:id="@+id/action_to_botFragment" app:destination="@id/botFragment">
+        <action android:id="@+id/action_to_botFragment" app:destination="@id/botFragment"
+                app:popUpTo="@+id/botFragment" app:popUpToInclusive="true">
             <argument android:defaultValue="false" android:name="orderDrinks"/>
             <argument android:defaultValue="false" android:name="orderFood"/>
             <argument android:defaultValue="0" android:name="offeredCost"/>
@@ -42,7 +44,8 @@
     <fragment android:id="@+id/foodCartFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.food.cart.FoodCartFragment"
               android:label="CART" tools:layout="@layout/food_cart_fragment">
-        <action android:id="@+id/action_to_botFragment" app:destination="@id/botFragment"/>
+        <action android:id="@+id/action_to_botFragment" app:destination="@id/botFragment"
+                app:popUpTo="@+id/botFragment" app:popUpToInclusive="true"/>
     </fragment>
     <fragment android:id="@+id/ordersFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.orders.OrdersFragment"

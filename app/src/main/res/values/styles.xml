@@ -19,10 +19,9 @@
 
     </style>
 
-    <!--<style name="AppTheme.Splash" parent="AppTheme">-->
-    <!--<item name="android:activityCloseExitAnimation">@anim/nav_default_pop_exit_anim</item>-->
-    <!--<item name="android:activityCloseEnterAnimation">@anim/nav_default_pop_enter_anim</item>-->
-    <!--</style>-->
+   <style name="AlertDialogTheme">
+       <item name="android:textColor">@color/secondaryColor</item>
+   </style>
 
 
 </resources>

@@ -20,7 +20,9 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.drinks_menu_fragment.*
 import kotlinx.android.synthetic.main.drinks_menu_popup_window.view.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -43,6 +45,7 @@ class DrinksMenuFragment : ScopedFragment(), KodeinAware {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DrinksMenuViewModel::class.java)
+
 
 
         launch {
@@ -68,17 +71,21 @@ class DrinksMenuFragment : ScopedFragment(), KodeinAware {
         launch {
             val drinksTitle = viewModel.getDrinksMenuTitles(drinksList)
 
-            val groupAdapter: GroupAdapter<ViewHolder>
+            val groupAdapter: GroupAdapter<ViewHolder> = GroupAdapter()
 
-            groupAdapter = GroupAdapter<ViewHolder>().apply {
-                for (drink in drinksTitle) {
-                    val section = Section()
-                    section.setHeader(MenuHeaderItem(drink))
-                    section.addAll(viewModel.getDrinksListByType(drink).toDrinksMenuItems())
-                    add(section)
+            withContext(Dispatchers.IO){
+                groupAdapter.apply {
+                    for (drink in drinksTitle) {
+                        val section = Section()
+                        section.setHeader(MenuHeaderItem(drink))
+                        section.addAll(viewModel.getDrinksListByType(drink).toDrinksMenuItems())
+                        add(section)
+                    }
+
                 }
-
             }
+
+
 
             drinks_menu_recycler_view.apply {
                 layoutManager = LinearLayoutManager(this@DrinksMenuFragment.context)
@@ -156,7 +163,7 @@ class DrinksMenuFragment : ScopedFragment(), KodeinAware {
 
                         alertDialog.dismiss()
 
-                        Navigation.findNavController(mainView).navigate(toBotFragment)
+                        Navigation.findNavController(this@DrinksMenuFragment.view!!).navigate(toBotFragment)
 
                     }
                 }

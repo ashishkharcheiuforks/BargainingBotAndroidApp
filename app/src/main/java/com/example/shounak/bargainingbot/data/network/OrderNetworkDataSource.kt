@@ -12,4 +12,6 @@ interface OrderNetworkDataSource {
 
     val drinksOrderChangeList: LiveData<List<DocumentChange>>
     suspend fun getDrinksOrders(context: Context)
+    suspend fun addToPreviousOrders(data: HashMap<String, Any>)
+    suspend fun clearOrders(userId : String)
 }
