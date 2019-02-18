@@ -124,7 +124,9 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
 
             runBlocking { viewModel.clearLocalOrders() }
 
-            Navigation.findNavController(this@OrdersFragment.view!!).navigate(R.id.botFragment)
+            val toBotFragment = OrdersFragmentDirections.actionToBotFragment(paymentDone = true)
+
+            Navigation.findNavController(this@OrdersFragment.view!!).navigate(toBotFragment)
         }
 
     }

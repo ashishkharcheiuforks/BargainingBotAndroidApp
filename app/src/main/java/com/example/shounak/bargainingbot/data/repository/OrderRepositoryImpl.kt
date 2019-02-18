@@ -8,7 +8,9 @@ import com.example.shounak.bargainingbot.data.db.Dao.OrderDao
 import com.example.shounak.bargainingbot.data.db.OrderType
 import com.example.shounak.bargainingbot.data.db.entity.FoodCartOrder
 import com.example.shounak.bargainingbot.data.db.entity.Order
+import com.example.shounak.bargainingbot.data.db.entity.User
 import com.example.shounak.bargainingbot.data.network.OrderNetworkDataSource
+import com.example.shounak.bargainingbot.data.network.SendGridAPIService
 import com.google.firebase.firestore.DocumentChange
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -17,8 +19,8 @@ import java.util.*
 
 class OrderRepositoryImpl(
     private val orderDao: OrderDao,
-    private val orderNetworkDataSource: OrderNetworkDataSource
-//    private val sendGridAPIService: SendGridAPIService
+    private val orderNetworkDataSource: OrderNetworkDataSource,
+    private val sendGridAPIService: SendGridAPIService
 ) : OrderRepository {
 
     override var isDrinksLoadingCompleted = MutableLiveData<Boolean>()
@@ -175,7 +177,9 @@ class OrderRepositoryImpl(
         }
     }
 
-    override suspend fun checkOut(data : HashMap<String, Any>) {
+    override suspend fun checkOut(data : HashMap<String, Any>, user : User) {
+
+        sendGridAPIService.sendEmail(data, user)
         orderNetworkDataSource.addToPreviousOrders(data)
     }
 

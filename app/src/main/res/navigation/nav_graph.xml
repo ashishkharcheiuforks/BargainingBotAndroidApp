@@ -13,6 +13,7 @@
         <argument android:name="orderFood" app:argType="boolean" android:defaultValue="false"/>
         <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
         <argument android:name="foodOrderList" app:argType="string" app:nullable="true" android:defaultValue="null"/>
+        <argument android:name="paymentDone" app:argType="boolean" android:defaultValue="false"/>
     </fragment>
     <fragment android:id="@+id/drinksMenuFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.drinks.DrinksMenuFragment"
@@ -22,6 +23,7 @@
                 app:popUpToInclusive="true" app:popUpTo="@+id/botFragment">
             <argument android:defaultValue="false" android:name="orderDrinks"/>
             <argument android:defaultValue="false" android:name="orderFood"/>
+            <argument android:defaultValue="false" android:name="paymentDone"/>
 
         </action>
         <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
@@ -34,6 +36,7 @@
             <argument android:defaultValue="false" android:name="orderDrinks"/>
             <argument android:defaultValue="false" android:name="orderFood"/>
             <argument android:defaultValue="0" android:name="offeredCost"/>
+            <argument android:defaultValue="false" android:name="paymentDone"/>
         </action>
         <action android:id="@+id/action_to_foodCartFragment" app:destination="@id/foodCartFragment"
                 app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
@@ -51,5 +54,7 @@
               android:name="com.example.shounak.bargainingbot.ui.main.orders.OrdersFragment"
               android:label="ORDERS" tools:layout="@layout/orders_fragment">
         <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
+        <action android:id="@+id/action_to_botFragment" app:destination="@id/botFragment"
+                app:popUpTo="@+id/botFragment" app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

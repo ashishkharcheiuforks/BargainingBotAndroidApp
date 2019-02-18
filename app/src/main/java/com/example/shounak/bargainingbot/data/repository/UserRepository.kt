@@ -12,4 +12,5 @@ interface UserRepository {
 
     suspend fun setCurrentUser(uid: String, name: String, email: String, photoUrl: Uri?)
 
+    suspend fun getCurrentUserLocal(): User?
 }

@@ -14,14 +14,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shounak.bargainingbot.R
-import com.example.shounak.bargainingbot.data.db.entity.FoodCartOrder
 import com.example.shounak.bargainingbot.data.db.entity.Message
-import com.example.shounak.bargainingbot.data.provider.PreferenceProvider
 import com.example.shounak.bargainingbot.internal.MessageFrom
-import com.example.shounak.bargainingbot.internal.PrefrencesUserNullException
+import com.example.shounak.bargainingbot.internal.NavigatedFrom
 import com.example.shounak.bargainingbot.ui.base.ScopedFragment
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.bot_fragment.*
@@ -36,22 +32,24 @@ import org.kodein.di.generic.instance
 
 class BotFragment : ScopedFragment(), KodeinAware {
 
+
     override val kodein: Kodein by closestKodein()
     private val viewModelFactory: BotViewModelFactory by instance()
 
     private lateinit var viewModel: BotViewModel
     private lateinit var groupAdapter: GroupAdapter<ViewHolder>
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var navigatedFrom: NavigatedFrom
 //    private var savedMessages: List<Message>? = null
 
     private var navigated = false
     private var isBundleChecked = false
-    private var foodAcknowledgement = ""
     private var isYesNoFragDisplayed = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkBundleOnCreate()
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
     }
@@ -60,6 +58,9 @@ class BotFragment : ScopedFragment(), KodeinAware {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+//        TODO("Acknowledge final order")
+
         Log.d("BotFragment", "OnCreateView")
         navigated = true
         val fragmentTransaction = childFragmentManager.beginTransaction()
@@ -90,7 +91,9 @@ class BotFragment : ScopedFragment(), KodeinAware {
                 })
 
                 userMessage.observe(this@BotFragment, Observer {
-                    addUserMessage(it)
+                    if (!it.equals("payment done", true)) {
+                        addUserMessage(it)
+                    }
                 })
 
                 action.observe(this@BotFragment, Observer {
@@ -99,9 +102,9 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
                 fragmentToReplaceWith.observe(this@BotFragment, Observer {
                     Log.d("called", "Observer")
-                   if(it != null){
-                       replaceBottomFragmentWith(it)
-                   }
+                    if (it != null) {
+                        replaceBottomFragmentWith(it)
+                    }
                 })
 
                 viewModel.messageHistory.await().observe(this@BotFragment, Observer {
@@ -110,7 +113,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
                         groupAdapter.clear()
                         addSavedMessages(it)
                         navigated = false
-                        if (foodAcknowledgement != "") {
+                        if (viewModel.foodAcknowledgement != "") {
                             addFoodAck(foodAcknowledgement)
                         }
                     }
@@ -123,7 +126,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
         initRecyclerView(this.context)
 
-        checkBundle()
+        actionOnBundleCheck()
 
         cancel_chip.setOnClickListener {
             launch {
@@ -136,9 +139,9 @@ class BotFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun manageUIWithAction(action: String?) {
-        when(action){
-            "OrderDrinksCounter" , "OrderDrinksAccept" , "OrderDrinksOfferLow" -> {
-                if(!isYesNoFragDisplayed){
+        when (action) {
+            "OrderDrinksCounter", "OrderDrinksAccept", "OrderDrinksOfferLow" -> {
+                if (!isYesNoFragDisplayed) {
                     replaceBottomFragmentWith(BotYesNoFragment())
                     cancel_chip.visibility = View.VISIBLE
                     isYesNoFragDisplayed = true
@@ -205,57 +208,45 @@ class BotFragment : ScopedFragment(), KodeinAware {
     }
 
 
+    private fun checkBundleOnCreate() {
+        if (!isBundleChecked) {
+            val args: BotFragmentArgs by navArgs()
 
-    //TODO: Multiple chat entries appear
-    private fun checkBundle() {
-        val args: BotFragmentArgs by navArgs()
-        if (args.orderDrinks and !isBundleChecked) {
 
-            isBundleChecked = true
-            val uid = getUserId()
-            launch {
-                if (uid != null || uid != "Not Available") {
-                    viewModel.sendAiDrinksOrderRequest(
-                        name = args.name,
-                        quantity = args.quantity,
-                        currentCost = args.currentCost,
-                        offeredCost = args.offeredCost,
-                        userId = uid!!
-                    )
-
-                } else {
-                    throw PrefrencesUserNullException()
+            when {
+                args.orderDrinks -> {
+                    navigatedFrom = NavigatedFrom.DRINKS_MENU
+                    isBundleChecked = true
+                }
+                args.orderFood -> {
+                    navigatedFrom = NavigatedFrom.FOOD_MENU
+                    isBundleChecked = true
+                }
+                args.paymentDone -> {
+                    navigatedFrom = NavigatedFrom.ORDERS_FRAGMENT
+                    isBundleChecked = true
+                }
+                else -> {
+                    navigatedFrom = NavigatedFrom.NONE
+                    isBundleChecked = true
                 }
             }
-        } else if (args.orderFood and !isBundleChecked) {
-            isBundleChecked = true
-            val foodOrderList = args.foodOrderList
-            if (foodOrderList != null) {
-                val foodOrderArrayList = Gson().fromJson<ArrayList<FoodCartOrder>>(foodOrderList)
-                val string = StringBuilder()
-                string.append("Great! Order placed for :\n")
-                for (item in foodOrderArrayList) {
-                    string.append("${item.quantity} - ${item.name} \n")
-                }
-                string.append("Bon Appétit")
-
-                foodAcknowledgement = string.toString()
-            }
-
 
         }
-
     }
 
-    inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)
 
+    //TODO: Multiple chat entries appear
+    private fun actionOnBundleCheck() {
 
-    private fun getUserId(): String? {
+        viewModel.setBundleDetails(navigatedFrom, isBundleChecked)
 
-        val pref = PreferenceProvider.getPrefrences(this@BotFragment.context!!)
-        return pref.getString(PreferenceProvider.USER_ID, "Not Available")
-
+        val args: BotFragmentArgs by navArgs()
+        launch {
+            viewModel.actionOnBundleCheck(args, this@BotFragment.context!!)
+        }
     }
+
 
     private fun addUserMessage(message: String?) {
         val url = viewModel.getPhotoUrl()
@@ -291,7 +282,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
     }
 
-    private fun replaceBottomFragmentWith(fragment : Fragment) {
+    private fun replaceBottomFragmentWith(fragment: Fragment) {
         Log.d("called", "replaceBottomFragment")
 
         val fragmentTransaction = childFragmentManager.beginTransaction()

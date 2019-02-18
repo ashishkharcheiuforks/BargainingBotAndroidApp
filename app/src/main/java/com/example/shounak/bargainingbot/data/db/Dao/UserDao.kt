@@ -20,4 +20,9 @@ interface UserDao {
 
     @Query("select * from User where constId=$CURRENT_USER_ID")
     fun getUser() : LiveData<User>
+
+    @Query("select * from User where constId=$CURRENT_USER_ID")
+    fun getUserNonLive() : User
+
+
 }

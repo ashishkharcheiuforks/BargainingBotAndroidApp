@@ -49,6 +49,12 @@ class UserRepositoryImpl(
 
     }
 
+    override suspend fun getCurrentUserLocal(): User? {
+        return withContext(Dispatchers.IO){
+            return@withContext userDao.getUserNonLive()
+        }
+    }
+
 
     override suspend fun setCurrentUser(uid: String, name: String, email: String, photoUrl: Uri?) {
         id = uid

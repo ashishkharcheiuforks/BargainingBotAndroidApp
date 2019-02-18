@@ -10,16 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.shounak.bargainingbot.data.db.entity.FoodCartOrder
 import com.example.shounak.bargainingbot.data.network.APIAIService
+import com.example.shounak.bargainingbot.data.provider.PreferenceProvider
 import com.example.shounak.bargainingbot.data.repository.BotRepository
 import com.example.shounak.bargainingbot.data.repository.UserRepository
-import com.example.shounak.bargainingbot.internal.APIAIToken
-import com.example.shounak.bargainingbot.internal.ProfileImageUrl
-import com.example.shounak.bargainingbot.internal.lazyDeferred
+import com.example.shounak.bargainingbot.internal.*
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 
 class BotViewModel(
     private val userRepository: UserRepository,
@@ -27,23 +30,12 @@ class BotViewModel(
     private val botRepository: BotRepository
 ) : ViewModel() {
 
-//    private var _response = MutableLiveData<String>()
-//    val response: LiveData<String>
-//        get() = _response
 
-
-
-    var lastOrderedDrinkName : String = ""
-    var lastOrderedDrinkCurrentCost = 0
-
-    private var _fragmentToReplaceWith = MutableLiveData<Fragment>()
-    val fragmentToReplaceWith : LiveData<Fragment>
-        get() = _fragmentToReplaceWith
-
-    val messageHistory by lazyDeferred {
-        botRepository.getSavedMessages()
-    }
-
+    private lateinit var aiDataService: AIDataService
+    private lateinit var aiRequest: AIRequest
+    private lateinit var navigatedFrom: NavigatedFrom
+    private var isBundleChecked = false
+    var foodAcknowledgement: String = ""
 
     val response = botRepository.botResponse
     val action = botRepository.botAction
@@ -53,16 +45,83 @@ class BotViewModel(
         get() = _userMessage
 
 
-    init {
-//        _fragmentToReplaceWith.postValue(BotChatButtonUIFragment())
+    var lastOrderedDrinkName: String = ""
+    var lastOrderedDrinkCurrentCost = 0
+
+    private var _fragmentToReplaceWith = MutableLiveData<Fragment>()
+    val fragmentToReplaceWith: LiveData<Fragment>
+        get() = _fragmentToReplaceWith
+
+    val messageHistory by lazyDeferred {
+        botRepository.getSavedMessages()
     }
 
-    private lateinit var aiDataService: AIDataService
-    private lateinit var aiRequest: AIRequest
+
+    fun setBundleDetails(navigatedFrom: NavigatedFrom, isBundleChecked: Boolean) {
+        this.navigatedFrom = navigatedFrom
+        this.isBundleChecked = isBundleChecked
+    }
+
+
+    suspend fun actionOnBundleCheck(args: BotFragmentArgs, context: Context) {
+        when (navigatedFrom) {
+
+            NavigatedFrom.DRINKS_MENU -> {
+                val uid = getUserId(context)
+                if (uid != null || uid != "Not Available") {
+                    sendAiDrinksOrderRequest(
+                        name = args.name,
+                        quantity = args.quantity,
+                        currentCost = args.currentCost,
+                        offeredCost = args.offeredCost,
+                        userId = uid!!
+                    )
+
+                } else {
+                    throw PrefrencesUserNullException()
+                }
+            }
+
+            NavigatedFrom.FOOD_MENU -> {
+                val foodOrderList = args.foodOrderList
+                if (foodOrderList != null) {
+                    val foodOrderArrayList = Gson().fromJson<ArrayList<FoodCartOrder>>(foodOrderList)
+                    val string = StringBuilder()
+                    string.append("Great! Order placed for :\n")
+                    for (item in foodOrderArrayList) {
+                        string.append("${item.quantity} - ${item.name} \n")
+                    }
+                    string.append("Bon Appétit")
+
+                    foodAcknowledgement = string.toString()
+                }
+
+            }
+
+            NavigatedFrom.ORDERS_FRAGMENT -> {
+                sendAiRequest("payment done")
+            }
+
+            NavigatedFrom.NONE -> {
+
+            }
+        }
+
+    }
+
+    inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)
+
+
+    private fun getUserId(context: Context): String? {
+
+        val pref = PreferenceProvider.getPrefrences(context)
+        return pref.getString(PreferenceProvider.USER_ID, "Not Available")
+
+    }
 
     fun setupApiAiService(context: Context) {
         val config = ai.api.android.AIConfiguration(
-            APIAIToken.CLIENT_ACCESS_TOKEN,
+            APIToken.API_AI_CLIENT_ACCESS_TOKEN,
             AIConfiguration.SupportedLanguages.English,
             ai.api.android.AIConfiguration.RecognitionEngine.System
         )
@@ -120,13 +179,12 @@ class BotViewModel(
         return ProfileImageUrl.getSmallPhotoUrl(userPhotoUri)
     }
 
-    suspend fun addFoodAcknowledgement(message: String){
+    suspend fun addFoodAcknowledgement(message: String) {
         botRepository.addFoodAcknowledgement(message)
     }
 
-    fun replaceBottomFragmentWithCallback(fragment: Fragment){
+    fun replaceBottomFragmentWithCallback(fragment: Fragment) {
         Log.d("called", "ViewModel")
         _fragmentToReplaceWith.value = fragment
     }
-
 }

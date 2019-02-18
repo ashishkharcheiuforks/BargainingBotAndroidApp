@@ -36,6 +36,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
 }
 
 androidExtensions {
@@ -116,6 +121,12 @@ dependencies {
     // Groupie
     implementation 'com.xwray:groupie:2.1.0'
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.1.0'
+
+    // SendGrid
+//    implementation 'com.sendgrid:sendgrid-java:4.0.1'
+    implementation ('com.github.danysantiago:sendgrid-android:1'){
+        exclude group: 'org.apache.httpcomponents', module:'httpclient'
+    }
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
