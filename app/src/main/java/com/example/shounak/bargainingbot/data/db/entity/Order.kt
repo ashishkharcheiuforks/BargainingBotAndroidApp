@@ -9,6 +9,7 @@ import java.util.*
 data class Order(
 
     val time : Long = Date().time,
+    val tableNumber : Int,
     val type : OrderType,
     @PrimaryKey
     val name: String,

@@ -8,6 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="aboutFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="814" />
+                            <option name="y" value="623" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="botFragment">
                     <value>
                       <LayoutPositions>
@@ -19,6 +31,16 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_botFragment_self">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_to_introSlideActivity">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_to_orders">
                               <value>
                                 <LayoutPositions />
@@ -34,18 +56,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="652" />
-                            <option name="y" value="360" />
+                            <option name="x" value="821" />
+                            <option name="y" value="242" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_to_botFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_to_orders">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -60,8 +77,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="171" />
-                            <option name="y" value="720" />
+                            <option name="x" value="54" />
+                            <option name="y" value="619" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -81,8 +98,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="89" />
-                            <option name="y" value="365" />
+                            <option name="x" value="4" />
+                            <option name="y" value="203" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -97,12 +114,19 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_to_orders">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="introSlideActivity">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="506" />
+                            <option name="y" value="-61" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -112,13 +136,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="531" />
-                            <option name="y" value="680" />
+                            <option name="x" value="411" />
+                            <option name="y" value="826" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_to_orders">
+                            <entry key="action_to_botFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

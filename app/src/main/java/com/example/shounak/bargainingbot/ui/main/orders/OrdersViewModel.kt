@@ -1,6 +1,5 @@
 package com.example.shounak.bargainingbot.ui.main.orders
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.shounak.bargainingbot.data.db.entity.Order
@@ -14,13 +13,12 @@ import java.util.*
 
 class OrdersViewModel(
     private val orderRepository: OrderRepository,
-    private val userRepository: UserRepository,
-    context: Context
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
 
     val orders by lazyDeferred {
-        orderRepository.getOrders(context)
+        orderRepository.getOrders()
     }
 
     val isDrinksLoadingCompleted = orderRepository.isDrinksLoadingCompleted

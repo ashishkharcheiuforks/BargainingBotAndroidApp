@@ -57,53 +57,59 @@ class BotViewModel(
     }
 
 
-    fun setBundleDetails(navigatedFrom: NavigatedFrom, isBundleChecked: Boolean) {
+    fun setBundleDetails(navigatedFrom: NavigatedFrom) {
         this.navigatedFrom = navigatedFrom
-        this.isBundleChecked = isBundleChecked
     }
 
 
     suspend fun actionOnBundleCheck(args: BotFragmentArgs, context: Context) {
-        when (navigatedFrom) {
+        if (!isBundleChecked) {
+            when (navigatedFrom) {
 
-            NavigatedFrom.DRINKS_MENU -> {
-                val uid = getUserId(context)
-                if (uid != null || uid != "Not Available") {
-                    sendAiDrinksOrderRequest(
-                        name = args.name,
-                        quantity = args.quantity,
-                        currentCost = args.currentCost,
-                        offeredCost = args.offeredCost,
-                        userId = uid!!
-                    )
+                NavigatedFrom.DRINKS_MENU -> {
+                    val uid = getUserId(context)
+                    if (uid != null || uid != "Not Available") {
+                        sendAiDrinksOrderRequest(
+                            name = args.name,
+                            quantity = args.quantity,
+                            currentCost = args.currentCost,
+                            offeredCost = args.offeredCost,
+                            userId = uid!!
+                        )
 
-                } else {
-                    throw PrefrencesUserNullException()
-                }
-            }
+                        isBundleChecked = true
 
-            NavigatedFrom.FOOD_MENU -> {
-                val foodOrderList = args.foodOrderList
-                if (foodOrderList != null) {
-                    val foodOrderArrayList = Gson().fromJson<ArrayList<FoodCartOrder>>(foodOrderList)
-                    val string = StringBuilder()
-                    string.append("Great! Order placed for :\n")
-                    for (item in foodOrderArrayList) {
-                        string.append("${item.quantity} - ${item.name} \n")
+                    } else {
+                        throw PrefrencesUserNullException()
                     }
-                    string.append("Bon Appétit")
-
-                    foodAcknowledgement = string.toString()
                 }
 
-            }
+                NavigatedFrom.FOOD_MENU -> {
+                    val foodOrderList = args.foodOrderList
+                    if (foodOrderList != null) {
+                        val foodOrderArrayList = Gson().fromJson<ArrayList<FoodCartOrder>>(foodOrderList)
+                        val string = StringBuilder()
+                        string.append("Great! Order placed for :\n")
+                        for (item in foodOrderArrayList) {
+                            string.append("${item.quantity} - ${item.name} \n")
+                        }
+                        string.append("Bon Appétit")
 
-            NavigatedFrom.ORDERS_FRAGMENT -> {
-                sendAiRequest("payment done")
-            }
+                        foodAcknowledgement = string.toString()
+                    }
 
-            NavigatedFrom.NONE -> {
+                    isBundleChecked = true
 
+                }
+
+                NavigatedFrom.ORDERS_FRAGMENT -> {
+                    sendAiRequest("payment done")
+                    isBundleChecked = true
+                }
+
+                NavigatedFrom.NONE -> {
+                    isBundleChecked = true
+                }
             }
         }
 

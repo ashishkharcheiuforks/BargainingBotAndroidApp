@@ -24,5 +24,6 @@ interface UserDao {
     @Query("select * from User where constId=$CURRENT_USER_ID")
     fun getUserNonLive() : User
 
-
+    @Query("delete from User")
+    fun clearUser()
 }

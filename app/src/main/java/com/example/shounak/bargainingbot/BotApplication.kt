@@ -34,24 +34,24 @@ class BotApplication : Application(), KodeinAware {
         bind() from singleton { instance<BotDatabase>().menuDao() }
         bind() from singleton { instance<BotDatabase>().botDao()}
         bind() from singleton { instance<BotDatabase>().orderDao() }
-        bind() from singleton { UserFirestoreDatabase() }
         bind<APIAIService>() with singleton { APIAIServiceImpl() }
         bind<SendGridAPIService>() with singleton { SendGridAPIServiceImpl() }
         bind<MenuNetworkDataSource>() with singleton { MenuNetworkDataSourceImpl() }
-        bind<UserNetworkDataSource>() with singleton { UserNetworkDataSourceImpl(instance()) }
+        bind<UserNetworkDataSource>() with singleton { UserNetworkDataSourceImpl() }
         bind<OrderNetworkDataSource>() with singleton { OrderNetworkDataSourceImpl() }
         bind<MenuRepository>() with singleton { MenuRepositoryImpl(instance(), instance()) }
         bind<UserRepository>() with singleton { UserRepositoryImpl(instance(), instance()) }
         bind<BotRepository>() with singleton { BotRepositoryImpl(instance(),instance()) }
-        bind<OrderRepository>() with singleton { OrderRepositoryImpl(instance(), instance(), instance()) }
+        bind<OrderRepository>() with singleton { OrderRepositoryImpl(instance(), instance(), instance(), context) }
         bind() from provider { LoginViewModelFactory(instance()) }
-        bind() from provider { MainActivityViewModelFactory(instance()) }
+        bind() from provider { MainActivityViewModelFactory(instance(),instance(),instance()) }
         bind() from provider { BotViewModelFactory(instance(),instance(), instance()) }
         bind() from provider { FoodMenuViewModelFactory(instance(), instance()) }
         bind() from provider { DrinksMenuViewModelFactory(instance()) }
         bind() from provider {FoodCartViewModelFactory(instance())}
-        bind() from provider { OrdersViewModelFactory(instance(), instance(),context) }
+        bind() from provider { OrdersViewModelFactory(instance(), instance()) }
     }
+
 
 
 }

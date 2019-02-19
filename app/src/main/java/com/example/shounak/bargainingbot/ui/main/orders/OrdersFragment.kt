@@ -68,13 +68,18 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
                     }
                     totalCost.postValue(total)
                     itemsCount.postValue(groupAdapter.itemCount)
+                    if (groupAdapter.itemCount == 0){
+                        groupAdapter.add(EmptyOrdersItem())
+                        orders_loading_group.visibility = View.INVISIBLE
+                    }
 
                 })
 
                 isDrinksLoadingCompleted.observe(this@OrdersFragment, Observer {
                     if (it) {
-                        orders_loading_group.visibility = View.GONE
+                        orders_loading_group.visibility = View.INVISIBLE
                     }
+
 
                 })
             }
@@ -108,25 +113,33 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
         })
 
         order_fragment_pay_button.setOnClickListener {
-            val userId = PreferenceProvider.getPrefrences(this@OrdersFragment.context!!)
-                .getString(PreferenceProvider.USER_ID, "")
 
-            runBlocking {
-                val checkout = async  {
-                    val orderList = viewModel.orders.await().value
-                    viewModel.checkoutWithUserId(userId, orderList)
+            if (groupAdapter.itemCount >= 1) {
+                orders_loading_group.visibility = View.VISIBLE
+
+                val userId = PreferenceProvider.getPrefrences(this@OrdersFragment.context!!)
+                    .getString(PreferenceProvider.USER_ID, "")
+
+                runBlocking {
+                    val checkout = async {
+                        val orderList = viewModel.orders.await().value
+                        viewModel.checkoutWithUserId(userId, orderList)
+                    }
+
+                    val clearOrders = async { viewModel.clearOrders(userId!!) }
+
+                    awaitAll(checkout, clearOrders)
                 }
 
-                val clearOrders = async { viewModel.clearOrders(userId!!) }
+                runBlocking { viewModel.clearLocalOrders() }
 
-                awaitAll(checkout, clearOrders)
+                val toBotFragment = OrdersFragmentDirections.actionToBotFragment(paymentDone = true)
+
+                PreferenceProvider.getPrefrences(this@OrdersFragment.context!!).edit()
+                    .putBoolean(PreferenceProvider.FIRST_LAUNCH, true).apply()
+
+                Navigation.findNavController(this@OrdersFragment.view!!).navigate(toBotFragment)
             }
-
-            runBlocking { viewModel.clearLocalOrders() }
-
-            val toBotFragment = OrdersFragmentDirections.actionToBotFragment(paymentDone = true)
-
-            Navigation.findNavController(this@OrdersFragment.view!!).navigate(toBotFragment)
         }
 
     }

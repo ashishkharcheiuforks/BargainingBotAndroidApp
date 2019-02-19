@@ -1,6 +1,5 @@
 package com.example.shounak.bargainingbot.data.repository
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.example.shounak.bargainingbot.data.db.entity.User
 
@@ -10,7 +9,7 @@ import com.example.shounak.bargainingbot.data.db.entity.User
 interface UserRepository {
     suspend fun getCurrentUser(): LiveData<User>
 
-    suspend fun setCurrentUser(uid: String, name: String, email: String, photoUrl: Uri?)
 
     suspend fun getCurrentUserLocal(): User?
+    suspend fun clearUser()
 }

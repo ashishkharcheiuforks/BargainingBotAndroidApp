@@ -22,4 +22,7 @@ interface BotDao {
     @Insert
     fun addMessage(message: Message)
 
+    @Query("delete from Message")
+    fun clearMessages()
+
 }

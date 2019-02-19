@@ -16,9 +16,6 @@ class BotRepositoryImpl(
     private val botDao: BotDao
 ) : BotRepository {
 
-//    var _userMessage = MutableLiveData<String>()
-//    override val userMessage : LiveData<String>
-//        get() = _userMessage
 
     private val _botResponse = MutableLiveData<String>()
     override val botResponse: LiveData<String>
@@ -27,12 +24,6 @@ class BotRepositoryImpl(
     private val _botAction = MutableLiveData<String>()
     override val botAction: LiveData<String>
         get() = _botAction
-//
-//    init {
-//        botDao.getLatestMessage().observeForever {
-//            _userMessage.postValue(it.message)
-//        }
-//    }
 
 
     override suspend fun sendAiRequest(messageToSend: String) {
@@ -82,5 +73,11 @@ class BotRepositoryImpl(
                 MessageFrom.BOT
             )
         )
+    }
+
+    override suspend fun clearMessages() {
+        withContext(Dispatchers.IO) {
+            botDao.clearMessages()
+        }
     }
 }

@@ -1,10 +1,8 @@
 package com.example.shounak.bargainingbot.data.network
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.shounak.bargainingbot.data.provider.PreferenceProvider
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,13 +21,10 @@ class OrderNetworkDataSourceImpl : OrderNetworkDataSource {
     override val drinksOrderChangeList: LiveData<List<DocumentChange>>
         get() = _drinksOrderChangeList
 
-    override suspend fun getDrinksOrders(context: Context) {
-
-        val sharedPrefs = PreferenceProvider.getPrefrences(context)
-        val userid = sharedPrefs.getString(PreferenceProvider.USER_ID, "Not Available")
+    override suspend fun getDrinksOrders(userId: String) {
 
         ordersCollectionRef
-            .whereEqualTo("userid", userid)
+            .whereEqualTo("userid", userId)
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 val data = querySnapshot?.documentChanges
                 Log.d("firestore", data.toString())
@@ -40,12 +35,9 @@ class OrderNetworkDataSourceImpl : OrderNetworkDataSource {
     }
 
     override suspend fun addToPreviousOrders(data: HashMap<String, Any>) {
-
-
         withContext(Dispatchers.IO) {
             prevOrdersCollectionRef.add(data)
         }
-
     }
 
     override suspend fun clearOrders(userId: String) {

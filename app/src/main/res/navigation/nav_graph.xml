@@ -14,6 +14,9 @@
         <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
         <argument android:name="foodOrderList" app:argType="string" app:nullable="true" android:defaultValue="null"/>
         <argument android:name="paymentDone" app:argType="boolean" android:defaultValue="false"/>
+        <action android:id="@+id/action_to_introSlideActivity" app:destination="@id/introSlideActivity"/>
+        <action android:id="@+id/action_botFragment_self" app:destination="@id/botFragment"
+                app:popUpTo="@+id/botFragment" app:popUpToInclusive="true"/>
     </fragment>
     <fragment android:id="@+id/drinksMenuFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.drinks.DrinksMenuFragment"
@@ -26,7 +29,6 @@
             <argument android:defaultValue="false" android:name="paymentDone"/>
 
         </action>
-        <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
     </fragment>
     <fragment android:id="@+id/foodMenuFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.food.FoodMenuFragment"
@@ -42,7 +44,6 @@
                 app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"
         />
-        <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
     </fragment>
     <fragment android:id="@+id/foodCartFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.food.cart.FoodCartFragment"
@@ -53,8 +54,13 @@
     <fragment android:id="@+id/ordersFragment"
               android:name="com.example.shounak.bargainingbot.ui.main.orders.OrdersFragment"
               android:label="ORDERS" tools:layout="@layout/orders_fragment">
-        <action android:id="@+id/action_to_orders" app:destination="@id/ordersFragment"/>
         <action android:id="@+id/action_to_botFragment" app:destination="@id/botFragment"
                 app:popUpTo="@+id/botFragment" app:popUpToInclusive="true"/>
     </fragment>
+    <activity android:id="@+id/introSlideActivity"
+              android:name="com.example.shounak.bargainingbot.ui.intro.IntroSlideActivity"
+              android:label="activity_slide_intro" tools:layout="@layout/activity_slide_intro"/>
+    <fragment android:id="@+id/aboutFragment"
+              android:name="com.example.shounak.bargainingbot.ui.main.about.AboutFragment"
+              android:label="ABOUT" tools:layout="@layout/fragment_about"/>
 </navigation>

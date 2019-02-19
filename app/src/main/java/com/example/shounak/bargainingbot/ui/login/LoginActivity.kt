@@ -27,7 +27,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.coroutines.runBlocking
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
@@ -144,7 +143,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-                    updateData(user)
+//                    updateData(user)
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -168,7 +167,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-                    updateData(user)
+//                    updateData(user)
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -228,13 +227,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
         }
     }
 
-    private fun updateData(user: FirebaseUser?) {
-        if (user != null) {
-            runBlocking {
-                viewModel.updateData(user)
-            }
-        }
-    }
+//    private fun updateData(user: FirebaseUser?) {
+//        if (user != null) {
+//            runBlocking {
+//                viewModel.updateData(user)
+//            }
+//        }
+//    }
 
 
 }

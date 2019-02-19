@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shounak.bargainingbot.R
 import com.example.shounak.bargainingbot.data.db.entity.Message
+import com.example.shounak.bargainingbot.internal.DrawerLocker
 import com.example.shounak.bargainingbot.internal.MessageFrom
 import com.example.shounak.bargainingbot.internal.NavigatedFrom
 import com.example.shounak.bargainingbot.ui.base.ScopedFragment
@@ -40,15 +41,18 @@ class BotFragment : ScopedFragment(), KodeinAware {
     private lateinit var groupAdapter: GroupAdapter<ViewHolder>
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var navigatedFrom: NavigatedFrom
-//    private var savedMessages: List<Message>? = null
 
     private var navigated = false
-    private var isBundleChecked = false
     private var isYesNoFragDisplayed = false
+    private var onCreateCalled = false
+    private var isFragmentRestored = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("BotFragment", "onCreate")
+        onCreateCalled = true
+        isFragmentRestored = false
         checkBundleOnCreate()
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
@@ -77,21 +81,28 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        TODO("multiple backstack entries for botFragment")
+
         Log.d("BotFragment", "OnActivityCreated")
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BotViewModel::class.java)
         cancel_chip.visibility = View.GONE
 
+        (activity as DrawerLocker).setDrawerEnabled()
 
         launch {
             viewModel.apply {
                 setupApiAiService(this@BotFragment.context!!)
 
                 response.observe(this@BotFragment, Observer {
-                    addBotMessage(it)
+                    if(!isFragmentRestored){
+                        addBotMessage(it)
+                        isFragmentRestored = false
+                    }
                 })
 
                 userMessage.observe(this@BotFragment, Observer {
-                    if (!it.equals("payment done", true)) {
+                    if (it != "payment done") {
                         addUserMessage(it)
                     }
                 })
@@ -126,7 +137,10 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
         initRecyclerView(this.context)
 
-        actionOnBundleCheck()
+        if (onCreateCalled) {
+            actionOnBundleCheck()
+        }
+
 
         cancel_chip.setOnClickListener {
             launch {
@@ -183,7 +197,9 @@ class BotFragment : ScopedFragment(), KodeinAware {
             for (message in savedMessages) {
                 Log.d("addSavedMessages", message.toString())
                 if (message.from == MessageFrom.USER) {
-                    addUserMessage(message.message)
+                    if (message.message != "payment done") {
+                        addUserMessage(message.message)
+                    }
                 } else if (message.from == MessageFrom.BOT) {
                     addBotMessage(message.message)
                 }
@@ -209,37 +225,31 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
 
     private fun checkBundleOnCreate() {
-        if (!isBundleChecked) {
-            val args: BotFragmentArgs by navArgs()
+        val args: BotFragmentArgs by navArgs()
 
 
-            when {
-                args.orderDrinks -> {
-                    navigatedFrom = NavigatedFrom.DRINKS_MENU
-                    isBundleChecked = true
-                }
-                args.orderFood -> {
-                    navigatedFrom = NavigatedFrom.FOOD_MENU
-                    isBundleChecked = true
-                }
-                args.paymentDone -> {
-                    navigatedFrom = NavigatedFrom.ORDERS_FRAGMENT
-                    isBundleChecked = true
-                }
-                else -> {
-                    navigatedFrom = NavigatedFrom.NONE
-                    isBundleChecked = true
-                }
+        navigatedFrom = when {
+            args.orderDrinks -> {
+                NavigatedFrom.DRINKS_MENU
             }
+            args.orderFood -> {
+                NavigatedFrom.FOOD_MENU
+            }
+            args.paymentDone -> {
+                NavigatedFrom.ORDERS_FRAGMENT
+            }
+            else -> {
+                NavigatedFrom.NONE
+            }
+
 
         }
     }
 
 
-    //TODO: Multiple chat entries appear
     private fun actionOnBundleCheck() {
 
-        viewModel.setBundleDetails(navigatedFrom, isBundleChecked)
+        viewModel.setBundleDetails(navigatedFrom)
 
         val args: BotFragmentArgs by navArgs()
         launch {
@@ -275,6 +285,10 @@ class BotFragment : ScopedFragment(), KodeinAware {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("BotFragment", "OnDestroyView")
+
+        (activity as DrawerLocker).setDrawerDisabled()
+
+        onCreateCalled = false
         viewModel.apply {
             response.removeObservers(this@BotFragment)
             userMessage.removeObservers(this@BotFragment)
@@ -289,11 +303,8 @@ class BotFragment : ScopedFragment(), KodeinAware {
         fragmentTransaction.apply {
             replace(R.id.bot_bottom_fragment, fragment)
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//            addToBackStack("bottom_fragments")
             commit()
         }
-
-
     }
 }
 
