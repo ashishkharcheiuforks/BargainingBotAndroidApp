@@ -1,6 +1,5 @@
 package com.example.shounak.bargainingbot.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.shounak.bargainingbot.data.db.Dao.BotDao
@@ -39,7 +38,6 @@ class BotRepositoryImpl(
                     MessageFrom.BOT
                 )
             )
-            Log.d("message", "message saved")
         }
     }
 
@@ -53,8 +51,6 @@ class BotRepositoryImpl(
                     MessageFrom.USER
                 )
             )
-            Log.d("message", "message saved")
-
         }
 
     }

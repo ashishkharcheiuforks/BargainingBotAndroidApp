@@ -186,7 +186,7 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
                         .into(drawer_header_user_image)
 
                     drawer_header_user_is_regular.text = when {
-                        it.isRegular -> "Buddy"
+                        it.regular -> "Buddy"
 
                         else -> "Stranger"
                     }

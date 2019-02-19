@@ -2,7 +2,6 @@ package com.example.shounak.bargainingbot.ui.main.orders
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +52,6 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
                 val orders = orders.await()
 
                 orders.observe(this@OrdersFragment, Observer {
-                    Log.d("firestore", it.toString())
                     groupAdapter.clear()
                     var total = 0
                     for (order in it) {

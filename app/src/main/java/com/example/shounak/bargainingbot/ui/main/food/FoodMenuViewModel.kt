@@ -1,6 +1,5 @@
 package com.example.shounak.bargainingbot.ui.main.food
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.shounak.bargainingbot.data.db.entity.Food
 import com.example.shounak.bargainingbot.data.repository.MenuRepository
@@ -24,12 +23,10 @@ class FoodMenuViewModel(
             val newList = list.distinctBy {
                 it.type
             }
-            Log.d("foodviewmodel", newList.toString())
             val titleList: ArrayList<String> = ArrayList(10)
             newList.forEach {
                 titleList.add(it.type)
             }
-            Log.d("foodviewmodel", titleList.toString())
             return@withContext titleList
         }
     }

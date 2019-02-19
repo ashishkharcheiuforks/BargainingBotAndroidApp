@@ -1,6 +1,5 @@
 package com.example.shounak.bargainingbot.ui.main.orders
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.shounak.bargainingbot.data.db.entity.Order
 import com.example.shounak.bargainingbot.data.db.entity.User
@@ -25,7 +24,6 @@ class OrdersViewModel(
 
 
     suspend fun checkoutWithUserId(userId: String?, orderList: List<Order>?) {
-        Log.d("PlaceOrder", orderList.toString())
         if (!orderList.isNullOrEmpty() and !userId.isNullOrBlank()) {
             val orderJson = Gson().toJson(orderList)
             val mainDocument = HashMap<String, Any>()
@@ -33,7 +31,6 @@ class OrdersViewModel(
             mainDocument["userId"] = userId!!
             mainDocument["Order"] = orderJson
 
-            //TODO : get user
             var user: User? = null
             runBlocking {
                 user = userRepository.getCurrentUserLocal()

@@ -27,7 +27,6 @@ class OrderNetworkDataSourceImpl : OrderNetworkDataSource {
             .whereEqualTo("userid", userId)
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 val data = querySnapshot?.documentChanges
-                Log.d("firestore", data.toString())
                 _drinksOrderChangeList.postValue(data)
             }
 

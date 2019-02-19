@@ -5,7 +5,6 @@ import ai.api.android.AIDataService
 import ai.api.model.AIRequest
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -190,7 +189,6 @@ class BotViewModel(
     }
 
     fun replaceBottomFragmentWithCallback(fragment: Fragment) {
-        Log.d("called", "ViewModel")
         _fragmentToReplaceWith.value = fragment
     }
 }

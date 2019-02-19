@@ -12,7 +12,7 @@ data class User(
     val email: String = "",
     val firstName: String = "",
     val lastName : String = "",
-    val isRegular: Boolean = false,
+    val regular: Boolean = false,
     val photoUrl: String= ""
 ) {
 

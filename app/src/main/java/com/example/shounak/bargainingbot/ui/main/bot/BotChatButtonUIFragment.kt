@@ -1,7 +1,6 @@
 package com.example.shounak.bargainingbot.ui.main.bot
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +39,6 @@ class BotChatButtonUIFragment : ScopedFragment(), KodeinAware {
         }
 
         to_chat_ui_button.setOnClickListener {
-            Log.d("called", "BotChatUIFragment")
 
             viewModel.replaceBottomFragmentWithCallback(BotChatUIFragment())
         }

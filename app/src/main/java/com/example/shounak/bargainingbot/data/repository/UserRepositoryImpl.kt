@@ -1,6 +1,5 @@
 package com.example.shounak.bargainingbot.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.shounak.bargainingbot.data.db.Dao.UserDao
 import com.example.shounak.bargainingbot.data.db.entity.User
@@ -20,7 +19,6 @@ class UserRepositoryImpl(
 
 
     init {
-        Log.d("firebaseuser", FirebaseAuth.getInstance().currentUser.toString())
         userNetworkDataSource.downloadedCurrentUser.observeForever {
             if (it != null) {
                 persistCurrentUser(it)
@@ -49,9 +47,7 @@ class UserRepositoryImpl(
 
     private suspend fun setCurrentUser() {
 
-        Log.d("firebaseuser", FirebaseAuth.getInstance().currentUser.toString())
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        Log.d("firebaseuser", firebaseUser.toString())
 
         if (firebaseUser != null) {
             id = firebaseUser.uid
@@ -98,7 +94,7 @@ class UserRepositoryImpl(
                         email = user.email,
                         firstName = user.firstName,
                         lastName = user.lastName,
-                        isRegular = user.isRegular,
+                        regular = user.regular,
                         photoUrl = ProfileImageUrl.getLargePhotoUrl(FirebaseAuth.getInstance().currentUser?.photoUrl).toString()
                     )
                 )

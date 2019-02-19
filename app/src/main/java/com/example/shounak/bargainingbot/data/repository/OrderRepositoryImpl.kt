@@ -1,7 +1,6 @@
 package com.example.shounak.bargainingbot.data.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.shounak.bargainingbot.data.db.Dao.OrderDao
@@ -52,7 +51,6 @@ class OrderRepositoryImpl(
 
                 for (document in list) {
                     val data = document.document.data
-                    Log.d("firestore", data.toString())
                     val time = Date().time
                     @Suppress("UNCHECKED_CAST")
                     val drink = data["drinks"] as Map<String, Any>
@@ -70,7 +68,6 @@ class OrderRepositoryImpl(
                                 cost = drinkCost * drinkQuantity
                             )
                         )
-                        Log.d("firestore", "added to orders database")
                     } else {
                         val newQuantity = drinkQuantity.plus(searchedEntry.quantity)
                         val newCost = searchedEntry.cost.plus(drinkQuantity * drinkCost)
@@ -84,10 +81,7 @@ class OrderRepositoryImpl(
                                 cost = newCost
                             )
                         )
-                        Log.d("firestore", "added to orders database")
-
                     }
-
                 }
             } else {
                 if (isCartCleared) {

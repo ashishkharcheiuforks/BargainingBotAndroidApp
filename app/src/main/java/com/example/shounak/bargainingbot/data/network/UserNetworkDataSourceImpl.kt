@@ -23,8 +23,6 @@ class UserNetworkDataSourceImpl : UserNetworkDataSource {
     private val db = FirebaseFirestore.getInstance()
     private val usersCollection = db.collection("Users")
 
-//TODO: user is fetched when get user is called. Implementation for data change on firestore? Add SnapshotListener
-
     override suspend fun getCurrentUser() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -57,7 +55,7 @@ class UserNetworkDataSourceImpl : UserNetworkDataSource {
                 } else {
                     val docData = HashMap<String, Any>()
                     docData["photoUrl"] = data.photoUrl
-                    docData["regular"] = data.isRegular
+                    docData["regular"] = data.regular
 
                     runBlocking {
                         withContext(Dispatchers.IO) {

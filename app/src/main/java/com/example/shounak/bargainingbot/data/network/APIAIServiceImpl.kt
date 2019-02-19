@@ -3,7 +3,6 @@ package com.example.shounak.bargainingbot.data.network
 import ai.api.android.AIDataService
 import ai.api.model.AIRequest
 import ai.api.model.AIResponse
-import android.util.Log
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -33,7 +32,6 @@ class APIAIServiceImpl : APIAIService {
             async {
                 aiRequest.setQuery(messageToSend)
                 val result = aiDataService.request(aiRequest)
-                Log.d("response", result.toString())
                 result
             }
         }

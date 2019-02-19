@@ -2,7 +2,6 @@ package com.example.shounak.bargainingbot.ui.main.bot
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +49,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("BotFragment", "onCreate")
         onCreateCalled = true
         isFragmentRestored = false
         checkBundleOnCreate()
@@ -65,7 +63,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
 //        TODO("Acknowledge final order")
 
-        Log.d("BotFragment", "OnCreateView")
         navigated = true
         val fragmentTransaction = childFragmentManager.beginTransaction()
         val botChatButtonUIFragment = BotChatButtonUIFragment()
@@ -82,9 +79,8 @@ class BotFragment : ScopedFragment(), KodeinAware {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        TODO("multiple backstack entries for botFragment")
+//        TODO("multiple backstack entries for botFragment")
 
-        Log.d("BotFragment", "OnActivityCreated")
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BotViewModel::class.java)
         cancel_chip.visibility = View.GONE
 
@@ -112,7 +108,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
                 })
 
                 fragmentToReplaceWith.observe(this@BotFragment, Observer {
-                    Log.d("called", "Observer")
                     if (it != null) {
                         replaceBottomFragmentWith(it)
                     }
@@ -120,7 +115,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
                 viewModel.messageHistory.await().observe(this@BotFragment, Observer {
                     if (navigated) {
-                        Log.d("BotFragment", "navigated is true")
                         groupAdapter.clear()
                         addSavedMessages(it)
                         navigated = false
@@ -195,7 +189,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
     private fun addSavedMessages(savedMessages: List<Message>?) {
         if (savedMessages != null && !savedMessages.isEmpty() && navigated) {
             for (message in savedMessages) {
-                Log.d("addSavedMessages", message.toString())
                 if (message.from == MessageFrom.USER) {
                     if (message.message != "payment done") {
                         addUserMessage(message.message)
@@ -215,7 +208,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
         recyclerView.apply {
             linearLayoutManager = LinearLayoutManager(context)
             linearLayoutManager.stackFromEnd = true
-//            linearLayoutManager.reverseLayout = true
             layoutManager = linearLayoutManager
             adapter = groupAdapter
         }
@@ -284,8 +276,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("BotFragment", "OnDestroyView")
-
         (activity as DrawerLocker).setDrawerDisabled()
 
         onCreateCalled = false
@@ -297,8 +287,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun replaceBottomFragmentWith(fragment: Fragment) {
-        Log.d("called", "replaceBottomFragment")
-
         val fragmentTransaction = childFragmentManager.beginTransaction()
         fragmentTransaction.apply {
             replace(R.id.bot_bottom_fragment, fragment)

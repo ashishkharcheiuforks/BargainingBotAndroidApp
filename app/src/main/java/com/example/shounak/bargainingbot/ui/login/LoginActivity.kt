@@ -134,7 +134,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
 
     //Exchange Google Credentials with Firebase Auth
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
@@ -204,13 +203,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
             }
 
             override fun onCancel() {
-                Log.d(TAG, "facebook:onCancel")
-                // ...
             }
 
             override fun onError(error: FacebookException) {
-                Log.d(TAG, "facebook:onError", error)
-                // ...
             }
         })
     }
@@ -218,7 +213,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
     //Call next activity
     private fun updateUI(account: FirebaseUser?) {
         if (account != null) {
-//            Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show()
             intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -227,13 +221,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
         }
     }
 
-//    private fun updateData(user: FirebaseUser?) {
-//        if (user != null) {
-//            runBlocking {
-//                viewModel.updateData(user)
-//            }
-//        }
-//    }
 
 
 }
