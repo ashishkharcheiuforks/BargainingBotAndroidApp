@@ -102,6 +102,8 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
                     .putBoolean(PreferenceProvider.FIRST_LAUNCH, false)
                     .apply()
 
+                viewModel.isTableSelected.value = true
+
                 alertDialog.dismiss()
             }
         }

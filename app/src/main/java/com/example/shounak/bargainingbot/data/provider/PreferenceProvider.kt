@@ -15,8 +15,6 @@ object PreferenceProvider {
         return context.applicationContext.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE)
     }
 
-    fun getUid(){
-        
-    }
+
 
 }

@@ -18,6 +18,8 @@ import com.example.shounak.bargainingbot.internal.DrawerLocker
 import com.example.shounak.bargainingbot.internal.MessageFrom
 import com.example.shounak.bargainingbot.internal.NavigatedFrom
 import com.example.shounak.bargainingbot.ui.base.ScopedFragment
+import com.example.shounak.bargainingbot.ui.main.MainActivityViewModel
+import com.example.shounak.bargainingbot.ui.main.MainActivityViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.bot_fragment.*
@@ -30,13 +32,18 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
+private const val WELCOME_USER_REG = "trigFirstWelcomeRegUser"
+private const val WELCOME_USER = "trigFirstWelcome"
+
 class BotFragment : ScopedFragment(), KodeinAware {
 
 
     override val kodein: Kodein by closestKodein()
     private val viewModelFactory: BotViewModelFactory by instance()
+    private val mainActivityViewModelFactory: MainActivityViewModelFactory by instance()
 
     private lateinit var viewModel: BotViewModel
+    private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var groupAdapter: GroupAdapter<ViewHolder>
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var navigatedFrom: NavigatedFrom
@@ -60,9 +67,6 @@ class BotFragment : ScopedFragment(), KodeinAware {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-//        TODO("Acknowledge final order")
-
         navigated = true
         val fragmentTransaction = childFragmentManager.beginTransaction()
         val botChatButtonUIFragment = BotChatButtonUIFragment()
@@ -82,6 +86,9 @@ class BotFragment : ScopedFragment(), KodeinAware {
 //        TODO("multiple backstack entries for botFragment")
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BotViewModel::class.java)
+        activity.apply {
+            mainActivityViewModel = ViewModelProviders.of(this!!).get(MainActivityViewModel::class.java)
+        }
         cancel_chip.visibility = View.GONE
 
         (activity as DrawerLocker).setDrawerEnabled()
@@ -91,14 +98,14 @@ class BotFragment : ScopedFragment(), KodeinAware {
                 setupApiAiService(this@BotFragment.context!!)
 
                 response.observe(this@BotFragment, Observer {
-                    if(!isFragmentRestored){
+                    if (!isFragmentRestored) {
                         addBotMessage(it)
                         isFragmentRestored = false
                     }
                 })
 
                 userMessage.observe(this@BotFragment, Observer {
-                    if (it != "payment done") {
+                    if (shouldAddMessage(it)) {
                         addUserMessage(it)
                     }
                 })
@@ -118,14 +125,21 @@ class BotFragment : ScopedFragment(), KodeinAware {
                         groupAdapter.clear()
                         addSavedMessages(it)
                         navigated = false
-                        if (viewModel.foodAcknowledgement != "") {
-                            addFoodAck(foodAcknowledgement)
-                        }
+                    }
+                    if (viewModel.foodAcknowledgement != "" && onCreateCalled) {
+                        addFoodAck(foodAcknowledgement)
                     }
 
                 })
+            }
 
+            mainActivityViewModel.apply {
+                isTableSelected.observe(this@BotFragment, Observer {
+                    if (it) {
+                        addWelcomeMessage()
+                    }
 
+                })
             }
         }
 
@@ -144,6 +158,28 @@ class BotFragment : ScopedFragment(), KodeinAware {
             cancel_chip.visibility = View.GONE
         }
 
+    }
+
+    private fun addWelcomeMessage() {
+        launch {
+            viewModel.apply {
+                if (groupAdapter.itemCount == 0) {
+                    val name = getUserName()
+                    if (getIsRegular()) {
+                        if (!name.isNullOrBlank())
+                            sendAiRequest("$WELCOME_USER_REG $name")
+                        else
+                            sendAiRequest(WELCOME_USER_REG)
+                    } else {
+                        if (!name.isNullOrBlank())
+                            sendAiRequest("$WELCOME_USER $name")
+                        else
+                            sendAiRequest(WELCOME_USER)
+                    }
+
+                }
+            }
+        }
     }
 
     private fun manageUIWithAction(action: String?) {
@@ -190,7 +226,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
         if (savedMessages != null && !savedMessages.isEmpty() && navigated) {
             for (message in savedMessages) {
                 if (message.from == MessageFrom.USER) {
-                    if (message.message != "payment done") {
+                    if (shouldAddMessage(message.message)) {
                         addUserMessage(message.message)
                     }
                 } else if (message.from == MessageFrom.BOT) {
@@ -293,6 +329,13 @@ class BotFragment : ScopedFragment(), KodeinAware {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             commit()
         }
+    }
+
+    private fun shouldAddMessage(message: String): Boolean {
+        return !(
+                message.contains("payment done", ignoreCase = true) or
+                        message.contains("trigFirstWelcome", ignoreCase = true)
+                )
     }
 }
 

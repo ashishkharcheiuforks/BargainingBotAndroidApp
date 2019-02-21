@@ -191,4 +191,12 @@ class BotViewModel(
     fun replaceBottomFragmentWithCallback(fragment: Fragment) {
         _fragmentToReplaceWith.value = fragment
     }
+
+    suspend fun getUserName(): String? {
+        return userRepository.getCurrentUserLocal()?.firstName
+    }
+
+    suspend fun getIsRegular(): Boolean {
+        return userRepository.getCurrentUserLocal()?.regular == true
+    }
 }

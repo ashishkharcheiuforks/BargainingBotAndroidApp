@@ -1,6 +1,7 @@
 package com.example.shounak.bargainingbot.ui.main
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shounak.bargainingbot.data.db.entity.Order
 import com.example.shounak.bargainingbot.data.repository.BotRepository
@@ -21,6 +22,12 @@ class MainActivityViewModel(
    private val botRepository: BotRepository
 ) :  ViewModel() {
 
+
+    var isTableSelected = MutableLiveData<Boolean>()
+
+    init {
+        isTableSelected.value = false
+    }
 
    val user by lazyDeferred {
       userRepository.getCurrentUser()
