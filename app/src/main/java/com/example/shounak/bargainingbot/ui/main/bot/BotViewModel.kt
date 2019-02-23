@@ -34,6 +34,7 @@ class BotViewModel(
     private lateinit var aiRequest: AIRequest
     private lateinit var navigatedFrom: NavigatedFrom
     private var isBundleChecked = false
+
     var foodAcknowledgement: String = ""
 
     val response = botRepository.botResponse
@@ -185,7 +186,9 @@ class BotViewModel(
     }
 
     suspend fun addFoodAcknowledgement(message: String) {
-        botRepository.addFoodAcknowledgement(message)
+        withContext(Dispatchers.IO) {
+            botRepository.addFoodAcknowledgement(message)
+        }
     }
 
     fun replaceBottomFragmentWithCallback(fragment: Fragment) {

@@ -8,7 +8,7 @@
 
     <ImageView
             android:layout_width="20dp"
-            android:layout_height="20dp" app:srcCompat="@android:drawable/sym_def_app_icon"
+            android:layout_height="20dp" app:srcCompat="@mipmap/ic_launcher_round"
             android:id="@+id/message_from_bot_image_view"
             android:elevation="8dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -28,9 +28,9 @@
                                                        android:padding="16dp"
                                                        android:layout_margin="8dp"
                                                        android:layoutDirection="ltr"
-                                                       app:layout_constraintHorizontal_bias="0.1"
+                                                       app:layout_constraintHorizontal_bias="0.05"
                                                        android:id="@+id/materialCardView"
-                                                       android:layout_marginStart="8dp" android:layout_marginEnd="8dp">
+                                                       android:layout_marginEnd="8dp" android:layout_marginStart="8dp">
 
         <TextView
                 android:layout_marginStart="16dp"
@@ -48,7 +48,7 @@
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                                 android:id="@+id/guideline"
                                                 android:orientation="vertical"
-                                                app:layout_constraintGuide_percent="0.13868614"/>
+                                                app:layout_constraintGuide_percent="0.12"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

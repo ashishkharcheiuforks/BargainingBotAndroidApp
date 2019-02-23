@@ -43,6 +43,7 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        foodMenuFragmentLayout.isClickable = false
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FoodMenuViewModel::class.java)
 
         launch {
@@ -51,6 +52,7 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
             foodMenu.observe(this@FoodMenuFragment, Observer {
                 if (!it.isEmpty()) {
                     food_group_loading.visibility = View.GONE
+                    foodMenuFragmentLayout.isClickable = true
                 }
                 initRecyclerView(it)
 
@@ -71,8 +73,8 @@ class FoodMenuFragment : ScopedFragment(), KodeinAware {
             val foodTitle = viewModel.getFoodMenuTitles(foodList)
 
             val groupAdapter = GroupAdapter<ViewHolder>()
-            withContext(Dispatchers.IO){
-               groupAdapter.apply {
+            withContext(Dispatchers.IO) {
+                groupAdapter.apply {
                     for (food in foodTitle) {
                         val section = Section()
                         section.setHeader(MenuHeaderItem(food))

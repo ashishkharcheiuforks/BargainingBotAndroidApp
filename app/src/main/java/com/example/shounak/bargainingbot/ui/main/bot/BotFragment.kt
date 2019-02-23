@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shounak.bargainingbot.R
 import com.example.shounak.bargainingbot.data.db.entity.Message
+import com.example.shounak.bargainingbot.data.provider.PreferenceProvider
 import com.example.shounak.bargainingbot.internal.DrawerLocker
 import com.example.shounak.bargainingbot.internal.MessageFrom
 import com.example.shounak.bargainingbot.internal.NavigatedFrom
@@ -23,10 +24,7 @@ import com.example.shounak.bargainingbot.ui.main.MainActivityViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.bot_fragment.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -87,7 +85,8 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BotViewModel::class.java)
         activity.apply {
-            mainActivityViewModel = ViewModelProviders.of(this!!).get(MainActivityViewModel::class.java)
+            mainActivityViewModel =
+                ViewModelProviders.of(this!!, mainActivityViewModelFactory).get(MainActivityViewModel::class.java)
         }
         cancel_chip.visibility = View.GONE
 
@@ -128,6 +127,7 @@ class BotFragment : ScopedFragment(), KodeinAware {
                     }
                     if (viewModel.foodAcknowledgement != "" && onCreateCalled) {
                         addFoodAck(foodAcknowledgement)
+                        viewModel.foodAcknowledgement = ""
                     }
 
                 })
@@ -135,7 +135,9 @@ class BotFragment : ScopedFragment(), KodeinAware {
 
             mainActivityViewModel.apply {
                 isTableSelected.observe(this@BotFragment, Observer {
-                    if (it) {
+                    val tableNumber = PreferenceProvider.getPrefrences(this@BotFragment.context!!)
+                        .getInt(PreferenceProvider.TABLE_NUMBER, 0)
+                    if (it and (tableNumber != 0)) {
                         addWelcomeMessage()
                     }
 
@@ -212,14 +214,13 @@ class BotFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun addFoodAck(foodAcknowledgement: String) {
-        runBlocking {
-            withContext(Dispatchers.IO) {
-                groupAdapter.add(MessageFromBotItem(foodAcknowledgement))
-                linearLayoutManager.scrollToPosition(groupAdapter.itemCount - 1)
-                viewModel.addFoodAcknowledgement(foodAcknowledgement)
-            }
-
+        launch {
+            viewModel.addFoodAcknowledgement(foodAcknowledgement)
         }
+        groupAdapter.add(MessageFromBotItem(foodAcknowledgement))
+        linearLayoutManager.scrollToPosition(groupAdapter.itemCount - 1)
+
+
     }
 
     private fun addSavedMessages(savedMessages: List<Message>?) {

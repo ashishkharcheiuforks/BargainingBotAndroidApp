@@ -2,6 +2,7 @@ package com.example.shounak.bargainingbot.ui.main.orders
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,11 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        orders_loading_group.visibility = View.VISIBLE
+
+        ordersFragmentLayout.isClickable = false
+
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(OrdersViewModel::class.java)
 
 
@@ -66,19 +72,16 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
                     }
                     totalCost.postValue(total)
                     itemsCount.postValue(groupAdapter.itemCount)
-                    if (groupAdapter.itemCount == 0){
-                        groupAdapter.add(EmptyOrdersItem())
-                        orders_loading_group.visibility = View.INVISIBLE
-                    }
 
                 })
 
                 isDrinksLoadingCompleted.observe(this@OrdersFragment, Observer {
-                    if (it) {
-                        orders_loading_group.visibility = View.INVISIBLE
+                    Log.d("drinksloaded", it.toString())
+                    if (it == true) {
+                        orders_loading_group.visibility = View.GONE
+                        ordersFragmentLayout.isClickable = true
+                        isDrinksLoadingCompleted.value = false
                     }
-
-
                 })
             }
         }
@@ -110,10 +113,12 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
             orders_total_amount_text_view.text = it.toString()
         })
 
+
         order_fragment_pay_button.setOnClickListener {
 
-            if (groupAdapter.itemCount >= 1) {
-                orders_loading_group.visibility = View.VISIBLE
+
+
+            if (groupAdapter.itemCount != 0) {
 
                 val userId = PreferenceProvider.getPrefrences(this@OrdersFragment.context!!)
                     .getString(PreferenceProvider.USER_ID, "")
@@ -121,7 +126,7 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
                 runBlocking {
                     val checkout = async {
                         val orderList = viewModel.orders.await().value
-                        viewModel.checkoutWithUserId(userId, orderList)
+                        viewModel.checkoutWithUserId(userId, orderList, totalCost.value!!)
                     }
 
                     val clearOrders = async { viewModel.clearOrders(userId!!) }

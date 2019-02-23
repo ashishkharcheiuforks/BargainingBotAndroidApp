@@ -44,6 +44,7 @@ class DrinksMenuFragment : ScopedFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        drinksMenuFragmentLayout.isClickable = false
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DrinksMenuViewModel::class.java)
 
 
@@ -54,8 +55,8 @@ class DrinksMenuFragment : ScopedFragment(), KodeinAware {
             drinksMenu.observe(this@DrinksMenuFragment, Observer {
                 if (!it.isEmpty()) {
                     drinks_group_loading.visibility = View.GONE
+                    drinksMenuFragmentLayout.isClickable = true
                 }
-
 
                 initRecyclerView(it)
 
@@ -73,7 +74,7 @@ class DrinksMenuFragment : ScopedFragment(), KodeinAware {
 
             val groupAdapter: GroupAdapter<ViewHolder> = GroupAdapter()
 
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 groupAdapter.apply {
                     for (drink in drinksTitle) {
                         val section = Section()

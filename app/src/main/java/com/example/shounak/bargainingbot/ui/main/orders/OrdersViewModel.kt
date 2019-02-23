@@ -23,11 +23,12 @@ class OrdersViewModel(
     val isDrinksLoadingCompleted = orderRepository.isDrinksLoadingCompleted
 
 
-    suspend fun checkoutWithUserId(userId: String?, orderList: List<Order>?) {
+    suspend fun checkoutWithUserId(userId: String?, orderList: List<Order>?, orderTotal : Int) {
         if (!orderList.isNullOrEmpty() and !userId.isNullOrBlank()) {
             val orderJson = Gson().toJson(orderList)
             val mainDocument = HashMap<String, Any>()
             mainDocument["time"] = Date().time
+            mainDocument["Total"] = orderTotal
             mainDocument["userId"] = userId!!
             mainDocument["Order"] = orderJson
 

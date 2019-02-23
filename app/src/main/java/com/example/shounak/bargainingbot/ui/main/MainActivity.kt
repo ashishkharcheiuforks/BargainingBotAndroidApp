@@ -60,7 +60,6 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
         val pref = PreferenceProvider.getPrefrences(this)
         pref.edit().apply {
             putString(PreferenceProvider.USER_ID, FirebaseAuth.getInstance().currentUser?.uid)
-            putBoolean(PreferenceProvider.FIRST_LAUNCH, true)
         }.apply()
 
         viewModel.user
@@ -79,10 +78,8 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private fun showSelectTableDialog() {
 
-        val isFirstLaunch = PreferenceProvider
-            .getPrefrences(this)
-            .getBoolean(PreferenceProvider.FIRST_LAUNCH, true)
-        if (isFirstLaunch) {
+        val tableNumber = PreferenceProvider.getPrefrences(this).getInt(PreferenceProvider.TABLE_NUMBER, 0)
+        if (tableNumber == 0) {
             val view = layoutInflater.inflate(R.layout.select_table_popup_window, null)
             view.select_table_number_picker.apply {
                 minValue = 1
@@ -99,7 +96,6 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
                 PreferenceProvider.getPrefrences(this)
                     .edit()
                     .putInt(PreferenceProvider.TABLE_NUMBER, view.select_table_number_picker.value)
-                    .putBoolean(PreferenceProvider.FIRST_LAUNCH, false)
                     .apply()
 
                 viewModel.isTableSelected.value = true
@@ -150,6 +146,7 @@ class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedLi
         LoginManager.getInstance().logOut()
         GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
         FirebaseAuth.getInstance().signOut()
+        PreferenceProvider.getPrefrences(this).edit().putInt(PreferenceProvider.TABLE_NUMBER, 0).apply()
 
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)

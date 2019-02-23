@@ -63,7 +63,7 @@ class FoodCartFragment : ScopedFragment(), KodeinAware, OnItemLongClickListener 
             val cartItems = viewModel.cartItems.await()
 
             cartItems.observe(this@FoodCartFragment, Observer {
-//                cartOrdersList = it
+                //                cartOrdersList = it
                 groupAdapter.clear()
                 var total = 0
                 for (order in it) {
@@ -104,35 +104,37 @@ class FoodCartFragment : ScopedFragment(), KodeinAware, OnItemLongClickListener 
 
 
         place_order_button.setOnClickListener {
-            launch {
-                deleteItemsInListFromCart()
-                withContext(Dispatchers.IO) {
-                    cartList = ArrayList<FoodCartOrder>(5)
-                    val count = groupAdapter.itemCount
-                    for (i in 0 until count){
-                        val item = groupAdapter.getItem(i) as FoodCartListItem
-                        cartList.add(
-                            FoodCartOrder(
-                                Date().time,
-                                item.name,
-                                item.quantity,
-                                item.cost
+            if (groupAdapter.itemCount != 0) {
+                launch {
+                    deleteItemsInListFromCart()
+                    withContext(Dispatchers.IO) {
+                        cartList = ArrayList<FoodCartOrder>(5)
+                        val count = groupAdapter.itemCount
+                        for (i in 0 until count) {
+                            val item = groupAdapter.getItem(i) as FoodCartListItem
+                            cartList.add(
+                                FoodCartOrder(
+                                    Date().time,
+                                    item.name,
+                                    item.quantity,
+                                    item.cost
+                                )
                             )
-                        )
+                        }
+                        viewModel.addCartToOrders(cartList)
                     }
-                    viewModel.addCartToOrders(cartList)
+                    viewModel.clearFoodCart()
+
+                    val toBotFragment = FoodMenuFragmentDirections.actionToBotFragment(
+                        orderDrinks = false,
+                        orderFood = true,
+                        foodOrderList = Gson().toJson(cartList)
+                    )
+                    Navigation.findNavController(this@FoodCartFragment.view!!).navigate(toBotFragment)
                 }
-                viewModel.clearFoodCart()
 
-                val toBotFragment =  FoodMenuFragmentDirections.actionToBotFragment(
-                    orderDrinks = false,
-                    orderFood = true,
-                    foodOrderList = Gson().toJson(cartList)
-                )
-                Navigation.findNavController(this@FoodCartFragment.view!!).navigate(toBotFragment)
+
             }
-
-
         }
 
         groupAdapter.setOnItemLongClickListener(this@FoodCartFragment)
