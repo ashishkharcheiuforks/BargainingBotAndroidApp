@@ -10,7 +10,7 @@ import com.example.shounak.bargainingbot.data.db.entity.FoodCartOrder
 import com.example.shounak.bargainingbot.data.db.entity.Order
 
 /**
- * Created by Shounak on 12-Feb-19
+ * Order Data Access Object
  */
 @Dao
 interface OrderDao {

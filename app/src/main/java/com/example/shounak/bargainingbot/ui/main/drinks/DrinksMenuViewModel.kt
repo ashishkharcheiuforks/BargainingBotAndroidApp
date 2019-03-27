@@ -8,6 +8,10 @@ import com.example.shounak.bargainingbot.internal.lazyDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * View model for Drinks menu
+ */
+
 class DrinksMenuViewModel(private val menuRepository: MenuRepository) : ViewModel() {
 
     val drinks by lazyDeferred {

@@ -10,7 +10,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.message_from_user.*
 
 /**
- * Created by Shounak on 12-Feb-19
+ * User message UI
  */
 class MessageFromUserItem(private val messageFromUser : String?, private val profileImageUrl : Uri?, private val context: Context) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {

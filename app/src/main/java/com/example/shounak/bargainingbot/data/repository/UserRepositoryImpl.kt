@@ -10,6 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
+/**
+ * User repository implementation
+ */
+
 private lateinit var id: String
 
 class UserRepositoryImpl(
@@ -31,7 +35,7 @@ class UserRepositoryImpl(
     override suspend fun getCurrentUser(): LiveData<User> {
 
         return withContext(Dispatchers.IO) {
-            initUser()  //TODO: Check if user data was written to firestore and user exists. If not add user again
+            initUser()
             return@withContext userDao.getUser()
         }
 

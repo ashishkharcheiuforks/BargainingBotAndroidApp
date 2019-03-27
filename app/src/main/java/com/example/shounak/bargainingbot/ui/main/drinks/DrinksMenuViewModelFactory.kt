@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.shounak.bargainingbot.data.repository.MenuRepository
 
 /**
- * Created by Shounak on 06-Feb-19
+ * View model factory to provide Drinks view model
  */
 class DrinksMenuViewModelFactory(private val menuRepository : MenuRepository) : ViewModelProvider.NewInstanceFactory() {
 

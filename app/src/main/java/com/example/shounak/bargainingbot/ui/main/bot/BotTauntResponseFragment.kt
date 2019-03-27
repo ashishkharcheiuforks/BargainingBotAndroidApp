@@ -15,6 +15,9 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
+/**
+ * Bot fragment with UI to respond to Taunt response
+ */
 
 class BotTauntResponseFragment : ScopedFragment(), KodeinAware{
     override val kodein: Kodein by closestKodein()

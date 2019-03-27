@@ -5,6 +5,10 @@ import ai.api.model.AIRequest
 import ai.api.model.AIResponse
 import kotlinx.coroutines.Deferred
 
+/**
+ * Dialogflow API service interface
+ */
+
 interface APIAIService {
 
     suspend fun sendRequest(messageToSend: String): Deferred<out AIResponse>

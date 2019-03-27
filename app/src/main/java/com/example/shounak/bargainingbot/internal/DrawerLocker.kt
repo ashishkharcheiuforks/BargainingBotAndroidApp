@@ -1,7 +1,7 @@
 package com.example.shounak.bargainingbot.internal
 
 /**
- * Created by Shounak on 19-Feb-19
+ * Interface for drawer lock toggle
  */
 interface DrawerLocker {
 

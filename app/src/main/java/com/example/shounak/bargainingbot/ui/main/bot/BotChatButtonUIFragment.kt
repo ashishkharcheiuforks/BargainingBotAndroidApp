@@ -14,7 +14,7 @@ import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
 /**
- * Created by Shounak on 14-Feb-19
+ * Bottom fragment with a button that navigates to chat UI
  */
 class BotChatButtonUIFragment : ScopedFragment(), KodeinAware {
     override val kodein: Kodein by closestKodein()

@@ -36,6 +36,10 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 
+/**
+ * Main Activity
+ * Acts as a container for all other fragments.
+ */
 
 class MainActivity : ScopedActivity(), NavigationView.OnNavigationItemSelectedListener, KodeinAware,
     DrawerLocker {

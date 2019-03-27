@@ -12,6 +12,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
+/**
+ * User online database implementation
+ */
+
 class UserNetworkDataSourceImpl : UserNetworkDataSource {
 
     private val TAG = "UserNetDataSourceImpl"

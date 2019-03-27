@@ -12,7 +12,7 @@ import com.example.shounak.bargainingbot.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_slide_intro.*
 
 /**
- * Created by Shounak on 29-Jan-19
+ * App introduction slides activity
  */
 class IntroSlideActivity : AppCompatActivity() {
 

@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.shounak.bargainingbot.R
 
+/**
+ * About Fragment
+ */
 
 class AboutFragment : Fragment(){
 

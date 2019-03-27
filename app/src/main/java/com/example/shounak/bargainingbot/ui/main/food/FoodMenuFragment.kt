@@ -27,6 +27,10 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
+/**
+ * Food Menu Fragment
+ */
+
 class FoodMenuFragment : ScopedFragment(), KodeinAware {
     override val kodein: Kodein by closestKodein()
     private val viewModelFactory: FoodMenuViewModelFactory by instance()

@@ -9,6 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
+/**
+ * Menu repository implementation
+ */
+
 class MenuRepositoryImpl(
     private val menuNetworkDataSource: MenuNetworkDataSource,
     private val menuDao: MenuDao

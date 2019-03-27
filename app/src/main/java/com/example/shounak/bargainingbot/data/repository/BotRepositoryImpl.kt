@@ -10,6 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
+/**
+ * Bot repository implementation
+ */
+
 class BotRepositoryImpl(
     private val apiaiService: APIAIService,
     private val botDao: BotDao

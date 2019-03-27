@@ -8,7 +8,7 @@ import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
 /**
- * Created by Shounak on 02-Feb-19
+ * Fragment with a coroutine scope
  */
 abstract class ScopedFragment : Fragment(), CoroutineScope {
 

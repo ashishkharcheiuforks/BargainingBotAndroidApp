@@ -20,7 +20,8 @@ import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
 /**
- * Created by Shounak on 30-Jan-19
+ * Class that represents the entire application
+ * Used for dependency binding here.
  */
 class BotApplication : Application(), KodeinAware {
 

@@ -9,7 +9,7 @@ import com.example.shounak.bargainingbot.data.db.entity.CURRENT_USER_ID
 import com.example.shounak.bargainingbot.data.db.entity.User
 
 /**
- * Created by Shounak on 30-Jan-19
+ * User Data Access Object
  */
 
 @Dao

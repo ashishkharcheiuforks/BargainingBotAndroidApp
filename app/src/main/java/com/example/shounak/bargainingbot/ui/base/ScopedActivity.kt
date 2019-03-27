@@ -8,7 +8,7 @@ import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
 /**
- * Created by Shounak on 04-Feb-19
+ * Activity with a coroutine scope
  */
 abstract class ScopedActivity : AppCompatActivity(), CoroutineScope {
 

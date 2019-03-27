@@ -30,6 +30,12 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
+/**
+ * Bot Fragment
+ * Main/home destination fragment for the app.
+ *
+ */
+
 private const val WELCOME_USER_REG = "trigFirstWelcomeRegUser"
 private const val WELCOME_USER = "trigFirstWelcome"
 

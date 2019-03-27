@@ -9,6 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
+/**
+ * Food menu view model
+ */
+
 class FoodMenuViewModel(
     private val menuRepository: MenuRepository,
     private val orderRepository: OrderRepository

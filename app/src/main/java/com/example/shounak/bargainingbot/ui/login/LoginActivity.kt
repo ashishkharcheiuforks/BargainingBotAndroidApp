@@ -32,11 +32,13 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 import java.util.*
 
+/**
+ * Login Activity
+ */
 
 private const val RC_SIGN_IN: Int = 1
 private lateinit var auth: FirebaseAuth
 
-//TODO: Show alert if user email exists with different signin account.
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
     override val kodein by closestKodein()
@@ -171,7 +173,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, KodeinAware {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                   //TODO: Background color wrong
                     AlertDialog.Builder(this)
                         .setIcon(R.drawable.ic_error_outline_e80000_24dp)
                         .setTitle("LOGIN FAILED.")

@@ -3,6 +3,10 @@ package com.example.shounak.bargainingbot.data.provider
 import android.content.Context
 import android.content.SharedPreferences
 
+/**
+ * A singleton class to provide SharedPreferences anywhere in the app
+ */
+
 private const val PREF_FILE = "com.example.shounak.bargainingbot.prefs"
 
 object PreferenceProvider {

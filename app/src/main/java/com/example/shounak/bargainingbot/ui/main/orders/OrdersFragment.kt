@@ -23,6 +23,10 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
+/**
+ * Orders Fragment
+ */
+
 class OrdersFragment : ScopedFragment(), KodeinAware {
     override val kodein: Kodein by closestKodein()
     private val viewModelFactory: OrdersViewModelFactory by instance()

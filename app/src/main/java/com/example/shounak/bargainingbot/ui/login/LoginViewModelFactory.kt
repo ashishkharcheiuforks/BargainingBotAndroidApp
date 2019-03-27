@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.shounak.bargainingbot.data.repository.UserRepository
 
 /**
- * Created by Shounak on 30-Jan-19
+ * View model factory to generate login view model
  */
 class LoginViewModelFactory(
     private val userRepository: UserRepository

@@ -9,6 +9,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Order online database implementation
+ */
+
 class OrderNetworkDataSourceImpl : OrderNetworkDataSource {
 
 

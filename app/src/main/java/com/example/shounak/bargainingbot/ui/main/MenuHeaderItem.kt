@@ -6,7 +6,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.menu_header_item.*
 
 /**
- * Created by Shounak on 08-Feb-19
+ * Menu Header.
  */
 class MenuHeaderItem(private val title: String) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {

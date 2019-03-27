@@ -22,6 +22,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * Bot View Model
+ */
 
 class BotViewModel(
     private val userRepository: UserRepository,

@@ -31,6 +31,10 @@ import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import java.util.*
 
+/**
+ * Food cart fragment
+ */
+
 class FoodCartFragment : ScopedFragment(), KodeinAware, OnItemLongClickListener {
 
 

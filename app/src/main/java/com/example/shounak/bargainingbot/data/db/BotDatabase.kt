@@ -12,7 +12,7 @@ import com.example.shounak.bargainingbot.data.db.Dao.UserDao
 import com.example.shounak.bargainingbot.data.db.entity.*
 
 /**
- * Created by Shounak on 30-Jan-19
+ * Local Sql database for the app
  */
 
 

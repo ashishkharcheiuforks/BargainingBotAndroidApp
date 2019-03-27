@@ -7,7 +7,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_drinks_menu.*
 
 /**
- * Created by Shounak on 06-Feb-19
+ * Drinks menu item for recycler view
  */
 class DrinksMenuItem(
     val drinks: Drinks

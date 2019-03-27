@@ -1,7 +1,7 @@
 package com.example.shounak.bargainingbot.internal
 
 /**
- * Created by Shounak on 18-Feb-19
+ * ENUM class to define navigated form destination
  */
 enum class NavigatedFrom {
 

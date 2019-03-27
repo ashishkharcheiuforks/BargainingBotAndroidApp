@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.example.shounak.bargainingbot.data.db.entity.Message
 
 /**
- * Created by Shounak on 12-Feb-19
+ *  Bot Data Access Object
  */
 
 @Dao

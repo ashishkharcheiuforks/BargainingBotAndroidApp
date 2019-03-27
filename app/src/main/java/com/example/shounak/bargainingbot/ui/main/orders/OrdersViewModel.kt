@@ -10,6 +10,10 @@ import com.google.gson.Gson
 import kotlinx.coroutines.*
 import java.util.*
 
+/**
+ * Orders View Model
+ */
+
 class OrdersViewModel(
     private val orderRepository: OrderRepository,
     private val userRepository: UserRepository

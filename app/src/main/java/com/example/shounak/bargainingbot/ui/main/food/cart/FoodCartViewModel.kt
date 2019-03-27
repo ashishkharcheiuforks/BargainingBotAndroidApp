@@ -6,6 +6,10 @@ import com.example.shounak.bargainingbot.data.repository.OrderRepository
 import com.example.shounak.bargainingbot.internal.lazyDeferred
 import java.util.*
 
+/**
+ * View model for Food Cart
+ */
+
 class FoodCartViewModel(
     private val orderRepository: OrderRepository
 ) : ViewModel() {

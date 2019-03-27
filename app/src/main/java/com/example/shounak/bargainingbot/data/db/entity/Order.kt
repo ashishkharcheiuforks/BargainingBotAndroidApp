@@ -5,6 +5,10 @@ import androidx.room.PrimaryKey
 import com.example.shounak.bargainingbot.data.db.OrderType
 import java.util.*
 
+/**
+ * Order Entity for local Room database
+ */
+
 @Entity(tableName = "CurrentOrders")
 data class Order(
 

@@ -7,6 +7,10 @@ import com.example.shounak.bargainingbot.data.db.entity.Food
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 
+/**
+ * Online menu database implementation
+ */
+
 class MenuNetworkDataSourceImpl : MenuNetworkDataSource {
 
     private val COST = "cost"

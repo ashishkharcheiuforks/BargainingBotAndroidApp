@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.shounak.bargainingbot.data.repository.OrderRepository
 
 /**
- * Created by Shounak on 12-Feb-19
+ * View model factory to provide Food cart view model
  */
 class FoodCartViewModelFactory(
     private val orderRepository: OrderRepository

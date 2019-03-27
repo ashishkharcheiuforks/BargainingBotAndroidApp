@@ -9,7 +9,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 /**
- * Created by Shounak on 07-Feb-19
+ * Dialogflow API service implementation
  */
 class APIAIServiceImpl : APIAIService {
 

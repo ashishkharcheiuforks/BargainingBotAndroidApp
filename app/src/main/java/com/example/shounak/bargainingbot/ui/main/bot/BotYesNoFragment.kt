@@ -15,7 +15,7 @@ import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
 /**
- * Created by Shounak on 14-Feb-19
+ * Bottom fragment with UI to respond with yes or no
  */
 class BotYesNoFragment() : ScopedFragment(), KodeinAware {
     override val kodein: Kodein by closestKodein()

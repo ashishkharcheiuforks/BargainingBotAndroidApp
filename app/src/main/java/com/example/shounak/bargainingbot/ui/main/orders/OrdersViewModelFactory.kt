@@ -6,7 +6,7 @@ import com.example.shounak.bargainingbot.data.repository.OrderRepository
 import com.example.shounak.bargainingbot.data.repository.UserRepository
 
 /**
- * Created by Shounak on 13-Feb-19
+ * View model factory to provide Orders view model
  */
 class OrdersViewModelFactory(
     private val ordersRepository: OrderRepository,

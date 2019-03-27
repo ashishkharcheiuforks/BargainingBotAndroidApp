@@ -13,6 +13,10 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.*
 
+/**
+ * Intro splash screen activity
+ */
+
 class SplashActivity : AppCompatActivity() {
 
     private var onCreateCounter = 0

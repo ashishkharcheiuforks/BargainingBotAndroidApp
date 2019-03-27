@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.DocumentChange
 
 /**
- * Created by Shounak on 13-Feb-19
+ * Order online database interface
  */
 interface OrderNetworkDataSource {
 

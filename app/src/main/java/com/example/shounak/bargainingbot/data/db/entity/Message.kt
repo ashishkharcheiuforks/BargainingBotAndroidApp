@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.shounak.bargainingbot.internal.MessageFrom
 
 /**
- * Created by Shounak on 12-Feb-19
+ * Message Entity for local Room database
  */
 
 @Entity

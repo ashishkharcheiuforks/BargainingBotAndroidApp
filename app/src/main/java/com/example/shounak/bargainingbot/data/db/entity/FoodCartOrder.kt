@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Created by Shounak on 12-Feb-19
+ * Food Cart Order Entity for local Room database
  */
 @Entity
 data class FoodCartOrder(

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Created by Shounak on 06-Feb-19
+ * Food Entity for local Room database
  */
 
 @Entity

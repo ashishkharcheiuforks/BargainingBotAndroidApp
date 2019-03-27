@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.shounak.bargainingbot.data.db.entity.User
 
 /**
- * Created by Shounak on 30-Jan-19
+ * User repository interface
  */
 interface UserRepository {
     suspend fun getCurrentUser(): LiveData<User>

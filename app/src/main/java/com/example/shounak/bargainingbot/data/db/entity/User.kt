@@ -3,6 +3,10 @@ package com.example.shounak.bargainingbot.data.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * User Entity for local Room database
+ * User table only contains one entry that of the currently signed in user.
+ */
 
 const val CURRENT_USER_ID: Int = 0
 

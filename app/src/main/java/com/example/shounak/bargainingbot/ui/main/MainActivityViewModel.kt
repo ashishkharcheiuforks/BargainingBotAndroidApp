@@ -14,7 +14,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 /**
- * Created by Shounak on 02-Feb-19
+ * Main Activity view model
  */
 class MainActivityViewModel(
    private val userRepository: UserRepository,

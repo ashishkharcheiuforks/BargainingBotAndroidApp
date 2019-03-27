@@ -3,7 +3,7 @@ package com.example.shounak.bargainingbot.data.db
 import androidx.room.TypeConverter
 
 /**
- * Created by Shounak on 12-Feb-19
+ * Type converter to help database use non primitive types.
  */
 class OrderEnumTypeConverter {
 

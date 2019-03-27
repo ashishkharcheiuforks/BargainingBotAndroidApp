@@ -6,7 +6,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.order_cart_list_item.*
 
 /**
- * Created by Shounak on 12-Feb-19
+ * Food cart list item for recycler view
  */
 class FoodCartListItem(
      val name : String,

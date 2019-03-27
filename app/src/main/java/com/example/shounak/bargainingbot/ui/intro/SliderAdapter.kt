@@ -11,7 +11,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.example.shounak.bargainingbot.R
 
 /**
- * Created by Shounak on 01-Feb-19
+ * Adapter for intro slides
  */
 class SliderAdapter(internal var context: Context) : PagerAdapter() {
 

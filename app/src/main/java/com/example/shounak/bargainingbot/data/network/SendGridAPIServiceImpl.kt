@@ -9,6 +9,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
+/**
+ * Sendgrid email API implementation
+ */
 
 private const val API_KEY = APIToken.SEND_GRID_API_KEY
 

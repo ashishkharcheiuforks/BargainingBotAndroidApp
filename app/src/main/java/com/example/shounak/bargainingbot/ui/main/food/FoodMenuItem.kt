@@ -7,7 +7,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_food_menu.*
 
 /**
- * Created by Shounak on 06-Feb-19
+ * Food menu item for recycler view
  */
 class FoodMenuItem(
      val food :Food

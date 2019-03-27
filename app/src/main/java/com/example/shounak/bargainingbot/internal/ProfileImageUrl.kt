@@ -3,7 +3,7 @@ package com.example.shounak.bargainingbot.internal
 import android.net.Uri
 
 /**
- * Created by Shounak on 04-Feb-19
+ * Singleton to return small and large profile image URL
  */
 
 private const val GOOGLE_URL = "googleusercontent.com"

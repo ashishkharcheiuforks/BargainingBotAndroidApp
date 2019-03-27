@@ -6,7 +6,7 @@ import com.example.shounak.bargainingbot.data.repository.MenuRepository
 import com.example.shounak.bargainingbot.data.repository.OrderRepository
 
 /**
- * Created by Shounak on 06-Feb-19
+ * View model factory to provide Food menu view model
  */
 class FoodMenuViewModelFactory(
     private val menuRepository: MenuRepository,

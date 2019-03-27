@@ -5,7 +5,7 @@ import com.example.shounak.bargainingbot.data.db.entity.Drinks
 import com.example.shounak.bargainingbot.data.db.entity.Food
 
 /**
- * Created by Shounak on 06-Feb-19
+ * Menu repository interface
  */
 interface MenuRepository {
 

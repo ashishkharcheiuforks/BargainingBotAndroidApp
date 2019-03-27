@@ -4,10 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Created by Shounak on 06-Feb-19
+ * Drinks Entity for local Room database
  */
 
-private const val ID_INITIALIZER: Int = 0
 
 @Entity
 data class Drinks(

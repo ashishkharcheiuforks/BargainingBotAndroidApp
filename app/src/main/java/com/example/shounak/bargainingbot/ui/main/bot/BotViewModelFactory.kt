@@ -7,7 +7,7 @@ import com.example.shounak.bargainingbot.data.repository.BotRepository
 import com.example.shounak.bargainingbot.data.repository.UserRepository
 
 /**
- * Created by Shounak on 02-Feb-19
+ * View model factory to provide Bot view model
  */
 class BotViewModelFactory(
     private val userRepository: UserRepository,

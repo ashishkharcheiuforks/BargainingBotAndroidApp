@@ -3,7 +3,7 @@ package com.example.shounak.bargainingbot.internal
 import kotlinx.coroutines.*
 
 /**
- * Created by Shounak on 02-Feb-19
+ * Function to call a deferred value lazily
  */
 
 fun <T> lazyDeferred(block: suspend CoroutineScope.() -> T): Lazy<Deferred<T>> {

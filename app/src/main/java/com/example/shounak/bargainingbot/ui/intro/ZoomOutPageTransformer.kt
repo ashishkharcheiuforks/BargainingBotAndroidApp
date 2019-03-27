@@ -2,6 +2,10 @@ package com.example.shounak.bargainingbot.ui.intro
 
 import android.view.View
 
+/**
+ * Transformer for intro slides animation
+ */
+
 private const val MIN_SCALE = 0.85f
 private const val MIN_ALPHA = 0.5f
 class ZoomOutPageTransformer : androidx.viewpager.widget.ViewPager.PageTransformer {
