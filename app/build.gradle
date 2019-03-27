@@ -13,6 +13,14 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 
 android {
+    signingConfigs {
+        config {
+            storeFile file('C:/Users/Shounak/.android/debug.keystore')
+            storePassword '@@@1996shaun'
+            keyAlias 'AndroidDebugKey'
+            keyPassword '@@@1996shaun'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.shounak.bargainingbot"
@@ -48,11 +56,11 @@ androidExtensions {
 }
 
 dependencies {
-//    android.defaultConfig.javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
 
-//    annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
+    //    android.defaultConfig.javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //    annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
 
@@ -65,17 +73,17 @@ dependencies {
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
     kapt "androidx.room:room-compiler:$room_version"
 
     // Gson
-    implementation "com.google.code.gson:gson:2.8.5"
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     // Kotlin Android Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0-RC1'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0-RC1"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0-RC1'
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -87,7 +95,7 @@ dependencies {
     implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"
 
     // New Material Design
-    implementation "com.google.android.material:material:1.0.0"
+    implementation 'com.google.android.material:material:1.0.0'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
@@ -123,13 +131,12 @@ dependencies {
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.1.0'
 
     // SendGrid
-//    implementation 'com.sendgrid:sendgrid-java:4.0.1'
-    implementation ('com.github.danysantiago:sendgrid-android:1'){
-        exclude group: 'org.apache.httpcomponents', module:'httpclient'
-    }
 
+    //    implementation 'com.sendgrid:sendgrid-java:4.0.1'
+    implementation('com.github.danysantiago:sendgrid-android:1') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-
 }

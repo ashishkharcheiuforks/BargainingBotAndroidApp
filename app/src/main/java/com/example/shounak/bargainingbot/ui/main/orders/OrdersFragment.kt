@@ -17,10 +17,7 @@ import com.example.shounak.bargainingbot.ui.base.ScopedFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.orders_fragment.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -36,6 +33,8 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
     private var itemsCount = MutableLiveData<Int>()
     private var totalCost = MutableLiveData<Int>()
 
+    private val GST_PERCENT = 0.09
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +45,8 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        pay_progressBar.visibility = View.GONE
+        pay_processing_textView.visibility = View.GONE
         orders_loading_group.visibility = View.VISIBLE
 
         ordersFragmentLayout.isClickable = false
@@ -102,6 +103,7 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
 
     }
 
+
     private fun bindUI() {
 
         itemsCount.observe(this@OrdersFragment, Observer {
@@ -110,39 +112,61 @@ class OrdersFragment : ScopedFragment(), KodeinAware {
         })
 
         totalCost.observe(this@OrdersFragment, Observer {
-            orders_total_amount_text_view.text = it.toString()
+
+            cost_before_gst_textView.text = it.toString()
+            val gstCost = (it * 0.09).toInt()
+            Log.e("GST cost", gstCost.toString())
+            cgst_textView.text = gstCost.toString()
+            sgst_textView.text = gstCost.toString()
+            val total = (it + (gstCost * 2))
+            orders_total_amount_text_view.text = total.toString()
         })
 
 
         order_fragment_pay_button.setOnClickListener {
 
-
-
-            if (groupAdapter.itemCount != 0) {
-
-                val userId = PreferenceProvider.getPrefrences(this@OrdersFragment.context!!)
-                    .getString(PreferenceProvider.USER_ID, "")
-
-                runBlocking {
-                    val checkout = async {
-                        val orderList = viewModel.orders.await().value
-                        viewModel.checkoutWithUserId(userId, orderList, totalCost.value!!)
-                    }
-
-                    val clearOrders = async { viewModel.clearOrders(userId!!) }
-
-                    awaitAll(checkout, clearOrders)
+            launch {
+                val a = async {
+                    pay_progressBar.visibility = View.VISIBLE
+                    pay_processing_textView.visibility = View.VISIBLE
                 }
+                val b = async {
+                    if (groupAdapter.itemCount != 0) {
 
-                runBlocking { viewModel.clearLocalOrders() }
+                        val userId = PreferenceProvider.getPrefrences(this@OrdersFragment.context!!)
+                            .getString(PreferenceProvider.USER_ID, "")
 
-                val toBotFragment = OrdersFragmentDirections.actionToBotFragment(paymentDone = true)
+                        runBlocking {
+                            val checkout = async {
+                                val orderList = viewModel.orders.await().value
+                                val gstCost = totalCost.value?.times(GST_PERCENT)
+                                val total = totalCost.value?.plus(gstCost!! * 2)
+                                viewModel.checkoutWithUserId(userId, orderList, gstCost?.toInt()!!, total?.toInt()!!)
+                            }
 
-                PreferenceProvider.getPrefrences(this@OrdersFragment.context!!).edit()
-                    .putBoolean(PreferenceProvider.FIRST_LAUNCH, true).apply()
+                            val clearOrders = async { viewModel.clearOrders(userId!!) }
 
-                Navigation.findNavController(this@OrdersFragment.view!!).navigate(toBotFragment)
+                            awaitAll(checkout, clearOrders)
+                        }
+
+                        withContext(Dispatchers.Main) { viewModel.clearLocalOrders() }
+
+                        val toBotFragment = OrdersFragmentDirections.actionToBotFragment(paymentDone = true)
+
+                        PreferenceProvider.getPrefrences(this@OrdersFragment.context!!).edit()
+                            .putBoolean(PreferenceProvider.FIRST_LAUNCH, true).apply()
+
+                        Navigation.findNavController(this@OrdersFragment.view!!).navigate(toBotFragment)
+                    }
+                }
+                awaitAll(a, b)
             }
+
+
+
+
+
+
         }
 
     }

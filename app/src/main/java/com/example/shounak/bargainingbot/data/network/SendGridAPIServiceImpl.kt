@@ -20,6 +20,7 @@ class SendGridAPIServiceImpl : SendGridAPIService {
         withContext(Dispatchers.IO) {
             val sendgrid = SendGrid(API_KEY)
             val total = data["Total"] as Int
+            val gst = data["gstCost"] as Int
 
             val parser = JsonParser()
             val orderArray = parser.parse(data["Order"] as String).asJsonArray
@@ -49,7 +50,11 @@ class SendGridAPIServiceImpl : SendGridAPIService {
                 }
                 appendln("")
                 appendln("")
-                appendln("Total :                        $total")
+                appendln("CGST : $gst")
+                appendln("")
+                appendln("SGST : $gst")
+                appendln("")
+                appendln("Total : $total")
             }
             email.text = text.toString()
 
