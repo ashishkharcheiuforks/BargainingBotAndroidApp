@@ -10,7 +10,7 @@ This repo is part of the [Bargaining Bot](https://github.com/shounakmulay/Bargai
 * [LiveData](https://developer.android.com/reference/android/arch/lifecycle/LiveData) and [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) to implement the observer pattern
 
 ```diff
-!! The Dialogflow sdk used in this project might be depricated soon.
+!! The Dialogflow sdk used in this project might be depricated October 2019.
 ```
 ##
 
